@@ -5,13 +5,11 @@ import Catalogo from './components/Catalogo'; // Importe o componente que captur
 
 function App() {
   return (
-   
     <BrowserRouter>
       <Routes>
         <Route path="/:capturedValue" element={<Catalogo />} />
       </Routes>
     </BrowserRouter>
-   
   );
 }
 
