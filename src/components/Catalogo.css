@@ -1,0 +1,132 @@
+.nav-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    
+  }
+  .persisti{
+    position: sticky;
+  }
+  .nav-item {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .nav-tabs .nav-link {
+    white-space: nowrap;
+  }
+  
+  .tab-content .sessao {
+    margin-bottom: 1rem;
+  }
+  
+  .tab-content .item {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+  
+  .tab-content .imagem {
+    
+    margin-right: 1rem;
+    width: 30%;
+  }
+  
+  .tab-content .imagem img {
+    max-width: 100%;
+    height: auto;
+    
+  }
+  
+  .tab-content .texto {
+    flex: 2;
+  }
+  
+  .tab-content{
+    padding: 15px;
+  }
+  .nav-tabs{
+    padding: 5px;
+  }
+  
+  .texto{
+    align-content: center;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  .main-content {
+    flex: 1; /* Faz com que o conteúdo principal ocupe todo o espaço disponível */
+    padding-bottom: 60px; /* Altura aproximada do footer */
+  }
+  
+  footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  footer p{
+    font-size: 10px;
+  }
+  
+  .texto h3{
+    font-size: 15px;
+  }
+  .texto h4{
+    font-size: 15px;
+    color:crimson;
+  }
+  
+  
+  .texto p{
+    font-size: 10px;
+  }
+
+  .textomenor{
+    font-size: 10px;
+  }
+  
+  .imagem img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover; /* Para garantir que a imagem mantenha suas proporções e cubra a área especificada */
+    border-radius: 0%; /* Para tornar a imagem redonda */
+  }
+
+  .placeholder {
+    width: 120px; /* Ajuste conforme necessário */
+    height: 120px; /* Ajuste conforme necessário */
+    background-color: black; /* Cor de fundo do placeholder */
+    border-radius: 50%; /* Arredondar para circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #aaa; /* Cor do texto */
+    text-align: center;
+}
+
+.rounded {
+  width: 100px; /* Defina o tamanho que você deseja */
+  height: 100px; /* A altura deve ser igual à largura para manter a proporção quadrada */
+  object-fit: cover; /* Corta a imagem para caber dentro do elemento */
+  border-radius: 50%; /* Torna a imagem circular */
+}
+header{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
