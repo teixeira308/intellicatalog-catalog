@@ -130,3 +130,11 @@ header{
   padding-top: 20px;
   padding-bottom: 20px;
 }
+
+.store-image{
+
+  width: 50px; /* Ajuste conforme necessário */
+  height: 50px; /* Ajuste conforme necessário */
+  border-radius: 50%; /* Arredondar para circular */
+ 
+}

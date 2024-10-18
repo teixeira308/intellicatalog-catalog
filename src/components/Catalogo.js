@@ -22,6 +22,7 @@ function Catalogo() {
   const [showProductModal, setShowProductModal] = useState(false); // Estado para controle do modal
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const [imageStoreUrls, setImageStoreUrls] = useState([]);
 
   //busca token no env
   const apiToken = process.env.REACT_APP_API_TOKEN;
@@ -36,23 +37,23 @@ function Catalogo() {
 
   const addToCart = (product) => {
     setCart(prevCart => {
-        const exists = prevCart.find(item => item.id === product.id);
-        if (exists) {
-            return prevCart.map(item =>
-                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-            );
-        }
-        return [...prevCart, { ...product, quantity: 1 }];
+      const exists = prevCart.find(item => item.id === product.id);
+      if (exists) {
+        return prevCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
     });
-};
+  };
 
 
   const sendOrderToWhatsApp = async () => {
     const orderDetails = cart.map(item => ({
-        title: item.titulo,
-        price: item.price,
-        quantity: item.quantity, // Inclui a quantidade no pedido
-        description: item.description,
+      title: item.titulo,
+      price: item.price,
+      quantity: item.quantity, // Inclui a quantidade no pedido
+      description: item.description,
     }));
 
     const message = encodeURIComponent(`Detalhes do pedido:\n${JSON.stringify(orderDetails, null, 2)}`);
@@ -60,13 +61,13 @@ function Catalogo() {
     const whatsappApiUrl = `https://api.whatsapp.com/send?text=${message}`; // URL da API do WhatsApp
 
     window.open(whatsappApiUrl, '_blank');
-};
+  };
 
 
 
   const fetchCategories = async (storeId) => {
     try {
-      const response = await axios.get(`http://192.168.15.21:3000/intellicatalog/v1/categories/users/${storeId}`, {
+      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/categories/users/${storeId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -82,7 +83,7 @@ function Catalogo() {
 
   const fetchStoreDetails = async (identificadorExterno) => {
     try {
-      const response = await axios.get(`http://192.168.15.21:3000/intellicatalog/v1/stores/${identificadorExterno}`, {
+      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/stores/${identificadorExterno}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -95,7 +96,7 @@ function Catalogo() {
 
   const fetchProductsByCategory = async (categoryId) => {
     try {
-      const response = await axios.get(`http://192.168.15.21:3000/intellicatalog/v1/products/category/${categoryId}`, {
+      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/products/category/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -114,7 +115,7 @@ function Catalogo() {
 
   const getFotoByProduto = async (product) => {
 
-    const response = await fetch(`http://192.168.15.21:3000/intellicatalog/v1/products/${product.id}/products_images`, {
+    const response = await fetch(`http://localhost:3000/intellicatalog/v1/products/${product.id}/products_images`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +130,7 @@ function Catalogo() {
   };
 
   const getFotoProdutoDownload = async (product, photo) => {
-    const response = await fetch(`http://192.168.15.21:3000/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
+    const response = await fetch(`http://localhost:3000/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${apiToken}`
@@ -144,6 +145,65 @@ function Catalogo() {
     // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
     const blob = new Blob([arrayBuffer], { type: "image/png" });
     return blob; // Retorna o Blob
+  };
+
+  const getFotoStoreDownload = async (store, photo) => {
+
+    const response = await fetch(`http://localhost:3000/intellicatalog/v1/stores/${store.id}/store_images/download?arquivo=${photo.nomearquivo}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${apiToken}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao fazer download da imagem");
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
+    const blob = new Blob([arrayBuffer], { type: "image/png" });
+    return blob; // Retorna o Blob
+  };
+
+  const getFotoByStoreId = async (store) => {
+
+    const response = await fetch(`http://localhost:3000/intellicatalog/v1/stores/${store.id}/store_images`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar imagens da store");
+    }
+
+    return await response.json();
+  }
+
+
+  // Função para carregar as imagens do stores do usuario
+  const loadStoreImages = async (store) => {
+    if (store) {
+      try {
+        const fotos = await getFotoByStoreId(store); // Busca todas as fotos do usuario
+        console.log("fotos por usuario: ", fotos)
+        // Gera URLs para cada imagem junto com o ID
+        const fotosUrls = await Promise.all(
+          fotos.map(async (foto) => {
+            const arrayBuffer = await getFotoStoreDownload(store, foto);
+            const blob = new Blob([arrayBuffer], { type: "image/jpeg" });
+            const url = URL.createObjectURL(blob); // Cria a URL a partir do Blob
+            return { id: foto.id, url, store_id: foto.store_id }; // Retorna um objeto com o ID e a URL
+          })
+        );
+        setImageStoreUrls(fotosUrls); // Define todas as URLs das imagens
+      } catch (error) {
+        console.error("Erro ao buscar fotos:", error);
+      }
+    }
   };
 
   const loadProductImages = async (products) => {
@@ -175,20 +235,24 @@ function Catalogo() {
   useEffect(() => {
     if (cart.length > 0) {
       loadProductImages(cart);
+
     }
   }, [cart]);
 
 
   useEffect(() => {
     //console.log('Valor capturado:', capturedValue);
+
   }, [capturedValue]);
 
   useEffect(() => {
     fetchStoreDetails(capturedValue);
+
   }, [capturedValue]);
 
   useEffect(() => {
-    if (storeDetails.id) {
+    if (storeDetails) {
+      loadStoreImages(storeDetails);
       fetchCategories(storeDetails.id);
     }
   }, [storeDetails]);
@@ -212,10 +276,21 @@ function Catalogo() {
 
   return (
     <div className="App">
-      <header className="bg-primary text-white text-center">
-        <h1 onClick={handleOpenModal} style={{ cursor: 'pointer' }}>{storeDetails.namestore}</h1>
-       {/*} <p>{storeDetails.status}</p>{*/}
-       {/*}  <p className='textomenor'>Horário: <br />{storeDetails.opening_hours} - {storeDetails.closing_hours}</p>{*/} 
+      <header className="bg-primary text-white text-center" onClick={handleOpenModal} >
+        {imageStoreUrls.map((image) => (
+          <div key={image.id}> {/* Use o id como chave */}
+            <img src={image.url} alt={`Foto da store ${storeDetails.namestore}`} style={{
+              width: "100px", 
+              height: "100px",
+              borderRadius: "50%",
+              objectFit: "cover"
+            }} />
+          </div>
+        ))}
+        <br/>
+        <h1 style={{ cursor: 'pointer' }}>{storeDetails.namestore}</h1>
+        {/*} <p>{storeDetails.status}</p>{*/}
+        {/*}  <p className='textomenor'>Horário: <br />{storeDetails.opening_hours} - {storeDetails.closing_hours}</p>{*/}
       </header>
 
       <main className="my main-content">
