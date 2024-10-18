@@ -24,8 +24,12 @@ function Catalogo() {
   const handleCloseModal = () => setShowModal(false);
   const [imageStoreUrls, setImageStoreUrls] = useState([]);
 
+ 
+
+
   //busca token no env
   const apiToken = process.env.REACT_APP_API_TOKEN;
+  const api_url = process.env.REACT_APP_API_URL;
 
   const handleOpenCartModal = () => {
     setShowCartModal(true);
@@ -67,7 +71,7 @@ function Catalogo() {
 
   const fetchCategories = async (storeId) => {
     try {
-      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/categories/users/${storeId}`, {
+      const response = await axios.get(`${api_url}/intellicatalog/v1/categories/users/${storeId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -83,7 +87,7 @@ function Catalogo() {
 
   const fetchStoreDetails = async (identificadorExterno) => {
     try {
-      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/stores/${identificadorExterno}`, {
+      const response = await axios.get(`${api_url}/intellicatalog/v1/stores/${identificadorExterno}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -96,7 +100,7 @@ function Catalogo() {
 
   const fetchProductsByCategory = async (categoryId) => {
     try {
-      const response = await axios.get(`http://localhost:3000/intellicatalog/v1/products/category/${categoryId}`, {
+      const response = await axios.get(`${api_url}/intellicatalog/v1/products/category/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -115,7 +119,7 @@ function Catalogo() {
 
   const getFotoByProduto = async (product) => {
 
-    const response = await fetch(`http://localhost:3000/intellicatalog/v1/products/${product.id}/products_images`, {
+    const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -130,7 +134,7 @@ function Catalogo() {
   };
 
   const getFotoProdutoDownload = async (product, photo) => {
-    const response = await fetch(`http://localhost:3000/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
+    const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${apiToken}`
@@ -149,7 +153,7 @@ function Catalogo() {
 
   const getFotoStoreDownload = async (store, photo) => {
 
-    const response = await fetch(`http://localhost:3000/intellicatalog/v1/stores/${store.id}/store_images/download?arquivo=${photo.nomearquivo}`, {
+    const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${apiToken}`
@@ -168,7 +172,7 @@ function Catalogo() {
 
   const getFotoByStoreId = async (store) => {
 
-    const response = await fetch(`http://localhost:3000/intellicatalog/v1/stores/${store.id}/store_images`, {
+    const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -276,7 +280,7 @@ function Catalogo() {
 
   return (
     <div className="App">
-      <header className="bg-primary text-white text-center" onClick={handleOpenModal} >
+      <header className="bg-color-config text-white text-center bg-color-config" onClick={handleOpenModal} >
         {imageStoreUrls.map((image) => (
           <div key={image.id}> {/* Use o id como chave */}
             <img src={image.url} alt={`Foto da store ${storeDetails.namestore}`} style={{
@@ -288,7 +292,7 @@ function Catalogo() {
           </div>
         ))}
         <br/>
-        <h1 style={{ cursor: 'pointer' }}>{storeDetails.namestore}</h1>
+        <h1 style={{ cursor: 'pointer' , fontFamily: "Kanit" }}>{storeDetails.namestore}</h1>
         {/*} <p>{storeDetails.status}</p>{*/}
         {/*}  <p className='textomenor'>Horário: <br />{storeDetails.opening_hours} - {storeDetails.closing_hours}</p>{*/}
       </header>
@@ -343,7 +347,7 @@ function Catalogo() {
                               loading="lazy"
                               src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
                               alt={product.titulo}
-                              className='rounded'
+                              className='img-square' 
                             />
                           ) : (
                             <div className="placeholder">
@@ -373,11 +377,12 @@ function Catalogo() {
         <footer>
           {storeDetails.status === "Aberta" ? (
             <>
-              <Button variant="secondary" onClick={() => handleOpenCartModal()}>
+              <Button  onClick={() => handleOpenCartModal()} style={{ backgroundColor: '#D8F793', borderColor: '#D8F793' , color: 'black' }}>
                 Ver Carrinho
               </Button>
               &nbsp;
-              <Button onClick={() => handleOpenCartModal()}>Finalizar Pedido</Button>
+              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: '#E0BE36', borderColor: '#E0BE36' , color: 'black' }}>
+                Finalizar Pedido</Button>
             </>
           ) : (
 

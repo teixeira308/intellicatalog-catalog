@@ -32,11 +32,7 @@
     width: 30%;
   }
   
-  .tab-content .imagem img {
-    max-width: 100%;
-    height: auto;
-    
-  }
+
   
   .tab-content .texto {
     flex: 2;
@@ -70,7 +66,7 @@
   }
   
   footer {
-    background-color: #343a40;
+    background-color: #A0CA92;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -100,13 +96,7 @@
     font-size: 10px;
   }
   
-  .imagem img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover; /* Para garantir que a imagem mantenha suas proporções e cubra a área especificada */
-    border-radius: 0%; /* Para tornar a imagem redonda */
-  }
-
+ 
   .placeholder {
     width: 120px; /* Ajuste conforme necessário */
     height: 120px; /* Ajuste conforme necessário */
@@ -137,4 +127,22 @@ header{
   height: 50px; /* Ajuste conforme necessário */
   border-radius: 50%; /* Arredondar para circular */
  
+}
+
+.img-square {
+  width: 100px;        /* Ajuste a largura conforme necessário */
+  height: 100px;       /* Altura igual à largura para garantir o formato quadrado */
+  object-fit: cover;   /* Garante que a imagem mantenha a proporção e cubra o quadrado */
+  display: block;      /* Remove o espaço em branco ao redor da imagem */
+  border-radius: 8px;  /* Mantém o arredondamento se for necessário */
+}
+
+.bg-color-config{
+  background-color: #75B09C;
+}
+
+.button-carrinho{
+  background-color: #75B09C !important;
+  border-color: #75B09C !important;      /* Cor da borda customizada */
+  color: white;        
 }

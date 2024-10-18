@@ -6,7 +6,7 @@ const StoreModal = ({ show, handleClose, storeDetails }) => {
   return (
     <Modal show={show} onHide={handleClose} className='modal-content' fullscreen='lg-down'>
       <Modal.Header closeButton>
-        <Modal.Title>{storeDetails.namestore}</Modal.Title>
+        <Modal.Title style={{ cursor: 'pointer' , fontFamily: "Kanit" }}>{storeDetails.namestore}</Modal.Title>
       </Modal.Header>
      <div className='store-info'>
         <p><strong>Horário de Funcionamento:</strong> {storeDetails.opening_hours} - {storeDetails.closing_hours}</p>
