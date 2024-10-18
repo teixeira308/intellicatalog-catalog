@@ -5,12 +5,11 @@
   }
   
   .image-gallery {
-    width: 100%; /* Defina o tamanho que você deseja */
-    height: 100%; /* A altura deve ser igual à largura para manter a proporção quadrada */
-    object-fit: cover; /* Corta a imagem para caber dentro do elemento */
-  
-  
-  margin-bottom: 20px;
+    width: 100vw;        /* Ajuste a largura conforme necessário */
+  height: 40vh;       /* Altura igual à largura para garantir o formato quadrado */
+  object-fit: cover;   /* Garante que a imagem mantenha a proporção e cubra o quadrado */
+  display: block;      /* Remove o espaço em branco ao redor da imagem */
+  border-radius: 8px;  /* Mantém o arredondamento se for necessário */
   }
   
  .modal-content{

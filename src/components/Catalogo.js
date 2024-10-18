@@ -171,7 +171,7 @@ function Catalogo() {
   };
 
   const getFotoByStoreId = async (store) => {
-
+    console.log(store.id)
     const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images`, {
       method: "GET",
       headers: {
@@ -257,7 +257,7 @@ function Catalogo() {
   useEffect(() => {
     if (storeDetails) {
       loadStoreImages(storeDetails);
-      fetchCategories(storeDetails.id);
+      fetchCategories(storeDetails.user_id);
     }
   }, [storeDetails]);
 
