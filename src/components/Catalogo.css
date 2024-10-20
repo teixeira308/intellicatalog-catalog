@@ -1,148 +1,252 @@
 .nav-tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    
-  }
-  .persisti{
-    position: sticky;
-  }
-  .nav-item {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-  
-  .nav-tabs .nav-link {
-    white-space: nowrap;
-  }
-  
-  .tab-content .sessao {
-    margin-bottom: 1rem;
-  }
-  
-  .tab-content .item {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-  
-  .tab-content .imagem {
-    
-    margin-right: 1rem;
-    width: 30%;
-  }
-  
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
-  
-  .tab-content .texto {
-    flex: 2;
-  }
-  
-  .tab-content{
-    padding: 15px;
-  }
-  .nav-tabs{
-    padding: 5px;
-  }
-  
-  .texto{
-    align-content: center;
-  }
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .App {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-  }
-  
-  .main-content {
-    flex: 1; /* Faz com que o conteúdo principal ocupe todo o espaço disponível */
-    padding-bottom: 60px; /* Altura aproximada do footer */
-  }
-  
-  footer {
-    background-color: #A0CA92;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  footer p{
-    font-size: 10px;
-  }
-  
-  .texto h3{
-    font-size: 15px;
-  }
-  .texto h4{
-    font-size: 15px;
-    color:crimson;
-  }
-  
-  
-  .texto p{
-    font-size: 10px;
-  }
+}
 
-  .textomenor{
-    font-size: 10px;
-  }
+.persisti {
+  position: sticky;
+  top: 0; /* Define a posição no topo da página */
+  z-index: 1000; /* Coloca o elemento acima de outros, se necessário */
+  background-color: white; /* Isso ajuda a garantir que a div seja visível */
+  border-bottom: 1px solid #ccc; /* Um exemplo de borda visual */
+
+}
+
+.nav-item {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.nav-tabs .nav-link {
+  white-space: nowrap;
+}
+
+.tab-content .sessao {
+  margin-bottom: 1rem;
+  padding-left: 10px;
+
+}
+
+
+
+.tab-content .imagem {
+
+  margin-right: 1rem;
+  width: 30%;
+}
+
+
+
+.tab-content .texto {
+  flex: 2;
   
- 
-  .placeholder {
-    width: 120px; /* Ajuste conforme necessário */
-    height: 120px; /* Ajuste conforme necessário */
-    background-color: black; /* Cor de fundo do placeholder */
-    border-radius: 50%; /* Arredondar para circular */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: #aaa; /* Cor do texto */
-    text-align: center;
+}
+
+.tab-content {
+  overflow-y: auto;
+  
+}
+
+.nav-tabs {
+  padding: 5px;
+}
+
+.texto{
+  
+  width: 5vw;
+
+}
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.main-content {
+  flex: 1;
+  /* Faz com que o conteúdo principal ocupe todo o espaço disponível */
+  padding-bottom: 60px;
+  /* Altura aproximada do footer */
+}
+
+footer {
+  background-color: #A0CA92;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  font-size: 10px;
+}
+
+.texto h3 {
+  font-size: 15px;
+}
+
+.texto h4 {
+  font-size: 15px;
+  color: crimson;
+}
+
+
+.texto p {
+  font-size: 10px;
+}
+
+.textomenor {
+  font-size: 10px;
+}
+
+
+.placeholder {
+  width: 120px;
+  /* Ajuste conforme necessário */
+  height: 120px;
+  /* Ajuste conforme necessário */
+  background-color: black;
+  /* Cor de fundo do placeholder */
+  border-radius: 50%;
+  /* Arredondar para circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #aaa;
+  /* Cor do texto */
+  text-align: center;
 }
 
 .rounded {
-  width: 100px; /* Defina o tamanho que você deseja */
-  height: 100px; /* A altura deve ser igual à largura para manter a proporção quadrada */
-  object-fit: cover; /* Corta a imagem para caber dentro do elemento */
-  border-radius: 50%; /* Torna a imagem circular */
+  width: 100px;
+  /* Defina o tamanho que você deseja */
+  height: 100px;
+  /* A altura deve ser igual à largura para manter a proporção quadrada */
+  object-fit: cover;
+  /* Corta a imagem para caber dentro do elemento */
+  border-radius: 50%;
+  /* Torna a imagem circular */
 }
-header{
+
+header {
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.store-image{
+.store-image {
 
-  width: 50px; /* Ajuste conforme necessário */
-  height: 50px; /* Ajuste conforme necessário */
-  border-radius: 50%; /* Arredondar para circular */
- 
+  width: 50px;
+  /* Ajuste conforme necessário */
+  height: 50px;
+  /* Ajuste conforme necessário */
+  border-radius: 50%;
+  /* Arredondar para circular */
+
 }
 
 .img-square {
-  width: 100px;        /* Ajuste a largura conforme necessário */
-  height: 100px;       /* Altura igual à largura para garantir o formato quadrado */
-  object-fit: cover;   /* Garante que a imagem mantenha a proporção e cubra o quadrado */
-  display: block;      /* Remove o espaço em branco ao redor da imagem */
-  border-radius: 8px;  /* Mantém o arredondamento se for necessário */
+  width: 100px;
+  /* Ajuste a largura conforme necessário */
+  height: 100px;
+  /* Altura igual à largura para garantir o formato quadrado */
+  object-fit: cover;
+  /* Garante que a imagem mantenha a proporção e cubra o quadrado */
+  display: block;
+  /* Remove o espaço em branco ao redor da imagem */
+  border-radius: 8px;
+  /* Mantém o arredondamento se for necessário */
 }
 
-.bg-color-config{
-  background-color: #75B09C;
-}
 
-.button-carrinho{
+
+.button-carrinho {
   background-color: #75B09C !important;
-  border-color: #75B09C !important;      /* Cor da borda customizada */
-  color: white;        
+  border-color: #75B09C !important;
+  /* Cor da borda customizada */
+  color: white;
+}
+
+
+.items-catalogo {
+  display: flex;
+  flex-direction: row;
+  /* Elementos lado a lado */
+  justify-content: left;
+  flex-wrap: wrap;
+  /* Permite quebrar linha ao atingir o limite da tela */
+  gap: 10px;
+  /* Espaçamento entre os itens */
+}
+
+
+.tab-content .item {
+  display: flex;
+  margin-bottom: 1rem;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  border-style: groove;
+  flex-basis: 20%;
+  /* Define a largura base de cada item como 30% */
+
+}
+
+@media (max-width: 768px) {
+  .items-catalogo {
+
+    flex-direction: column;
+    /* Elementos um abaixo do outro */
+    justify-content: left;
+  }
+
+  .tab-content .item {
+    display: flex;
+    margin-bottom: 1rem;
+    border-style: none;
+  }
+
+  .item {
+    flex-basis: 100%;
+    /* Largura total em telas menores */
+    border-style: none;
+  
+  }
+
+}
+
+.item-descricao {
+  display: -webkit-box;
+  /* Define um contêiner flexível */
+  -webkit-line-clamp: 2;
+  /* Limita o texto a 2 linhas */
+  -webkit-box-orient: vertical;
+  /* Define a orientação vertical */
+  overflow: hidden;
+  /* Esconde o conteúdo extra */
+  text-overflow: ellipsis;
+  /* Adiciona reticências (...) */
+  width: 90%;
+}
+
+.item-titulo{
+  width: 90%;
+}
+
+.item-preco{
+  width: 90%;
 }

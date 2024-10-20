@@ -23,8 +23,9 @@ function Catalogo() {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const [imageStoreUrls, setImageStoreUrls] = useState([]);
+  const [configStore, setConfigStore] = useState([]);
 
- 
+
 
 
   //busca token no env
@@ -37,35 +38,52 @@ function Catalogo() {
 
   const handleCloseCartModal = () => setShowCartModal(false);
 
-
-
   const addToCart = (product) => {
-    setCart(prevCart => {
-      const exists = prevCart.find(item => item.id === product.id);
-      if (exists) {
-        return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
+    setCart((prevCart) => {
+      const cartCopy = [...prevCart];
+
+      const productIndex = cartCopy.findIndex(item => item.id === product.id);
+
+      if (productIndex !== -1) {
+        // Se o produto já existe, atualiza a quantidade somando a quantidade selecionada
+        cartCopy[productIndex] = {
+          ...cartCopy[productIndex],
+          quantity: cartCopy[productIndex].quantity + product.quantity
+        };
+      } else {
+        // Se o produto não existe, adiciona-o com a quantidade selecionada
+        cartCopy.push({ ...product });
       }
-      return [...prevCart, { ...product, quantity: 1 }];
+
+      return cartCopy;
     });
   };
 
 
+
   const sendOrderToWhatsApp = async () => {
-    const orderDetails = cart.map(item => ({
-      title: item.titulo,
-      price: item.price,
-      quantity: item.quantity, // Inclui a quantidade no pedido
-      description: item.description,
-    }));
+    const orderDetails = cart.map(item => {
+      const { titulo, price, quantity } = item;
+      const unitPrice = Number(price); // Converte para número para evitar erros
+      const totalItem = unitPrice * quantity; // Calcula o total de cada item
 
-    const message = encodeURIComponent(`Detalhes do pedido:\n${JSON.stringify(orderDetails, null, 2)}`);
+      return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
+    });
 
-    const whatsappApiUrl = `https://api.whatsapp.com/send?text=${message}`; // URL da API do WhatsApp
+    // Calcula o valor total do pedido
+    const totalOrder = cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
+
+    // Converte os detalhes em uma string compreensível e adiciona o total
+    const message = encodeURIComponent(
+      `Detalhes do pedido:\n\n${orderDetails.join('')}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
+    );
+
+    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`; // URL da API do WhatsApp
 
     window.open(whatsappApiUrl, '_blank');
   };
+
+
 
 
 
@@ -133,6 +151,25 @@ function Catalogo() {
     return await response.json();
   };
 
+
+  const getStoreConfigs = async (store) => {
+
+    const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/config`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar imagens do produto");
+    }
+    return await response.json();
+  };
+
+
+
   const getFotoProdutoDownload = async (product, photo) => {
     const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
@@ -171,7 +208,7 @@ function Catalogo() {
   };
 
   const getFotoByStoreId = async (store) => {
-    console.log(store.id)
+
     const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images`, {
       method: "GET",
       headers: {
@@ -193,7 +230,7 @@ function Catalogo() {
     if (store) {
       try {
         const fotos = await getFotoByStoreId(store); // Busca todas as fotos do usuario
-        console.log("fotos por usuario: ", fotos)
+
         // Gera URLs para cada imagem junto com o ID
         const fotosUrls = await Promise.all(
           fotos.map(async (foto) => {
@@ -204,6 +241,18 @@ function Catalogo() {
           })
         );
         setImageStoreUrls(fotosUrls); // Define todas as URLs das imagens
+      } catch (error) {
+        console.error("Erro ao buscar fotos:", error);
+      }
+    }
+  };
+
+  const loadStoreConfigs = async (store) => {
+    if (store) {
+      try {
+        const configs = await getStoreConfigs(store); // Busca todas as fotos do usuario
+
+        setConfigStore(configs)
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
       }
@@ -239,7 +288,6 @@ function Catalogo() {
   useEffect(() => {
     if (cart.length > 0) {
       loadProductImages(cart);
-
     }
   }, [cart]);
 
@@ -255,7 +303,8 @@ function Catalogo() {
   }, [capturedValue]);
 
   useEffect(() => {
-    if (storeDetails) {
+    if (storeDetails && Object.keys(storeDetails).length > 0 && storeDetails.user_id) {
+      loadStoreConfigs(storeDetails);
       loadStoreImages(storeDetails);
       fetchCategories(storeDetails.user_id);
     }
@@ -280,22 +329,51 @@ function Catalogo() {
 
   return (
     <div className="App">
-      <header className="bg-color-config text-white text-center bg-color-config" onClick={handleOpenModal} >
-        {imageStoreUrls.map((image) => (
-          <div key={image.id}> {/* Use o id como chave */}
-            <img src={image.url} alt={`Foto da store ${storeDetails.namestore}`} style={{
-              width: "100px", 
-              height: "100px",
-              borderRadius: "50%",
-              objectFit: "cover"
-            }} />
-          </div>
-        ))}
-        <br/>
-        <h1 style={{ cursor: 'pointer' , fontFamily: "Kanit" }}>{storeDetails.namestore}</h1>
-        {/*} <p>{storeDetails.status}</p>{*/}
-        {/*}  <p className='textomenor'>Horário: <br />{storeDetails.opening_hours} - {storeDetails.closing_hours}</p>{*/}
-      </header>
+     <header
+  className="text-white text-center"
+  style={{
+    backgroundImage: `url(${imageStoreUrls[0]?.url})`, // Usa a primeira imagem como fundo
+    backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
+    backgroundPosition: 'center', // Centraliza a imagem
+    backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
+    position: 'relative', // Necessário para o posicionamento do pseudo-elemento
+    color: 'white', // Para garantir que o texto fique legível
+  }}
+  onClick={handleOpenModal}
+>
+  <div
+    style={{
+      position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Cor escura com opacidade
+      zIndex: 1, // Coloca a sobreposição acima do fundo
+    }}
+  />
+  {imageStoreUrls.map((image) => (
+    <div key={image.id}>
+      <img
+        src={image.url}
+        alt={`Foto da store ${storeDetails.namestore}`}
+        style={{
+          width: '100px',
+          height: '100px',
+          borderRadius: '50%',
+          objectFit: 'cover',
+          position: 'relative', // Mantém a imagem do logo acima da sobreposição
+          zIndex: 2, // Imagem acima da sobreposição
+        }}
+      />
+      <br />
+      <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2 , color: "white",position: 'relative',}}>{storeDetails.namestore}</h1>
+    </div>
+  ))}
+  
+</header>
+
+
 
       <main className="my main-content">
         <section>
@@ -304,7 +382,7 @@ function Catalogo() {
               <ul className='nav nav-tabs flex-nowrap w-100' role='tablist'>
                 {categories.map((category, index) => (
                   <li className='nav-item flex-fill text-center' key={index}>
-                    <a
+                    <button
                       className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                       id={`tab${category.id}-tab`}
                       href={`#content${category.id}`}
@@ -312,9 +390,14 @@ function Catalogo() {
                       aria-controls={`tab${category.id}`}
                       aria-selected={activeTab === `categoria${category.id}`}
                       onClick={(e) => { e.preventDefault(); setActiveTab(`categoria${category.id}`); }}
+                      style={{
+                        color: activeTab === `categoria${category.id}` ? configStore.cor_botao_primaria : configStore.cor_botao_secundaria, // Azul se selecionado, preto se não
+                        textDecoration: 'none',
+                        fontWeight: activeTab === `categoria${category.id}` ? 'bold' : 'normal', // Negrito se selecionado
+                      }}
                     >
                       {category.name}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -338,50 +421,54 @@ function Catalogo() {
                   <div className='sessao'>
                     <p>{category.description}</p>
                   </div>
-                  {products[category.id] && products[category.id].length > 0 ? (
-                    products[category.id].map((product, idx) => (
-                      <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                        <div className='imagem'>
-                          {productImages[product.id] && productImages[product.id].length > 0 ? (
-                            <img
-                              loading="lazy"
-                              src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
-                              alt={product.titulo}
-                              className='img-square' 
-                            />
-                          ) : (
-                            <div className="placeholder">
-                              Sem imagem
-                            </div>
-                          )}
+                  <div className='items-catalogo'>
+                    {products[category.id] && products[category.id].length > 0 ? (
+                      products[category.id].map((product, idx) => (
+                        <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                          <div className='imagem'>
+                            {productImages[product.id] && productImages[product.id].length > 0 ? (
+                              <img
+                                loading="lazy"
+                                src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                alt={product.titulo}
+                                className='img-square'
+                              />
+                            ) : (
+                              <div className="placeholder">
+                                Sem imagem
+                              </div>
+                            )}
+                          </div>
+                          <div className='texto'>
+                            <h3 className='item-titulo'>{product.titulo}</h3>
+                            <p className='item-descricao'>{product.description}</p>
+                            <h4 className='item-preco'>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</h4>
+                          </div>
                         </div>
-                        <div className='texto'>
-                          <h3>{product.titulo}</h3>
-                          <p>{product.description}</p>
-                          <h4>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</h4>
-                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center my-5">
+                        <h4>Nenhum produto encontrado nesta categoria</h4>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center my-5">
-                      <h4>Nenhum produto encontrado nesta categoria</h4>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               ))
+
             )}
+
           </div>
 
 
         </section>
-        <footer>
+        <footer style={{ backgroundColor: configStore.cor_primaria }}>
           {storeDetails.status === "Aberta" ? (
             <>
-              <Button  onClick={() => handleOpenCartModal()} style={{ backgroundColor: '#D8F793', borderColor: '#D8F793' , color: 'black' }}>
+              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_primaria, borderColor: configStore.cor_botao_primaria, color: 'black' }}>
                 Ver Carrinho
               </Button>
               &nbsp;
-              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: '#E0BE36', borderColor: '#E0BE36' , color: 'black' }}>
+              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: 'black' }}>
                 Finalizar Pedido</Button>
             </>
           ) : (
@@ -392,26 +479,30 @@ function Catalogo() {
       </main>
       <StoreModal show={showModal} handleClose={handleCloseModal} storeDetails={storeDetails} />
 
-      {selectedProduct && (
-        <ProductModal
-          show={showProductModal}
-          handleClose={handleCloseProductModal}
-          addToCart={addToCart}
-          product={selectedProduct}
-          images={productImages[selectedProduct.id] || []}
-          storeStatus={storeDetails.status}
-        />
-      )}
-
-      <CartModal
-        show={showCartModal}
-        handleClose={handleCloseCartModal}
-        cart={cart}
-        productImages={productImages} // Passando as imagens para o CartModal
-        sendOrderToWhatsApp={sendOrderToWhatsApp}
-        setCart={setCart}
-        store={storeDetails}
+  {
+    selectedProduct && (
+      <ProductModal
+        show={showProductModal}
+        handleClose={handleCloseProductModal}
+        addToCart={addToCart}
+        product={selectedProduct}
+        images={productImages[selectedProduct.id] || []}
+        storeStatus={storeDetails.status}
+        storeConfigs={configStore}
       />
+    )
+  }
+
+  <CartModal
+    show={showCartModal}
+    handleClose={handleCloseCartModal}
+    cart={cart}
+    productImages={productImages} // Passando as imagens para o CartModal
+    sendOrderToWhatsApp={sendOrderToWhatsApp}
+    setCart={setCart}
+    store={storeDetails}
+    storeConfigs={configStore}
+  />
     </div >
   );
 }

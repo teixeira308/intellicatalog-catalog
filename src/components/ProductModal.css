@@ -5,11 +5,12 @@
   }
   
   .image-gallery {
-    width: 100vw;        /* Ajuste a largura conforme necessário */
-  height: 40vh;       /* Altura igual à largura para garantir o formato quadrado */
+    width: 100%;        /* Ajuste a largura conforme necessário */
+  height: auto;       /* Altura igual à largura para garantir o formato quadrado */
   object-fit: cover;   /* Garante que a imagem mantenha a proporção e cubra o quadrado */
   display: block;      /* Remove o espaço em branco ao redor da imagem */
   border-radius: 8px;  /* Mantém o arredondamento se for necessário */
+  max-height: 500px; 
   }
   
  .modal-content{
@@ -28,6 +29,7 @@
 }
 .product-info{
   padding-left: 20px;
+  margin-top: 10px;
   height: 60%;
 }
 
@@ -51,3 +53,4 @@
   margin-bottom: 20px;
   background-color: #f0f0f0; /* Exemplo de cor de fundo para visualização */
 }
+

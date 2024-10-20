@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 import Form from 'react-bootstrap/Form';
 
-const ProductModal = ({ show, handleClose, product, images, addToCart, storeStatus }) => {
+const ProductModal = ({ show, handleClose, product, images, addToCart, storeStatus, storeConfigs }) => {
     const [quantity, setQuantity] = useState(1); // Estado para quantidade
 
     const handleQuantityChange = (e) => {
@@ -74,7 +74,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                                     <Button variant="light" onClick={increaseQuantity}>+</Button>
                                 </div>
                             </Form.Group>
-                            <Button onClick={handleAddToCart}>
+                            <Button onClick={handleAddToCart} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: 'black' }}>
                                 Adicionar ao Carrinho
                             </Button>
 

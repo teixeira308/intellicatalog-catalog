@@ -4,6 +4,7 @@
   margin-bottom: 10px;
   margin-top: 10px;
   margin-left: 20px;
+  margin-right: 50px;
 }
 
 .cart-item-image {
@@ -46,6 +47,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  margin-right: 10px;
 }
 
 .footer {
@@ -63,4 +65,17 @@
 .quantity-control {
   justify-content: space-between;
   width: 100%;
+  display: flex;
+  
+}
+
+.buttons-cart{
+  text-align: center;
+  justify-content: space-between;
+  width: 100vw;
+}
+
+.cart-content{
+ height: 90vh; 
+ overflow-y: auto;
 }
