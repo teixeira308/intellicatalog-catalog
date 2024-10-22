@@ -330,55 +330,57 @@ function Catalogo() {
   return (
     <div className="App">
 
-<header
-  className="text-white text-center"
-  style={{
-    backgroundImage: configStore.usa_logo_fundo === "true" 
-      ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
-      : `none`, // Se não, não define nenhuma imagem de fundo
-    backgroundColor: configStore.usa_logo_fundo === "true"
-      ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
-      : configStore.cor_primaria, // Se não, usa a cor primária
-    backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
-    backgroundPosition: 'center', // Centraliza a imagem
-    backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
-    position: 'relative', // Necessário para o posicionamento do pseudo-elemento
-    color: 'white', // Para garantir que o texto fique legível
-  }}
-  onClick={handleOpenModal}
->
-  <div
-    style={{
-      position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Cor escura com opacidade
-      zIndex: 1, // Coloca a sobreposição acima do fundo
-    }}
-  />
-  {imageStoreUrls.map((image) => (
-    <div key={image.id}>
-      <img
-        src={image.url}
-        alt={`Foto da store ${storeDetails.namestore}`}
+      <header
+        className="text-white text-center"
         style={{
-          width: '100px',
-          height: '100px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-          position: 'relative', // Mantém a imagem do logo acima da sobreposição
-          zIndex: 2, // Imagem acima da sobreposição
+          backgroundImage: configStore.usa_logo_fundo === "true"
+            ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
+            : `none`, // Se não, não define nenhuma imagem de fundo
+          backgroundColor: configStore.usa_logo_fundo === "true"
+            ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
+            : configStore.cor_primaria, // Se não, usa a cor primária
+          backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
+          backgroundPosition: 'center', // Centraliza a imagem
+          backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
+          position: 'relative', // Necessário para o posicionamento do pseudo-elemento
+          color: 'white', // Para garantir que o texto fique legível
         }}
-      />
-      <br />
-      <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
-        {storeDetails.namestore}
-      </h1>
-    </div>
-  ))}
-</header>
+        onClick={handleOpenModal}
+      >
+        <div
+          style={{
+            position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: configStore.usa_logo_fundo === "true"
+              ? 'rgba(0, 0, 0, 0.5)' // Cor escura com opacidade
+              : `none`,
+            zIndex: 1, // Coloca a sobreposição acima do fundo
+          }}
+        />
+        {imageStoreUrls.map((image) => (
+          <div key={image.id}>
+            <img
+              src={image.url}
+              alt={`Foto da store ${storeDetails.namestore}`}
+              style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                position: 'relative', // Mantém a imagem do logo acima da sobreposição
+                zIndex: 2, // Imagem acima da sobreposição
+              }}
+            />
+            <br />
+            <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
+              {storeDetails.namestore}
+            </h1>
+          </div>
+        ))}
+      </header>
 
 
 
@@ -388,26 +390,32 @@ function Catalogo() {
           <div className="persisti">
             <div className='nav-tabs-responsive'>
               <ul className='nav nav-tabs flex-nowrap w-100' role='tablist'>
-                {categories.map((category, index) => (
-                  <li className='nav-item flex-fill text-center' key={index}>
-                    <button
-                      className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-                      id={`tab${category.id}-tab`}
-                      href={`#content${category.id}`}
-                      role='tab'
-                      aria-controls={`tab${category.id}`}
-                      aria-selected={activeTab === `categoria${category.id}`}
-                      onClick={(e) => { e.preventDefault(); setActiveTab(`categoria${category.id}`); }}
-                      style={{
-                        color: activeTab === `categoria${category.id}` ? configStore.cor_botao_primaria : configStore.cor_botao_secundaria, // Azul se selecionado, preto se não
-                        textDecoration: 'none',
-                        fontWeight: activeTab === `categoria${category.id}` ? 'bold' : 'normal', // Negrito se selecionado
-                      }}
-                    >
-                      {category.name}
-                    </button>
-                  </li>
-                ))}
+                {categories
+                  .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
+                  .map((category, index) => (
+                    <li className="nav-item flex-fill text-center" key={index}>
+                      <button
+                        className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
+                        id={`tab${category.id}-tab`}
+                        href={`#content${category.id}`}
+                        role="tab"
+                        aria-controls={`tab${category.id}`}
+                        aria-selected={activeTab === `categoria${category.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setActiveTab(`categoria${category.id}`);
+                        }}
+                        style={{
+                          color: activeTab === `categoria${category.id}` ? configStore.cor_botao_primaria : configStore.cor_botao_secundaria,
+                          textDecoration: 'none',
+                          fontWeight: activeTab === `categoria${category.id}` ? 'bold' : 'normal',
+                        }}
+                      >
+                        {category.name}
+                      </button>
+                    </li>
+                  ))}
+
               </ul>
             </div>
           </div>
@@ -487,30 +495,30 @@ function Catalogo() {
       </main>
       <StoreModal show={showModal} handleClose={handleCloseModal} storeDetails={storeDetails} />
 
-  {
-    selectedProduct && (
-      <ProductModal
-        show={showProductModal}
-        handleClose={handleCloseProductModal}
-        addToCart={addToCart}
-        product={selectedProduct}
-        images={productImages[selectedProduct.id] || []}
-        storeStatus={storeDetails.status}
+      {
+        selectedProduct && (
+          <ProductModal
+            show={showProductModal}
+            handleClose={handleCloseProductModal}
+            addToCart={addToCart}
+            product={selectedProduct}
+            images={productImages[selectedProduct.id] || []}
+            storeStatus={storeDetails.status}
+            storeConfigs={configStore}
+          />
+        )
+      }
+
+      <CartModal
+        show={showCartModal}
+        handleClose={handleCloseCartModal}
+        cart={cart}
+        productImages={productImages} // Passando as imagens para o CartModal
+        sendOrderToWhatsApp={sendOrderToWhatsApp}
+        setCart={setCart}
+        store={storeDetails}
         storeConfigs={configStore}
       />
-    )
-  }
-
-  <CartModal
-    show={showCartModal}
-    handleClose={handleCloseCartModal}
-    cart={cart}
-    productImages={productImages} // Passando as imagens para o CartModal
-    sendOrderToWhatsApp={sendOrderToWhatsApp}
-    setCart={setCart}
-    store={storeDetails}
-    storeConfigs={configStore}
-  />
     </div >
   );
 }
