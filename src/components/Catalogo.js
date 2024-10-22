@@ -472,11 +472,11 @@ function Catalogo() {
         <footer style={{ backgroundColor: configStore.cor_primaria }}>
           {storeDetails.status === "Aberta" ? (
             <>
-              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_primaria, borderColor: configStore.cor_botao_primaria, color: 'black' }}>
+              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_primaria, borderColor: configStore.cor_botao_primaria, color: configStore.cor_secundaria }}>
                 Ver Carrinho
               </Button>
               &nbsp;
-              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: 'black' }}>
+              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
                 Finalizar Pedido</Button>
             </>
           ) : (

@@ -93,7 +93,7 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
             <div className='buttons-cart'>
                 {cart.length > 0 ? (
                     <>
-                        <Button  onClick={handleClose} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: 'black', width: "45%" ,height: "60px"}}>
+                        <Button  onClick={handleClose} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: storeConfigs.cor_secundaria, width: "45%" ,height: "60px"}}>
                             Continuar comprando
                         </Button>
                         &nbsp;
@@ -107,7 +107,7 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
                         </Button>
                     </>
                 ) : (
-                    <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: 'black', width: "45%" ,height: "60px"}}>
+                    <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: storeConfigs.cor_secundaria, width: "45%" ,height: "60px"}}>
                         Selecione Produtos
                     </Button>
                 )}

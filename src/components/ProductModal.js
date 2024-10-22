@@ -74,7 +74,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                                     <Button variant="light" onClick={increaseQuantity}>+</Button>
                                 </div>
                             </Form.Group>
-                            <Button onClick={handleAddToCart} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: 'black' }}>
+                            <Button onClick={handleAddToCart} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: storeConfigs.cor_secundaria }}>
                                 Adicionar ao Carrinho
                             </Button>
 
