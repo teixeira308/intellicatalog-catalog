@@ -329,10 +329,16 @@ function Catalogo() {
 
   return (
     <div className="App">
-     <header
+
+<header
   className="text-white text-center"
   style={{
-    backgroundImage: `url(${imageStoreUrls[0]?.url})`, // Usa a primeira imagem como fundo
+    backgroundImage: configStore.usa_logo_fundo === "true" 
+      ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
+      : `none`, // Se não, não define nenhuma imagem de fundo
+    backgroundColor: configStore.usa_logo_fundo === "true"
+      ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
+      : configStore.cor_primaria, // Se não, usa a cor primária
     backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
     backgroundPosition: 'center', // Centraliza a imagem
     backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
@@ -367,11 +373,13 @@ function Catalogo() {
         }}
       />
       <br />
-      <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2 , color: "white",position: 'relative',}}>{storeDetails.namestore}</h1>
+      <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
+        {storeDetails.namestore}
+      </h1>
     </div>
   ))}
-  
 </header>
+
 
 
 
