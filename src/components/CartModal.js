@@ -55,14 +55,14 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
                                 <div className="quantity-control">
                                     <div>
                                     <Button
-                                        variant="light"
+                                        variant="outline-secondary"
                                         onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                                     >
                                         -
                                     </Button>&nbsp;&nbsp;
                                     <span>{item.quantity}</span>&nbsp;&nbsp;
                                     <Button
-                                        variant="light"
+                                        variant="outline-secondary"
                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                     >
                                         +

@@ -103,6 +103,14 @@ function Catalogo() {
     }
   };
 
+  useEffect(() => {
+    // Essa parte irá definir a categoria ativa após as categorias serem carregadas
+    if (categories.length > 0) {
+      const firstCategoryId = `categoria${categories[0].id}`; // Pega a primeira categoria carregada
+      setActiveTab(firstCategoryId); // Define a primeira categoria como ativa
+    }
+  }, [categories]);
+
   const fetchStoreDetails = async (identificadorExterno) => {
     try {
       const response = await axios.get(`${api_url}/intellicatalog/v1/stores/${identificadorExterno}`, {
@@ -111,6 +119,7 @@ function Catalogo() {
         }
       });
       setStoreDetails(response.data);
+      
     } catch (error) {
       console.error('Erro ao buscar detalhes da loja:', error);
     }
@@ -250,8 +259,7 @@ function Catalogo() {
   const loadStoreConfigs = async (store) => {
     if (store) {
       try {
-        const configs = await getStoreConfigs(store); // Busca todas as fotos do usuario
-
+        const configs = await getStoreConfigs(store); 
         setConfigStore(configs)
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
@@ -493,7 +501,14 @@ function Catalogo() {
           )}
         </footer>
       </main>
-      <StoreModal show={showModal} handleClose={handleCloseModal} storeDetails={storeDetails} />
+      <StoreModal 
+      show={showModal} 
+      handleClose={handleCloseModal} 
+      storeDetails={storeDetails} 
+      storeConfig={configStore}
+        storeConfigs={configStore}
+        storeImages={imageStoreUrls}
+        />
 
       {
         selectedProduct && (

@@ -67,11 +67,11 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                     {storeStatus === "Aberta" ? (
                         <>
                             <Form.Group controlId="productQuantity">
-                                <div className="quantity-control">
+                            <div className="d-flex align-items-center">
 
-                                    <Button variant="light" onClick={decreaseQuantity}>-</Button>
-                                    <span>  {quantity}  </span>
-                                    <Button variant="light" onClick={increaseQuantity}>+</Button>
+                                    <Button variant="outline-secondary" onClick={decreaseQuantity}>-</Button>
+                                    &nbsp; &nbsp;{quantity}   &nbsp;&nbsp;
+                                    <Button variant="outline-secondary" onClick={increaseQuantity}>+</Button>
                                 </div>
                             </Form.Group>
                             <Button onClick={handleAddToCart} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: storeConfigs.cor_secundaria }}>
