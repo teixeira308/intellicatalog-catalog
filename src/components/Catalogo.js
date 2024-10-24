@@ -498,7 +498,7 @@ function Catalogo() {
                             <h3 className='item-titulo'>{product.titulo}</h3>
                             <p className='item-descricao'>{product.description}</p>
                             <h4 className='item-preco'>
-                              {product.promocional_price ? (
+                              {product.promocional_price > 0 ? (
                                 <>
                                   <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
                                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}

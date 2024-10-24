@@ -55,7 +55,7 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
                                 )}
                                 <div className="cart-item-details">
                                     <h5>{item.titulo}</h5>
-                                    <p>{item.promocional_price ? (
+                                    <p>{item.promocional_price > 0 ? (
                                         <>
                                             <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
                                                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}

@@ -57,7 +57,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
             <div className='product-info'>
                 <h1>{product.titulo} - {product.brand}</h1>
                 
-                <h4> {product.promocional_price ? (
+                <h4> {product.promocional_price > 0 ? (
                                 <>
                                   <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '14px' }}>
                                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
