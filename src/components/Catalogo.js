@@ -478,7 +478,9 @@ function Catalogo() {
                   </div>
                   <div className='items-catalogo'>
                     {products[category.id] && products[category.id].length > 0 ? (
-                      products[category.id].map((product, idx) => (
+                      products[category.id]
+                      .sort((a, b) => a.product_order - b.product_order) 
+                      .map((product, idx) => (
                         <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
                           <div className='imagem'>
                             {productImages[product.id] && productImages[product.id].length > 0 ? (
