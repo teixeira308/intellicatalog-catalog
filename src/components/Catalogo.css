@@ -187,9 +187,7 @@ header {
   flex-direction: row;
   /* Elementos lado a lado */
   justify-content: left;
-  flex-wrap: wrap;
   /* Permite quebrar linha ao atingir o limite da tela */
-  gap: 10px;
   /* Espaçamento entre os itens */
 }
 

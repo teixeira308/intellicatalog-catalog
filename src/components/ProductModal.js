@@ -55,8 +55,25 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                 <div className="semimagem">Sem imagens disponíveis</div>
             )}
             <div className='product-info'>
-                <h1>{product.titulo}</h1>
-                <h4>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</h4>
+                <h1>{product.titulo} - {product.brand}</h1>
+                
+                <h4> {product.promocional_price ? (
+                                <>
+                                  <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '14px' }}>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                  </span>
+                                  <br/>
+                                  <span>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                  </span>
+                                  &nbsp;
+                                  <span style={{ color: 'green' }}>
+                                    ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                  </span>
+                                </>
+                              ) : (
+                                new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                              )}</h4>
                 <p>{product.description}</p>
 
 

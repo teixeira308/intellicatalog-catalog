@@ -24,6 +24,8 @@ function Catalogo() {
   const handleCloseModal = () => setShowModal(false);
   const [imageStoreUrls, setImageStoreUrls] = useState([]);
   const [configStore, setConfigStore] = useState([]);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
 
 
 
@@ -37,6 +39,31 @@ function Catalogo() {
   };
 
   const handleCloseCartModal = () => setShowCartModal(false);
+
+  const total = cart.length > 0
+    ? cart.reduce((sum, item) => {
+      const itemPrice = item.promocional_price
+        ? parseFloat(item.promocional_price)
+        : parseFloat(item.price);
+      return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
+    }, 0) + (parseFloat(configStore.taxa_entrega) || 0)
+    : 0;
+
+
+  const updateCartItemCount = (cart) => {
+    const totalItems = cart.reduce((count, item) => count + item.quantity, 0);
+    setCartItemCount(totalItems);
+  };
+
+  useEffect(() => {
+    updateCartItemCount(cart);
+  }, [cart]);
+
+
+  const formattedTotal = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(total);
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -81,6 +108,10 @@ function Catalogo() {
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`; // URL da API do WhatsApp
 
     window.open(whatsappApiUrl, '_blank');
+  
+    setCart([]);
+    setCartItemCount(0);
+    handleCloseCartModal();
   };
 
 
@@ -119,7 +150,7 @@ function Catalogo() {
         }
       });
       setStoreDetails(response.data);
-      
+
     } catch (error) {
       console.error('Erro ao buscar detalhes da loja:', error);
     }
@@ -259,7 +290,7 @@ function Catalogo() {
   const loadStoreConfigs = async (store) => {
     if (store) {
       try {
-        const configs = await getStoreConfigs(store); 
+        const configs = await getStoreConfigs(store);
         setConfigStore(configs)
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
@@ -466,7 +497,25 @@ function Catalogo() {
                           <div className='texto'>
                             <h3 className='item-titulo'>{product.titulo}</h3>
                             <p className='item-descricao'>{product.description}</p>
-                            <h4 className='item-preco'>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</h4>
+                            <h4 className='item-preco'>
+                              {product.promocional_price ? (
+                                <>
+                                  <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                  </span>
+                                  <br />
+                                  <span>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                  </span>
+                                  &nbsp;
+                                  <span style={{ color: 'green' }}>
+                                    ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                  </span>
+                                </>
+                              ) : (
+                                new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                              )}
+                            </h4>
                           </div>
                         </div>
                       ))
@@ -485,30 +534,33 @@ function Catalogo() {
 
 
         </section>
-        <footer style={{ backgroundColor: configStore.cor_primaria }}>
-          {storeDetails.status === "Aberta" ? (
-            <>
-              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_primaria, borderColor: configStore.cor_botao_primaria, color: configStore.cor_secundaria }}>
-                Ver Carrinho
-              </Button>
-              &nbsp;
-              <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
-                Finalizar Pedido</Button>
-            </>
-          ) : (
+        {cartItemCount > 0 && (
+          <footer style={{ backgroundColor: configStore.cor_primaria }}>
+            {storeDetails.status === "Aberta" ? (
+              <div>
+                <>
+                  Total: {formattedTotal} &nbsp; &nbsp;
+                </>
+                <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
+                  ({cartItemCount}) Ver carrinho
+                </Button>
+              </div>
+            ) : (
+              <p>Loja indisponível para receber pedidos</p>
+            )}
+          </footer>
+        )}
 
-            <p>Loja indisponível para receber pedidos</p>
-          )}
-        </footer>
+
       </main>
-      <StoreModal 
-      show={showModal} 
-      handleClose={handleCloseModal} 
-      storeDetails={storeDetails} 
-      storeConfig={configStore}
+      <StoreModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        storeDetails={storeDetails}
+        storeConfig={configStore}
         storeConfigs={configStore}
         storeImages={imageStoreUrls}
-        />
+      />
 
       {
         selectedProduct && (
@@ -533,6 +585,8 @@ function Catalogo() {
         setCart={setCart}
         store={storeDetails}
         storeConfigs={configStore}
+        cartItemCount={cartItemCount}
+        setCartItemCount={setCartItemCount}
       />
     </div >
   );
