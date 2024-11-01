@@ -7,6 +7,8 @@ import ProductModal from './ProductModal';
 import CartModal from './CartModal';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
+
 
 function Catalogo() {
   const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
@@ -87,6 +89,12 @@ function Catalogo() {
   };
 
 
+  const handleClickWhatsappNoOrder = () => {
+    const message = "Olá! Gostaria de saber mais sobre seus produtos.";
+    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${encodeURIComponent(message)}`; // URL da API do WhatsApp
+
+    window.open(whatsappApiUrl, '_blank');
+  }
 
   const sendOrderToWhatsApp = async () => {
     const orderDetails = cart.map(item => {
@@ -108,7 +116,7 @@ function Catalogo() {
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`; // URL da API do WhatsApp
 
     window.open(whatsappApiUrl, '_blank');
-  
+
     setCart([]);
     setCartItemCount(0);
     handleCloseCartModal();
@@ -384,7 +392,7 @@ function Catalogo() {
           position: 'relative', // Necessário para o posicionamento do pseudo-elemento
           color: 'white', // Para garantir que o texto fique legível
         }}
-        onClick={handleOpenModal}
+       
       >
         <div
           style={{
@@ -398,9 +406,10 @@ function Catalogo() {
               : `none`,
             zIndex: 1, // Coloca a sobreposição acima do fundo
           }}
+          onClick={handleOpenModal}
         />
         {imageStoreUrls.map((image) => (
-          <div key={image.id}>
+          <div key={image.id} onClick={handleOpenModal}>
             <img
               src={image.url}
               alt={`Foto da store ${storeDetails.namestore}`}
@@ -417,8 +426,24 @@ function Catalogo() {
             <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
               {storeDetails.namestore}
             </h1>
+           
+           
           </div>
+          
         ))}
+       <div style={{ zIndex: 2, position: 'relative', marginTop: '10px' }}>
+    {configStore.facebook && (
+      <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+        <FaFacebookF size={24} />
+      </a>
+    )}
+
+    {configStore.instagram && (
+      <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+        <FaInstagram size={24} />
+      </a>
+    )}
+  </div>
       </header>
 
 
@@ -479,48 +504,48 @@ function Catalogo() {
                   <div className='items-catalogo'>
                     {products[category.id] && products[category.id].length > 0 ? (
                       products[category.id]
-                      .sort((a, b) => a.product_order - b.product_order) 
-                      .map((product, idx) => (
-                        <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                          <div className='imagem'>
-                            {productImages[product.id] && productImages[product.id].length > 0 ? (
-                              <img
-                                loading="lazy"
-                                src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
-                                alt={product.titulo}
-                                className='img-square'
-                              />
-                            ) : (
-                              <div className="placeholder">
-                                Sem imagem
-                              </div>
-                            )}
-                          </div>
-                          <div className='texto'>
-                            <h3 className='item-titulo'>{product.titulo}</h3>
-                            <p className='item-descricao'>{product.description}</p>
-                            <h4 className='item-preco'>
-                              {product.promocional_price > 0 ? (
-                                <>
-                                  <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
-                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                  </span>
-                                  <br />
-                                  <span>
-                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                  </span>
-                                  &nbsp;
-                                  <span style={{ color: 'green' }}>
-                                    ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                  </span>
-                                </>
+                        .sort((a, b) => a.product_order - b.product_order)
+                        .map((product, idx) => (
+                          <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                            <div className='imagem'>
+                              {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                <img
+                                  loading="lazy"
+                                  src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                  alt={product.titulo}
+                                  className='img-square'
+                                />
                               ) : (
-                                new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                <div className="placeholder">
+                                  Sem imagem
+                                </div>
                               )}
-                            </h4>
+                            </div>
+                            <div className='texto'>
+                              <h3 className='item-titulo'>{product.titulo}</h3>
+                              <p className='item-descricao'>{product.description}</p>
+                              <h4 className='item-preco'>
+                                {product.promocional_price > 0 ? (
+                                  <>
+                                    <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                    </span>
+                                    <br />
+                                    <span>
+                                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                    </span>
+                                    &nbsp;
+                                    <span style={{ color: 'green' }}>
+                                      ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                    </span>
+                                  </>
+                                ) : (
+                                  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                )}
+                              </h4>
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        ))
                     ) : (
                       <div className="text-center my-5">
                         <h4>Nenhum produto encontrado nesta categoria</h4>
@@ -531,7 +556,10 @@ function Catalogo() {
               ))
 
             )}
+            <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
+              <FaWhatsapp className="whatsapp-icon" />
 
+            </button>
           </div>
 
 

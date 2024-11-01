@@ -45,7 +45,6 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
         <p><strong>Horário de Funcionamento:</strong> {storeDetails.opening_hours} - {storeDetails.closing_hours}</p>
         <p><strong>Endereço:</strong> {storeDetails.address}</p>
         <p><strong>Telefone:</strong> {storeDetails.phone}</p>
-        <p><strong>WhatsApp:</strong> {storeConfig.numero_whatsapp}</p>
         <p><strong>E-mail:</strong> {storeDetails.email}</p>
         
        

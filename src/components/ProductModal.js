@@ -38,7 +38,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                
             </Modal.Header>
 
-
+            <div className="modal-content">
             {images.length > 0 ? (
                 <Carousel>
                     {images.map((img, idx) => (
@@ -103,7 +103,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                     )}
                 </Modal.Footer>
 
-           
+           </div>
         </Modal>
     );
 };

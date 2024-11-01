@@ -5,13 +5,20 @@
   }
   
   .image-gallery {
-    width: 100%;        /* Ajuste a largura conforme necessário */
-  height: auto;       /* Altura igual à largura para garantir o formato quadrado */
-  object-fit: cover;   /* Garante que a imagem mantenha a proporção e cubra o quadrado */
-  display: block;      /* Remove o espaço em branco ao redor da imagem */
-  border-radius: 8px;  /* Mantém o arredondamento se for necessário */
-  max-height: 500px; 
-  }
+    width: 80%; /* Ajuste a largura conforme necessário */
+    height: auto; /* Mantenha a altura automática */
+    max-height: 300px; /* Ajuste a altura máxima conforme necessário */
+    display: block; /* Remove o espaço em branco ao redor da imagem */
+    border-radius: 8px; /* Mantém o arredondamento se necessário */
+    margin: 0 auto; /* Centraliza a imagem horizontalmente */
+}
+
+.carousel img {
+  width: 100%; /* Faz com que a imagem ocupe 100% do contêiner */
+  height: 100%; /* Faz com que a imagem ocupe 100% da altura do contêiner */
+  object-fit:contain; /* Ajusta a imagem para cobrir completamente o contêiner */
+  border-radius: 8px; /* Mantém o arredondamento se necessário */
+}
   
  .modal-content{
  width: 100%;
@@ -27,22 +34,27 @@
   width: 100%;
   justify-content: space-between;
 }
-.product-info{
+.product-info {
   padding-left: 20px;
   margin-top: 10px;
-  height: 60%;
+  flex-grow: 1; /* Faz com que essa área ocupe o espaço restante */
+  overflow-y: auto; /* Adiciona rolagem se o conteúdo exceder a altura */
 }
 
 .modal-footer {
   display: flex; /* Habilita o flexbox */
   justify-content: space-between; /* Espaça os itens ao longo da linha */
   width: 100%; /* Garantir que ocupa toda a largura */
-  
+  background-color: #fff; /* Garante fundo branco no footer */
+  border-top: 1px solid #dee2e6; /* Opcional: adiciona uma borda no topo do footer */
+  position: relative; /* Necessário para que o footer fique abaixo do conteúdo */
 }
 
-.modal-footer .btn {
-  flex: 1; /* Cada botão ocupará um espaço igual */
-  margin: 0 5px; /* Adiciona um espaço entre os botões */
+.modal-footer {
+  position: sticky; /* Faz com que o rodapé fique fixo na parte inferior do modal */
+  bottom: 0;
+  width: 100%; /* Garante que o rodapé ocupe toda a largura */
+  background-color: white; /* Fundo branco para o rodapé */
 }
 
 .semimagem {
@@ -55,4 +67,8 @@
 }
 
 
+.modal-content {
+  max-height: calc(100vh - 50px); /* Ajuste a altura máxima para considerar o rodapé */
+  overflow-y: auto; /* Permite rolagem no conteúdo do modal */
+}
  
