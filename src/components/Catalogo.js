@@ -151,7 +151,7 @@ function Catalogo() {
   }, [categories]);
 
   const fetchStoreDetails = async (identificadorExterno) => {
-    console.log(`${api_url}/intellicatalog/v1/stores/${identificadorExterno}`);
+    
     try {
       const response = await axios.get(`${api_url}/intellicatalog/v1/stores/${identificadorExterno}`, {
         headers: {
