@@ -5,7 +5,7 @@ import Catalogo from './components/Catalogo'; // Importe o componente que captur
 
 function App() {
   return (
-    <BrowserRouter basename='/c'>
+    <BrowserRouter basename="/c">
       <Routes>
         <Route path="/:capturedValue" element={<Catalogo />} />
       </Routes>
