@@ -368,7 +368,6 @@ function Catalogo() {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
     }
-    setLoading(false)
   }, [activeTab]);
 
   const handleOpenProductModal = (product) => {
