@@ -290,6 +290,7 @@ function Catalogo() {
           })
         );
         setImageStoreUrls(fotosUrls); // Define todas as URLs das imagens
+        setLoading(false)
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
       }
@@ -331,7 +332,7 @@ function Catalogo() {
       ...prevImages,
       ...newImages, // Mescla as novas imagens com as existentes
     }));
-    setLoading(false)
+    
   };
 
   useEffect(() => {
