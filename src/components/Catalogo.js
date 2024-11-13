@@ -518,10 +518,10 @@ function Catalogo() {
                           <p>{category.description}</p>
                         </div>
                         {loading ? (
-                          <div className="loading-screen-category">
+                         <>
                             {/* Exibir tela de carregamento */}
                             <img src={loadingGif} alt="Carregando..." />
-                          </div>
+                            </>
                         )
                           :
                           (
