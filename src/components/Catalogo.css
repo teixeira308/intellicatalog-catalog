@@ -25,6 +25,7 @@
 }
 
 .loading-screen-category {
+  display: flex;
   height: auto;
   width: 100vw; 
   justify-content: center;
