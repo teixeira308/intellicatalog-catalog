@@ -356,6 +356,7 @@ function Catalogo() {
       loadStoreImages(storeDetails);
       fetchCategories(storeDetails.user_id);
     }
+    setLoading(false)
   }, [storeDetails]);
 
   useEffect(() => {
