@@ -290,7 +290,7 @@ function Catalogo() {
           })
         );
         setImageStoreUrls(fotosUrls); // Define todas as URLs das imagens
-        setLoading(false)
+        
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
       }
@@ -325,6 +325,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
+        setLoading(false)
       })
     );
 
