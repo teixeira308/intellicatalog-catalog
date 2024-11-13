@@ -29,7 +29,7 @@ function Catalogo() {
   const [cartItemCount, setCartItemCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
-
+  const [loadingcat, setLoadingCat] = useState(true);
 
 
   //busca token no env
@@ -325,6 +325,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
+        setLoadingCat(false)
         setLoading(false)
       })
     );
@@ -363,7 +364,7 @@ function Catalogo() {
   }, [storeDetails]);
 
   useEffect(() => {
-    setLoading(true)
+    setLoadingCat(true)
     if (activeTab) {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
@@ -517,7 +518,7 @@ function Catalogo() {
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
-                        {loading ? (
+                        {loadingcat ? (
                          <>
                             {/* Exibir tela de carregamento */}
                             <img src={loadingGif} alt="Carregando..." className='loading-screen-category' />
