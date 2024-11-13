@@ -325,7 +325,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-        setLoadingCat(false)
+        
         setLoading(false)
       })
     );
@@ -364,7 +364,7 @@ function Catalogo() {
   }, [storeDetails]);
 
   useEffect(() => {
-    setLoadingCat(true)
+   
     if (activeTab) {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
