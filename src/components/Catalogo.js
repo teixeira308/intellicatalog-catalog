@@ -29,7 +29,7 @@ function Catalogo() {
   const [cartItemCount, setCartItemCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
-  const [loadingcat, setLoadingCat] = useState(true);
+
 
 
   //busca token no env
@@ -518,14 +518,7 @@ function Catalogo() {
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
-                        {loadingcat ? (
-                         <>
-                            {/* Exibir tela de carregamento */}
-                            <img src={loadingGif} alt="Carregando..." className='loading-screen-category' />
-                            </>
-                        )
-                          :
-                          (
+                        
                             <div className='items-catalogo'>
                               {products[category.id] && products[category.id].length > 0 ? (
                                 products[category.id]
@@ -577,7 +570,7 @@ function Catalogo() {
                                 </div>
                               )}
                             </div>
-                          )}
+                         
                     </div>
                     ))
 
