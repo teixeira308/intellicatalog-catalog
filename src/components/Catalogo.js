@@ -8,7 +8,7 @@ import CartModal from './CartModal';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
-
+import loadingGif from '../components/loading.gif'
 
 function Catalogo() {
   const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
@@ -387,7 +387,7 @@ function Catalogo() {
 {loading ? (
         <div className="loading-screen">
           {/* Exibir tela de carregamento */}
-          Carregando...
+          <img src={loadingGif} alt="Carregando..." />
         </div>
       ) 
       :
