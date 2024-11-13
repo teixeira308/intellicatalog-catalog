@@ -356,7 +356,7 @@ function Catalogo() {
       loadStoreImages(storeDetails);
       fetchCategories(storeDetails.user_id);
     }
-    setLoading(false)
+    
   }, [storeDetails]);
 
   useEffect(() => {
@@ -364,6 +364,7 @@ function Catalogo() {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
     }
+    setLoading(false)
   }, [activeTab]);
 
   const handleOpenProductModal = (product) => {
