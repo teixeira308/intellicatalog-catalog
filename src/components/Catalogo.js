@@ -520,7 +520,7 @@ function Catalogo() {
                         {loading ? (
                          <>
                             {/* Exibir tela de carregamento */}
-                            <img src={loadingGif} alt="Carregando..." />
+                            <img src={loadingGif} alt="Carregando..." className='loading-screen-category' />
                             </>
                         )
                           :
