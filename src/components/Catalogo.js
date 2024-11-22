@@ -474,7 +474,17 @@ function Catalogo() {
                       {categories
                         .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
-                          <li className="nav-item flex-fill text-center" key={index} >
+                          <li className="nav-item flex-fill text-center" key={index} 
+                          style={{
+                            borderRadius: "10px",
+                            backgroundColor:
+                              category.name.toLowerCase() === "black friday"
+                                ? "black" // Fundo preto para Black Friday
+                                : activeTab === `categoria${category.id}`
+                                  ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
+                                  : "transparent", // Fundo padrão para outras categorias
+                          }}
+                          >
                             <button
                               className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                               id={`tab${category.id}-tab`}
@@ -487,9 +497,16 @@ function Catalogo() {
                                 setActiveTab(`categoria${category.id}`);
                               }}
                               style={{
-                                color: activeTab === `categoria${category.id}` ? configStore.cor_botao_primaria : configStore.cor_botao_secundaria,
-                                textDecoration: 'none',
-                                fontWeight: activeTab === `categoria${category.id}` ? 'bold' : 'normal',
+                                color:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "white" // Sempre texto branco para Black Friday
+                                    : activeTab === `categoria${category.id}`
+                                      ? configStore.cor_botao_primaria // Texto para aba ativa
+                                      : configStore.cor_botao_secundaria, // Texto para aba inativa
+                                backgroundColor:
+                                  category.name.toLowerCase() === "black friday" ? "black" : "white", // Redundância para evitar conflitos
+                                textDecoration: "none",
+                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
                               }}
                             >
                               {category.name}
@@ -540,7 +557,22 @@ function Catalogo() {
                                         )}
                                       </div>
                                       <div className='texto'>
-                                        <h3 className='item-titulo'>{product.titulo}</h3>
+                                        <h3 className='item-titulo'>{product.titulo} {category.name.toLowerCase() === "black friday" && (
+                                      <div
+                                        style={{
+                                          backgroundColor: "black",
+                                          color: "white",
+                                          borderRadius: "10px",
+                                          padding: "5px 10px",
+                                          display: "inline-block",
+                                          fontSize: "12px",
+                                          fontWeight: "bold",
+                                          marginBottom: "8px",
+                                        }}
+                                      >
+                                        Black Friday
+                                      </div>
+                                    )}</h3>
                                         <p className='item-descricao'>{product.description}</p>
                                         <h4 className='item-preco'>
                                           {product.promocional_price > 0 ? (
