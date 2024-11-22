@@ -544,12 +544,30 @@ function Catalogo() {
                                     <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
                                       <div className='imagem'>
                                         {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                          <>
+                                           {category.name.toLowerCase() === "black friday" && (
+                                            <div
+                                              style={{
+                                                backgroundColor: "black",
+                                                color: "white",
+                                                borderRadius: "10px",
+                                                padding: "5px 10px",
+                                                display: "inline-block",
+                                                fontSize: "12px",
+                                                fontWeight: "bold",
+                                                marginBottom: "8px",
+                                              }}
+                                            >
+                                              Black Friday
+                                            </div>
+                                          )}
                                           <img
                                             loading="lazy"
                                             src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
                                             alt={product.titulo}
                                             className='img-square'
                                           />
+                                          </>
                                         ) : (
                                           <div className="placeholder">
                                             Sem imagem
@@ -557,22 +575,7 @@ function Catalogo() {
                                         )}
                                       </div>
                                       <div className='texto'>
-                                        <h3 className='item-titulo'>{product.titulo} {category.name.toLowerCase() === "black friday" && (
-                                      <div
-                                        style={{
-                                          backgroundColor: "black",
-                                          color: "white",
-                                          borderRadius: "10px",
-                                          padding: "5px 10px",
-                                          display: "inline-block",
-                                          fontSize: "12px",
-                                          fontWeight: "bold",
-                                          marginBottom: "8px",
-                                        }}
-                                      >
-                                        Black Friday
-                                      </div>
-                                    )}</h3>
+                                        <h3 className='item-titulo'>{product.titulo}</h3>
                                         <p className='item-descricao'>{product.description}</p>
                                         <h4 className='item-preco'>
                                           {product.promocional_price > 0 ? (
