@@ -505,7 +505,7 @@ function Catalogo() {
               ? configStore.cor_botao_primaria // Texto para aba ativa
               : configStore.cor_botao_secundaria, // Texto para aba inativa
           backgroundColor:
-            category.name.toLowerCase() === "black friday" ? "black" : "transparent", // Redundância para evitar conflitos
+            category.name.toLowerCase() === "black friday" ? "black" : "white", // Redundância para evitar conflitos
           textDecoration: "none",
           fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
         }}
