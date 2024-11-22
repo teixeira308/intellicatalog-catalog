@@ -498,6 +498,7 @@ function Catalogo() {
           setActiveTab(`categoria${category.id}`);
         }}
         style={{
+          borderRadius: "10px",
           color:
             category.name.toLowerCase() === "black friday"
               ? "white" // Sempre texto branco para Black Friday
