@@ -474,17 +474,8 @@ function Catalogo() {
                       {categories
                         .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
-                          <li className="nav-item flex-fill text-center" key={index} 
-                          style={{
-                            borderRadius: "10px",
-                            backgroundColor:
-                              category.name.toLowerCase() === "black friday"
-                                ? "black" // Fundo preto para Black Friday
-                                : activeTab === `categoria${category.id}`
-                                  ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
-                                  : "transparent", // Fundo padrão para outras categorias
-                          }}
-                          >
+                          <li className="nav-item flex-fill text-center" key={index} >
+                          
                             <button
                               className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                               id={`tab${category.id}-tab`}
@@ -497,16 +488,22 @@ function Catalogo() {
                                 setActiveTab(`categoria${category.id}`);
                               }}
                               style={{
+                                borderRadius: "10px", // Bordas arredondadas no botão
+                                backgroundColor:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "black" // Fundo preto para Black Friday
+                                    : activeTab === `categoria${category.id}`
+                                    ? configStore.cor_botao_primaria // Fundo personalizado para aba ativa
+                                    : "transparent", // Fundo padrão para outras categorias
                                 color:
                                   category.name.toLowerCase() === "black friday"
-                                    ? "white" // Sempre texto branco para Black Friday
+                                    ? "white" // Texto branco para Black Friday
                                     : activeTab === `categoria${category.id}`
-                                      ? configStore.cor_botao_primaria // Texto para aba ativa
-                                      : configStore.cor_botao_secundaria, // Texto para aba inativa
-                                backgroundColor:
-                                  category.name.toLowerCase() === "black friday" ? "black" : "white", // Redundância para evitar conflitos
+                                    ? "white" // Texto branco para aba ativa
+                                    : configStore.cor_botao_secundaria, // Texto padrão para aba inativa
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+                                padding: "10px 15px", // Padding para ajustar tamanho do botão
                               }}
                             >
                               {category.name}
