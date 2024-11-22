@@ -325,7 +325,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-
+        
         setLoading(false)
       })
     );
@@ -364,7 +364,7 @@ function Catalogo() {
   }, [storeDetails]);
 
   useEffect(() => {
-
+   
     if (activeTab) {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
@@ -474,21 +474,19 @@ function Catalogo() {
                       {categories
                         .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
-                          <li
-                            className="nav-item flex-fill text-center"
-                            key={index}
-                            style={{
-                              borderRadius: "10px",
-                              backgroundColor:
-                                category.name.toLowerCase() === "black friday"
-                                  ? "black" // Fundo preto para Black Friday
-                                  : activeTab === `categoria${category.id}`
-                                    ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
-                                    : "transparent", // Fundo padrão para outras categorias
-                            }}
+                          <li className="nav-item flex-fill text-center" key={index} 
+                          style={{
+                            borderRadius: "10px",
+                            backgroundColor:
+                              category.name.toLowerCase() === "black friday"
+                                ? "black" // Fundo preto para Black Friday
+                                : activeTab === `categoria${category.id}`
+                                  ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
+                                  : "transparent", // Fundo padrão para outras categorias
+                          }}
                           >
                             <button
-                              className={`nav-link ${activeTab === `categoria${category.id}` ? "active" : ""}`}
+                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                               id={`tab${category.id}-tab`}
                               href={`#content${category.id}`}
                               role="tab"
@@ -499,7 +497,6 @@ function Catalogo() {
                                 setActiveTab(`categoria${category.id}`);
                               }}
                               style={{
-
                                 color:
                                   category.name.toLowerCase() === "black friday"
                                     ? "white" // Sempre texto branco para Black Friday
@@ -516,7 +513,6 @@ function Catalogo() {
                             </button>
                           </li>
                         ))}
-
 
                     </ul>
                   </div>
@@ -539,29 +535,29 @@ function Catalogo() {
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
-
-                        <div className='items-catalogo'>
-                          {products[category.id] && products[category.id].length > 0 ? (
-                            products[category.id]
-                              .sort((a, b) => a.product_order - b.product_order)
-                              .map((product, idx) => (
-                                <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                                  <div className='imagem'>
-                                    {productImages[product.id] && productImages[product.id].length > 0 ? (
-                                      <img
-                                        loading="lazy"
-                                        src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
-                                        alt={product.titulo}
-                                        className='img-square'
-                                      />
-                                    ) : (
-                                      <div className="placeholder">
-                                        Sem imagem
+                        
+                            <div className='items-catalogo'>
+                              {products[category.id] && products[category.id].length > 0 ? (
+                                products[category.id]
+                                  .sort((a, b) => a.product_order - b.product_order)
+                                  .map((product, idx) => (
+                                    <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                                      <div className='imagem'>
+                                        {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                          <img
+                                            loading="lazy"
+                                            src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                            alt={product.titulo}
+                                            className='img-square'
+                                          />
+                                        ) : (
+                                          <div className="placeholder">
+                                            Sem imagem
+                                          </div>
+                                        )}
                                       </div>
-                                    )}
-                                  </div>
-                                  <div className='texto'>
-                                    <h3 className='item-titulo'>{product.titulo}  {category.name.toLowerCase() === "black friday" && (
+                                      <div className='texto'>
+                                        <h3 className='item-titulo'>{product.titulo} {category.name.toLowerCase() === "black friday" && (
                                       <div
                                         style={{
                                           backgroundColor: "black",
@@ -569,7 +565,7 @@ function Catalogo() {
                                           borderRadius: "10px",
                                           padding: "5px 10px",
                                           display: "inline-block",
-                                          fontSize: "10px",
+                                          fontSize: "12px",
                                           fontWeight: "bold",
                                           marginBottom: "8px",
                                         }}
@@ -577,38 +573,37 @@ function Catalogo() {
                                         Black Friday
                                       </div>
                                     )}</h3>
-                                   
-                                    <p className='item-descricao'>{product.description}</p>
-                                    <h4 className='item-preco'>
-                                      {product.promocional_price > 0 ? (
-                                        <>
-                                          <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                          </span>
-                                          <br />
-                                          <span>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                          </span>
-                                          &nbsp;
-                                          <span style={{ color: 'green' }}>
-                                            ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                          </span>
-                                        </>
-                                      ) : (
-                                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
-                                      )}
-                                    </h4>
-                                  </div>
+                                        <p className='item-descricao'>{product.description}</p>
+                                        <h4 className='item-preco'>
+                                          {product.promocional_price > 0 ? (
+                                            <>
+                                              <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                              </span>
+                                              <br />
+                                              <span>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                              </span>
+                                              &nbsp;
+                                              <span style={{ color: 'green' }}>
+                                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                              </span>
+                                            </>
+                                          ) : (
+                                            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                          )}
+                                        </h4>
+                                      </div>
+                                    </div>
+                                  ))
+                              ) : (
+                                <div className="text-center my-5">
+                                  <h4>Nenhum produto encontrado nesta categoria</h4>
                                 </div>
-                              ))
-                          ) : (
-                            <div className="text-center my-5">
-                              <h4>Nenhum produto encontrado nesta categoria</h4>
+                              )}
                             </div>
-                          )}
-                        </div>
-
-                      </div>
+                         
+                    </div>
                     ))
 
                   )}
