@@ -500,10 +500,12 @@ function Catalogo() {
         style={{
           color:
             category.name.toLowerCase() === "black friday"
-              ? "white" // Texto branco para Black Friday
+              ? "white" // Sempre texto branco para Black Friday
               : activeTab === `categoria${category.id}`
-              ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
-              : configStore.cor_botao_secundaria, // Cor padrão para texto
+              ? configStore.cor_botao_primaria // Texto para aba ativa
+              : configStore.cor_botao_secundaria, // Texto para aba inativa
+          backgroundColor:
+            category.name.toLowerCase() === "black friday" ? "black" : "transparent", // Redundância para evitar conflitos
           textDecoration: "none",
           fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
         }}
