@@ -561,8 +561,7 @@ function Catalogo() {
                                     )}
                                   </div>
                                   <div className='texto'>
-                                    <h3 className='item-titulo'>{product.titulo}</h3>
-                                    {category.name.toLowerCase() === "black friday" && (
+                                    <h3 className='item-titulo'>{product.titulo}  {category.name.toLowerCase() === "black friday" && (
                                       <div
                                         style={{
                                           backgroundColor: "black",
@@ -570,14 +569,15 @@ function Catalogo() {
                                           borderRadius: "10px",
                                           padding: "5px 10px",
                                           display: "inline-block",
-                                          fontSize: "12px",
+                                          fontSize: "7px",
                                           fontWeight: "bold",
                                           marginBottom: "8px",
                                         }}
                                       >
                                         Black Friday
                                       </div>
-                                    )}
+                                    )}</h3>
+                                   
                                     <p className='item-descricao'>{product.description}</p>
                                     <h4 className='item-preco'>
                                       {product.promocional_price > 0 ? (
