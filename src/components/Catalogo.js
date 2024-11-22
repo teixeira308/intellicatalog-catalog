@@ -471,31 +471,41 @@ function Catalogo() {
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
                     <ul className='nav nav-tabs flex-nowrap w-100' role='tablist'>
-                      {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
-                        .map((category, index) => (
-                          <li className="nav-item flex-fill text-center" key={index}>
-                            <button
-                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-                              id={`tab${category.id}-tab`}
-                              href={`#content${category.id}`}
-                              role="tab"
-                              aria-controls={`tab${category.id}`}
-                              aria-selected={activeTab === `categoria${category.id}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setActiveTab(`categoria${category.id}`);
-                              }}
-                              style={{
-                                color: activeTab === `categoria${category.id}` ? configStore.cor_botao_primaria : configStore.cor_botao_secundaria,
-                                textDecoration: 'none',
-                                fontWeight: activeTab === `categoria${category.id}` ? 'bold' : 'normal',
-                              }}
-                            >
-                              {category.name}
-                            </button>
-                          </li>
-                        ))}
+                    {categories
+  .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
+  .map((category, index) => (
+    <li
+      className="nav-item flex-fill text-center"
+      key={index}
+      style={{
+        backgroundColor: category.name.toLowerCase() === "black friday" ? "black" : "transparent",
+      }}
+    >
+      <button
+        className={`nav-link ${activeTab === `categoria${category.id}` ? "active" : ""}`}
+        id={`tab${category.id}-tab`}
+        href={`#content${category.id}`}
+        role="tab"
+        aria-controls={`tab${category.id}`}
+        aria-selected={activeTab === `categoria${category.id}`}
+        onClick={(e) => {
+          e.preventDefault();
+          setActiveTab(`categoria${category.id}`);
+        }}
+        style={{
+          color:
+            activeTab === `categoria${category.id}`
+              ? configStore.cor_botao_primaria
+              : configStore.cor_botao_secundaria,
+          textDecoration: "none",
+          fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+        }}
+      >
+        {category.name}
+      </button>
+    </li>
+  ))}
+
 
                     </ul>
                   </div>
