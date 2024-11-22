@@ -478,6 +478,7 @@ function Catalogo() {
       className="nav-item flex-fill text-center"
       key={index}
       style={{
+        borderRadius: "10px",
         backgroundColor:
           category.name.toLowerCase() === "black friday"
             ? "black" // Fundo preto para Black Friday
@@ -498,7 +499,7 @@ function Catalogo() {
           setActiveTab(`categoria${category.id}`);
         }}
         style={{
-          borderRadius: "10px",
+         
           color:
             category.name.toLowerCase() === "black friday"
               ? "white" // Sempre texto branco para Black Friday
