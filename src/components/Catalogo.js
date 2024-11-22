@@ -325,7 +325,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-
+        
         setLoading(false)
       })
     );
@@ -364,7 +364,7 @@ function Catalogo() {
   }, [storeDetails]);
 
   useEffect(() => {
-
+   
     if (activeTab) {
       const categoryId = parseInt(activeTab.replace('categoria', ''));
       fetchProductsByCategory(categoryId);
@@ -471,47 +471,47 @@ function Catalogo() {
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
                     <ul className='nav nav-tabs flex-nowrap w-100' role='tablist'>
-                      {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
-                        .map((category, index) => (
-                          <li
-                            className="nav-item flex-fill text-center"
-                            key={index}
-                            style={{
-                              backgroundColor:
-                                category.name.toLowerCase() === "black friday"
-                                  ? "black" // Fundo preto para Black Friday
-                                  : activeTab === `categoria${category.id}`
-                                    ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
-                                    : "transparent", // Fundo padrão para outras categorias
-                            }}
-                          >
-                            <button
-                              className={`nav-link ${activeTab === `categoria${category.id}` ? "active" : ""}`}
-                              id={`tab${category.id}-tab`}
-                              href={`#content${category.id}`}
-                              role="tab"
-                              aria-controls={`tab${category.id}`}
-                              aria-selected={activeTab === `categoria${category.id}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setActiveTab(`categoria${category.id}`);
-                              }}
-                              style={{
-                                color:
-                                  category.name.toLowerCase() === "black friday"
-                                    ? "white" // Texto branco para Black Friday
-                                    : activeTab === `categoria${category.id}`
-                                      ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
-                                      : configStore.cor_botao_secundaria, // Cor padrão para texto
-                                textDecoration: "none",
-                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                              }}
-                            >
-                              {category.name}
-                            </button>
-                          </li>
-                        ))}
+                    {categories
+  .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
+  .map((category, index) => (
+    <li
+      className="nav-item flex-fill text-center"
+      key={index}
+      style={{
+        backgroundColor:
+          category.name.toLowerCase() === "black friday"
+            ? "black" // Fundo preto para Black Friday
+            : activeTab === `categoria${category.id}`
+            ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
+            : "transparent", // Fundo padrão para outras categorias
+      }}
+    >
+      <button
+        className={`nav-link ${activeTab === `categoria${category.id}` ? "active" : ""}`}
+        id={`tab${category.id}-tab`}
+        href={`#content${category.id}`}
+        role="tab"
+        aria-controls={`tab${category.id}`}
+        aria-selected={activeTab === `categoria${category.id}`}
+        onClick={(e) => {
+          e.preventDefault();
+          setActiveTab(`categoria${category.id}`);
+        }}
+        style={{
+          color:
+            category.name.toLowerCase() === "black friday"
+              ? "white" // Texto branco para Black Friday
+              : activeTab === `categoria${category.id}`
+              ? configStore.cor_botao_primaria // Cor personalizada para aba ativa
+              : configStore.cor_botao_secundaria, // Cor padrão para texto
+          textDecoration: "none",
+          fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+        }}
+      >
+        {category.name}
+      </button>
+    </li>
+  ))}
 
 
                     </ul>
@@ -535,60 +535,60 @@ function Catalogo() {
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
-
-                        <div className='items-catalogo'>
-                          {products[category.id] && products[category.id].length > 0 ? (
-                            products[category.id]
-                              .sort((a, b) => a.product_order - b.product_order)
-                              .map((product, idx) => (
-                                <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                                  <div className='imagem'>
-                                    {productImages[product.id] && productImages[product.id].length > 0 ? (
-                                      <img
-                                        loading="lazy"
-                                        src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
-                                        alt={product.titulo}
-                                        className='img-square'
-                                      />
-                                    ) : (
-                                      <div className="placeholder">
-                                        Sem imagem
+                        
+                            <div className='items-catalogo'>
+                              {products[category.id] && products[category.id].length > 0 ? (
+                                products[category.id]
+                                  .sort((a, b) => a.product_order - b.product_order)
+                                  .map((product, idx) => (
+                                    <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                                      <div className='imagem'>
+                                        {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                          <img
+                                            loading="lazy"
+                                            src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                            alt={product.titulo}
+                                            className='img-square'
+                                          />
+                                        ) : (
+                                          <div className="placeholder">
+                                            Sem imagem
+                                          </div>
+                                        )}
                                       </div>
-                                    )}
-                                  </div>
-                                  <div className='texto'>
-                                    <h3 className='item-titulo'>{product.titulo}</h3>
-                                    <p className='item-descricao'>{product.description}</p>
-                                    <h4 className='item-preco'>
-                                      {product.promocional_price > 0 ? (
-                                        <>
-                                          <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                          </span>
-                                          <br />
-                                          <span>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                          </span>
-                                          &nbsp;
-                                          <span style={{ color: 'green' }}>
-                                            ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                          </span>
-                                        </>
-                                      ) : (
-                                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
-                                      )}
-                                    </h4>
-                                  </div>
+                                      <div className='texto'>
+                                        <h3 className='item-titulo'>{product.titulo}</h3>
+                                        <p className='item-descricao'>{product.description}</p>
+                                        <h4 className='item-preco'>
+                                          {product.promocional_price > 0 ? (
+                                            <>
+                                              <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                              </span>
+                                              <br />
+                                              <span>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                              </span>
+                                              &nbsp;
+                                              <span style={{ color: 'green' }}>
+                                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                              </span>
+                                            </>
+                                          ) : (
+                                            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                          )}
+                                        </h4>
+                                      </div>
+                                    </div>
+                                  ))
+                              ) : (
+                                <div className="text-center my-5">
+                                  <h4>Nenhum produto encontrado nesta categoria</h4>
                                 </div>
-                              ))
-                          ) : (
-                            <div className="text-center my-5">
-                              <h4>Nenhum produto encontrado nesta categoria</h4>
+                              )}
                             </div>
-                          )}
-                        </div>
-
-                      </div>
+                         
+                    </div>
                     ))
 
                   )}
