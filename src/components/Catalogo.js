@@ -567,17 +567,16 @@ function Catalogo() {
                                           backgroundColor: "black",
                                           color: "white",
                                           borderRadius: "10px",
-                                          padding: "5px 10px",
+                                          
                                           display: "inline-block",
-                                          fontSize: "7px",
+                                          fontSize: "10px",
                                           fontWeight: "bold",
-                                          marginBottom: "8px",
+                                         
                                         }}
                                       >
                                         Black Friday
                                       </div>
                                     )}</h3>
-                                   
                                     <p className='item-descricao'>{product.description}</p>
                                     <h4 className='item-preco'>
                                       {product.promocional_price > 0 ? (
