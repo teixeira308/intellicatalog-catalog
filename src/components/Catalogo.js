@@ -98,7 +98,7 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
-    console.log(orderDetails)
+    
     const orderDetails = cart.map(item => {
       const { titulo, price, quantity } = item;
       const unitPrice = Number(price); // Converte para número para evitar erros
@@ -109,6 +109,8 @@ function Catalogo() {
 
 
     });
+    console.log('orderDetails: ',orderDetails)
+    console.log('item: ',cart)
 
     // Calcula o valor total do pedido
     const totalOrder = cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
