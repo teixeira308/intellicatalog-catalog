@@ -98,6 +98,7 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
+    e.preventDefault(); 
     // Formata os itens do carrinho no formato esperado
     const formattedItems = cart.map((item) => ({
       product_id: item.id,
