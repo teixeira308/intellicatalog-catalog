@@ -99,7 +99,7 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
-    
+
     // Formata os itens do carrinho no formato esperado
     const formattedItems = cart.map((item) => ({
       product_id: item.id,
@@ -124,12 +124,29 @@ function Catalogo() {
       items: formattedItems,
     };
 
-    try {
+    /*try {
       // Chama a função para criar o pedido no backend
       const pedido = await createPedido(pedido, storeDetails.user_id);
       //console.log("Pedido criado com sucesso:", pedido);
     } catch (error) {
       console.error("Erro ao criar pedido:", error);
+    }
+*/
+    const pedidoComUserId = {
+      ...pedido,
+      user_id: storeDetails.user_id, // Pega o user_id do objeto `user`
+
+    };
+    let newPedido;
+    try {
+      const response = await axios.post(`${api_url}/intellicatalog/v1/orders`, pedidoComUserId, {
+        headers: {
+          Authorization: `Bearer ${apiToken}`
+        }
+      });
+      newPedido = response.id;
+    } catch (error) {
+      console.error('Erro ao criar pedido:', error);
     }
 
     // Gera a mensagem para o WhatsApp
@@ -140,9 +157,9 @@ function Catalogo() {
 
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
     });
-    
+
     const message = encodeURIComponent(
-      `Detalhes do pedido #${pedido.id}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
+      `Detalhes do pedido #${newPedido}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );
 
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
