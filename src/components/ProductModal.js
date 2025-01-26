@@ -11,7 +11,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
     // Função para alterar a quantidade com base na entrada do usuário
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
-        if (value > 0 && (!storeConfigs.usa_estoque || value <= product.estoque)) { // Verifica se o valor é positivo e não ultrapassa o estoque se 'usa_estoque' for true
+        if (value > 0 && (!storeConfigs.usa_estoque || storeConfigs.usa_estoque === "false" || value <= product.estoque)) { // Verifica se 'usa_estoque' é "true" ou "false"
             setQuantity(value);
         }
     };
@@ -24,7 +24,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
 
     // Função para aumentar a quantidade
     const increaseQuantity = () => {
-        if (!storeConfigs.usa_estoque || quantity < product.estoque) { // Impede que a quantidade ultrapasse o estoque se 'usa_estoque' for true
+        if (!storeConfigs.usa_estoque || storeConfigs.usa_estoque === "false" || quantity < product.estoque) { // Impede que a quantidade ultrapasse o estoque se 'usa_estoque' for "true"
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
@@ -79,8 +79,8 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                         )}
                     </h4>
                     <p>{product.description}</p>
-                    {storeConfigs.usa_estoque && (
-                        <p>Estoque disponível: {product.estoque}</p> // Exibe a quantidade de estoque disponível se 'usa_estoque' for true
+                    {storeConfigs.usa_estoque === "true" && (
+                        <p>Estoque disponível: {product.estoque}</p> // Exibe a quantidade de estoque disponível se 'usa_estoque' for "true"
                     )}
 
                 </div>
