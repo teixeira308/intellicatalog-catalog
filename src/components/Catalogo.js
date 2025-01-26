@@ -116,8 +116,8 @@ function Catalogo() {
     const pedido = {
       user_id: storeDetails.user_id, // Insira o ID do usuário associado à loja
       total_amount: totalOrder,
-      phone: "55972472746", // Insira o telefone aqui
-      delivery_address: "aaaa", // Insira o endereço de entrega aqui
+      phone: "pendente confirmação", // Insira o telefone aqui
+      delivery_address: "pendente confirmação", // Insira o endereço de entrega aqui
       notes: "pedido enviado por whatsapp, pendente confirmação",
       items: formattedItems,
     };
@@ -138,9 +138,9 @@ function Catalogo() {
 
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
     });
-    console.log(pedido);
+    console.log(pedido.id);
     const message = encodeURIComponent(
-      `Detalhes do pedido:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
+      `Detalhes do pedido #${pedido.id}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );
 
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
@@ -564,6 +564,7 @@ function Catalogo() {
                         <div className='items-catalogo'>
                           {products[category.id] && products[category.id].length > 0 ? (
                             products[category.id]
+                              .filter(product => product.estoque > 0)
                               .sort((a, b) => a.product_order - b.product_order)
                               .map((product, idx) => (
                                 <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>

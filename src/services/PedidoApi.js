@@ -11,7 +11,7 @@ const PedidoApi = () => {
       user_id: userId, // Pega o user_id do objeto `user`
       
     };
-    console.log(pedidoComUserId);
+    
     const response = await fetch(`${api_url}/intellicatalog/v1/orders`, {
       method: "POST",
       headers: {
