@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
 import loadingGif from '../components/loading.gif'
+import PedidoApi from '../services/PedidoApi';
 
 function Catalogo() {
   const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
@@ -29,7 +30,7 @@ function Catalogo() {
   const [cartItemCount, setCartItemCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
-
+  const { createPedido } = PedidoApi();
 
 
   //busca token no env
@@ -97,12 +98,16 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
+    console.log(orderDetails)
     const orderDetails = cart.map(item => {
       const { titulo, price, quantity } = item;
       const unitPrice = Number(price); // Converte para número para evitar erros
       const totalItem = unitPrice * quantity; // Calcula o total de cada item
-
+      
+     
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
+
+
     });
 
     // Calcula o valor total do pedido
@@ -112,7 +117,21 @@ function Catalogo() {
     const message = encodeURIComponent(
       `Detalhes do pedido:\n\n${orderDetails.join('')}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );
+    /*
+    const pedido = {
+      notes: "pedido enviado por whatsapp, pendente confirmação",
+      total_amount: totalOrder,
 
+    }
+
+    try { 
+      createPedido(pedido,storeDetails.user_id); 
+  
+    } catch (error) {
+      console.error("Erro ao criar pedido:", error);
+       
+    }
+    */
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`; // URL da API do WhatsApp
 
     window.open(whatsappApiUrl, '_blank');
