@@ -90,7 +90,8 @@ function Catalogo() {
   };
 
 
-  const handleClickWhatsappNoOrder = () => {
+  const handleClickWhatsappNoOrder = (e) => {
+    e.preventDefault();
     const message = "Olá! Gostaria de saber mais sobre seus produtos.";
     const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${encodeURIComponent(message)}`; // URL da API do WhatsApp
 
@@ -98,7 +99,7 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
-    e.preventDefault(); 
+    
     // Formata os itens do carrinho no formato esperado
     const formattedItems = cart.map((item) => ({
       product_id: item.id,
