@@ -8,32 +8,36 @@ import Form from 'react-bootstrap/Form';
 const ProductModal = ({ show, handleClose, product, images, addToCart, storeStatus, storeConfigs }) => {
     const [quantity, setQuantity] = useState(1); // Estado para quantidade
 
+    // Função para alterar a quantidade com base na entrada do usuário
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
-        if (value > 0) {
+        if (value > 0 && value <= product.estoque) { // Verifica se o valor é positivo e não ultrapassa o estoque
             setQuantity(value);
         }
     };
 
+    // Função para adicionar ao carrinho
     const handleAddToCart = () => {
         addToCart({ ...product, quantity }); // Adiciona o produto com a quantidade selecionada
         handleClose();
     };
 
-
+    // Função para aumentar a quantidade
     const increaseQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        if (quantity < product.estoque) { // Impede que a quantidade ultrapasse o estoque
+            setQuantity(prevQuantity => prevQuantity + 1);
+        }
     };
 
+    // Função para diminuir a quantidade
     const decreaseQuantity = () => {
-        if (quantity > 1) {
+        if (quantity > 1) { // Impede que a quantidade seja menor que 1
             setQuantity(prevQuantity => prevQuantity - 1);
         }
     };
 
     return (
         <Modal show={show} onHide={handleClose} fullscreen='lg-down'>
-
             <Modal.Header closeButton> 
             </Modal.Header> 
             <div className="modal-content">
@@ -55,35 +59,35 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                 <div className='product-info'>
                     <h1>{product.titulo} - {product.brand}</h1>
 
-                    <h4> {product.promocional_price > 0 ? (
-                        <>
-                            <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '14px' }}>
-                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                            </span>
-                            <br />
-                            <span>
-                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                            </span>
-                            &nbsp;
-                            <span style={{ color: 'green' }}>
-                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                            </span>
-                        </>
-                    ) : (
-                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
-                    )}</h4>
+                    <h4> 
+                        {product.promocional_price > 0 ? (
+                            <>
+                                <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '14px' }}>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                </span>
+                                <br />
+                                <span>
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                </span>
+                                &nbsp;
+                                <span style={{ color: 'green' }}>
+                                    ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                </span>
+                            </>
+                        ) : (
+                            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                        )}
+                    </h4>
                     <p>{product.description}</p>
-
+                    <p>Estoque disponível: {product.estoque}</p> {/* Exibe a quantidade de estoque disponível */}
 
                 </div>
-
 
                 <Modal.Footer className="modal-footer">
                     {storeStatus === "Aberta" ? (
                         <>
                             <Form.Group controlId="productQuantity">
                                 <div className="d-flex align-items-center">
-
                                     <Button variant="outline-secondary" onClick={decreaseQuantity}>-</Button>
                                     &nbsp; &nbsp;{quantity}   &nbsp;&nbsp;
                                     <Button variant="outline-secondary" onClick={increaseQuantity}>+</Button>
@@ -92,7 +96,6 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                             <Button onClick={handleAddToCart} style={{ backgroundColor: storeConfigs.cor_botao_primaria, borderColor: storeConfigs.cor_botao_primaria, color: storeConfigs.cor_secundaria }}>
                                 Adicionar ao Carrinho
                             </Button>
-
                         </>
                     ) : (
                         <Button variant="secondary" onClick={handleClose}>
@@ -100,7 +103,6 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                         </Button>
                     )}
                 </Modal.Footer>
-
             </div>
         </Modal>
     );
