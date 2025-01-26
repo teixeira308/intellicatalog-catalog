@@ -142,7 +142,7 @@ function Catalogo() {
           Authorization: `Bearer ${apiToken}`
         }
       });
-      newPedido = response.id;
+      newPedido = response;
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
     }
