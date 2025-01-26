@@ -8,8 +8,7 @@ import CartModal from './CartModal';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
-import loadingGif from '../components/loading.gif'
-import PedidoApi from '../services/PedidoApi';
+import loadingGif from '../components/loading.gif' 
 
 function Catalogo() {
   const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
@@ -29,8 +28,7 @@ function Catalogo() {
   const [configStore, setConfigStore] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
 
-  const [loading, setLoading] = useState(true);
-  const { createPedido } = PedidoApi();
+  const [loading, setLoading] = useState(true); 
 
 
   //busca token no env
