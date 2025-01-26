@@ -22,10 +22,8 @@ const PedidoApi = () => {
     });
 
     if (response.status === 401) {
-      // Redireciona para a tela de login
-      
-    }
-
+      // Redireciona para a tela de login 
+    } 
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Erro ao criar pedido");

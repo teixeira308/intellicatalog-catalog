@@ -138,7 +138,7 @@ function Catalogo() {
 
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
     });
-    console.log(pedido);
+    
     const message = encodeURIComponent(
       `Detalhes do pedido #${pedido.id}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );

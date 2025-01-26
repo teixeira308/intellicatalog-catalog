@@ -34,10 +34,8 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
     return (
         <Modal show={show} onHide={handleClose} fullscreen='lg-down'>
 
-            <Modal.Header closeButton>
-
-            </Modal.Header>
-
+            <Modal.Header closeButton> 
+            </Modal.Header> 
             <div className="modal-content">
                 {images.length > 0 ? (
                     <Carousel>
