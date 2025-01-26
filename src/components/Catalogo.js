@@ -98,50 +98,62 @@ function Catalogo() {
   }
 
   const sendOrderToWhatsApp = async () => {
-    
-    const orderDetails = cart.map(item => {
-      const { titulo, price, quantity } = item;
-      const unitPrice = Number(price); // Converte para número para evitar erros
-      const totalItem = unitPrice * quantity; // Calcula o total de cada item
-      
-     
-      return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
-
-
-    });
-    console.log('orderDetails: ',orderDetails)
-    console.log('item: ',cart)
-
-    // Calcula o valor total do pedido
-    const totalOrder = cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
-
-    // Converte os detalhes em uma string compreensível e adiciona o total
-    const message = encodeURIComponent(
-      `Detalhes do pedido:\n\n${orderDetails.join('')}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
-    );
-    /*
-    const pedido = {
-      notes: "pedido enviado por whatsapp, pendente confirmação",
-      total_amount: totalOrder,
-
-    }
-
-    try { 
-      createPedido(pedido,storeDetails.user_id); 
+    // Formata os itens do carrinho no formato esperado
+    const formattedItems = cart.map((item) => ({
+      product_id: item.id,
+      quantity: item.quantity,
+      unit_price: parseFloat(item.price),
+      total_price: parseFloat(item.price) * item.quantity,
+    }));
   
+    // Calcula o valor total do pedido
+    const totalOrder = cart.reduce(
+      (total, item) => total + parseFloat(item.price) * item.quantity,
+      0
+    );
+  
+    // Monta o objeto `pedido`
+    const pedido = {
+      user_id: storeDetails.user_id, // Insira o ID do usuário associado à loja
+      total_amount: totalOrder,
+      phone: "55972472746", // Insira o telefone aqui
+      delivery_address: "aaaa", // Insira o endereço de entrega aqui
+      notes: "pedido enviado por whatsapp, pendente confirmação",
+      items: formattedItems,
+    };
+  
+    try {
+      // Chama a função para criar o pedido no backend
+      await createPedido(pedido, storeDetails.user_id);
+      console.log("Pedido criado com sucesso:", pedido);
     } catch (error) {
       console.error("Erro ao criar pedido:", error);
-       
     }
-    */
-    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`; // URL da API do WhatsApp
-
-    window.open(whatsappApiUrl, '_blank');
-
+  
+    // Gera a mensagem para o WhatsApp
+    const orderDetails = cart.map((item) => {
+      const { titulo, price, quantity } = item;
+      const unitPrice = Number(price);
+      const totalItem = unitPrice * quantity;
+  
+      return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
+    });
+  
+    const message = encodeURIComponent(
+      `Detalhes do pedido:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
+    );
+  
+    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
+  
+    // Abre o WhatsApp com a mensagem do pedido
+    window.open(whatsappApiUrl, "_blank");
+  
+    // Limpa o carrinho
     setCart([]);
     setCartItemCount(0);
     handleCloseCartModal();
   };
+  
 
 
 
