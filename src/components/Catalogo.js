@@ -146,7 +146,7 @@ function Catalogo() {
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
     }
-
+    console.log(newPedido)
     // Gera a mensagem para o WhatsApp
     const orderDetails = cart.map((item) => {
       const { titulo, price, quantity } = item;
