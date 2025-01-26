@@ -1,6 +1,6 @@
 const PedidoApi = () => {
  
-  const api_url = process.env.REACT_APP_API;
+  const api_url = process.env.REACT_APP_API_URL;
   const apiToken = process.env.REACT_APP_API_TOKEN;
 
   
