@@ -30,7 +30,7 @@ const PedidoApi = () => {
       const errorData = await response.json();
       throw new Error(errorData.message || "Erro ao criar pedido");
     }
-    console.log(response.json());
+    console.log("response: ",response.json());
     return await response.json();
   }
 
