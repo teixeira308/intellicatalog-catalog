@@ -548,7 +548,7 @@ function Catalogo() {
                                       : configStore.cor_botao_secundaria, // Texto padrão para aba inativa
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                                padding: "10px 15px", // Padding para ajustar tamanho do botão
+                               
                               }}
                             >
                               {category.name}
