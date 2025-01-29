@@ -515,7 +515,7 @@ function Catalogo() {
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                    <ul className='nav nav-tabs flex-nowrap w-100' role='tablist'>
+                  <ul className='nav nav-tabs w-100' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none" }}>
                       {categories
                         .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
