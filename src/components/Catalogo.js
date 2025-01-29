@@ -533,6 +533,7 @@ function Catalogo() {
                                 setActiveTab(`categoria${category.id}`);
                               }}
                               style={{
+                                border: "none",
                                 borderRadius: "0px", // Bordas arredondadas no botão
                                 backgroundColor:
                                   category.name.toLowerCase() === "black friday"
@@ -548,7 +549,7 @@ function Catalogo() {
                                       : configStore.cor_botao_secundaria, // Texto padrão para aba inativa
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                               
+                                padding: "10px 15px", // Padding para ajustar tamanho do botão
                               }}
                             >
                               {category.name}
