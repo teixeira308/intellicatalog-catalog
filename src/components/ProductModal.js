@@ -80,7 +80,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                     </h4>
                     <p>{product.description}</p>
                     {storeConfigs.usa_estoque === "true" && (
-                        <p>Estoque disponível: {product.estoque}</p> // Exibe a quantidade de estoque disponível se 'usa_estoque' for "true"
+                        <p><b>Estoque disponível:</b> {product.estoque}</p> // Exibe a quantidade de estoque disponível se 'usa_estoque' for "true"
                     )}
 
                 </div>
