@@ -145,7 +145,7 @@ footer p {
   /* Ajuste conforme necessário */
   background-color: black;
   /* Cor de fundo do placeholder */
-  /*border-radius: 50%;*/
+  border-radius: 50%;
   /* Arredondar para circular */
   display: flex;
   align-items: center;
@@ -221,7 +221,6 @@ header {
   margin-bottom: 1rem;
   margin: 5px;
   padding: 10px; 
-  border-style: groove;
   flex-basis: 20%;
   /* Define a largura base de cada item como 30% */
 
