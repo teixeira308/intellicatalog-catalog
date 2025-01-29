@@ -8,7 +8,7 @@ import CartModal from './CartModal';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
-import loadingGif from '../components/loading.gif' 
+import loadingGif from '../components/loading.gif'
 
 function Catalogo() {
   const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
@@ -28,7 +28,7 @@ function Catalogo() {
   const [configStore, setConfigStore] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
 
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
 
   //busca token no env
@@ -146,7 +146,7 @@ function Catalogo() {
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
     }
-    
+
     // Gera a mensagem para o WhatsApp
     const orderDetails = cart.map((item) => {
       const { titulo, price, quantity } = item;
@@ -515,7 +515,7 @@ function Catalogo() {
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                  <ul className='nav nav-tabs w-100' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none" }}>
+                    <ul className='nav nav-tabs w-100' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none" }}>
                       {categories
                         .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
@@ -537,16 +537,20 @@ function Catalogo() {
                                 borderRadius: "0px", // Bordas arredondadas no botão
                                 backgroundColor:
                                   category.name.toLowerCase() === "black friday"
-                                    ? "black" // Fundo preto para Black Friday
-                                    : activeTab === `categoria${category.id}`
-                                      ? configStore.cor_botao_primaria // Fundo personalizado para aba ativa
-                                      : "transparent", // Fundo padrão para outras categorias
+                                    ? "black"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "red"
+                                      : activeTab === `categoria${category.id}`
+                                        ? configStore.cor_botao_primaria
+                                        : "transparent",
                                 color:
                                   category.name.toLowerCase() === "black friday"
-                                    ? "white" // Texto branco para Black Friday
-                                    : activeTab === `categoria${category.id}`
-                                      ? "white" // Texto branco para aba ativa
-                                      : configStore.cor_botao_secundaria, // Texto padrão para aba inativa
+                                    ? "white"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "yellow"
+                                      : activeTab === `categoria${category.id}`
+                                        ? "white"
+                                        : configStore.cor_botao_secundaria,
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
                                 padding: "10px 15px", // Padding para ajustar tamanho do botão
