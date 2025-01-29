@@ -533,7 +533,7 @@ function Catalogo() {
                                 setActiveTab(`categoria${category.id}`);
                               }}
                               style={{
-                                
+                                borderRadius: "0px", // Bordas arredondadas no botão
                                 backgroundColor:
                                   category.name.toLowerCase() === "black friday"
                                     ? "black" // Fundo preto para Black Friday
