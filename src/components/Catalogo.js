@@ -173,7 +173,7 @@ function Catalogo() {
 
   const fetchCategories = async (storeId) => {
     try {
-      const response = await axios.get(`${api_url}/intellicatalog/v1/categories/users/${storeId}`, {
+      const response = await axios.get(`${api_url}/intellicatalog/v1/categories/users/${storeId}?mode=store`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
