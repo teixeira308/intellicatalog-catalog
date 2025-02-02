@@ -31,14 +31,14 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
             <h1>
               <Modal.Title style={{ cursor: 'pointer', fontFamily: "Kanit" }}>{storeDetails.namestore}</Modal.Title>
             </h1>
-            {configStore.facebook && (
-              <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+            {storeConfig.facebook && (
+              <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_secundaria }}>
                 <FaFacebookF size={24} />
               </a>
             )}
 
-            {configStore.instagram && (
-              <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+            {storeConfig.instagram && (
+              <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_secundaria }}>
                 <FaInstagram size={24} />
               </a>
             )}
