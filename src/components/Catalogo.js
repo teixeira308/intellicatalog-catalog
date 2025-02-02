@@ -426,6 +426,27 @@ function Catalogo() {
     setShowProductModal(false);
   };
 
+  useEffect(() => {
+    if (imageStoreUrls.length > 0) {
+      const favicon = document.querySelector("link[rel='icon']");
+      if (favicon) {
+        favicon.href = imageStoreUrls[0].url; // Usa a primeira imagem como favicon
+      } else {
+        const newFavicon = document.createElement("link");
+        newFavicon.rel = "icon";
+        newFavicon.href = imageStoreUrls[0].url;
+        document.head.appendChild(newFavicon);
+      }
+    }
+  }, [imageStoreUrls]); // Executa sempre que as imagens mudarem
+
+  useEffect(() => {
+    if (storeDetails?.namestore) {
+      document.title = storeDetails.namestore;
+    }
+  }, [storeDetails?.namestore]); // Reexecuta quando o nome da loja mudar
+
+
   return (
 
     <div className="App">
@@ -474,6 +495,7 @@ function Catalogo() {
                 <div key={image.id} onClick={handleOpenModal}>
                   <img
                     src={image.url}
+                    
                     alt={`Foto da store ${storeDetails.namestore}`}
                     style={{
                       width: '100px',
@@ -487,7 +509,8 @@ function Catalogo() {
                   <br />
                   <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
                     {storeDetails.namestore}
-                    {document.title= storeDetails.namestore}
+                   
+                    
                   </h1>
 
 
