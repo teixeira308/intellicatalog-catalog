@@ -294,7 +294,7 @@ function Catalogo() {
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
-
+    
     const arrayBuffer = await response.arrayBuffer();
     // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
     const blob = new Blob([arrayBuffer], { type: "image/png" });
@@ -426,7 +426,7 @@ function Catalogo() {
     setShowProductModal(false);
   };
 
-useEffect(() => {
+  useEffect(() => {
     if (imageStoreUrls.length > 0) {
       const favicon = document.querySelector("link[rel='icon']");
       if (favicon) {
@@ -439,6 +439,12 @@ useEffect(() => {
       }
     }
   }, [imageStoreUrls]); // Executa sempre que as imagens mudarem
+
+  useEffect(() => {
+    if (storeDetails?.namestore) {
+      document.title = storeDetails.namestore;
+    }
+  }, [storeDetails?.namestore]); // Reexecuta quando o nome da loja mudar
 
 
   return (
@@ -489,7 +495,6 @@ useEffect(() => {
                 <div key={image.id} onClick={handleOpenModal}>
                   <img
                     src={image.url}
-                    
                     alt={`Foto da store ${storeDetails.namestore}`}
                     style={{
                       width: '100px',
@@ -503,8 +508,6 @@ useEffect(() => {
                   <br />
                   <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
                     {storeDetails.namestore}
-                    {document.title= storeDetails.namestore}
-                    
                   </h1>
 
 
@@ -525,20 +528,33 @@ useEffect(() => {
                 )}
               </div>
             </header>
-
-
-
-
             <main className="my main-content">
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                    <ul className='nav nav-tabs w-100' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none" }}>
+                    <ul
+                      className='nav nav-tabs w-100 d-flex'
+                      role='tablist'
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        borderBottom: "none",
+                        display: "flex", // Distribui os itens em linha
+                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
+                      }}
+                    >
                       {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
+                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
                         .map((category, index) => (
-                          <li className="nav-item flex-fill text-center" key={index} >
-
+                          <li
+                            className="nav-item text-center flex-fill"
+                            key={index}
+                            style={{
+                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
+                              display: "flex",
+                              justifyContent: "center", // Centraliza o botão dentro do <li>
+                            }}
+                          >
                             <button
                               className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                               id={`tab${category.id}-tab`}
@@ -552,7 +568,7 @@ useEffect(() => {
                               }}
                               style={{
                                 border: "none",
-                                borderRadius: "0px", // Bordas arredondadas no botão
+                                borderRadius: "0px",
                                 backgroundColor:
                                   category.name.toLowerCase() === "black friday"
                                     ? "black"
@@ -571,16 +587,17 @@ useEffect(() => {
                                         : configStore.cor_botao_secundaria,
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                                padding: "10px 15px", // Padding para ajustar tamanho do botão
+                                padding: "10px 15px",
+                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
                               }}
                             >
                               {category.name}
                             </button>
                           </li>
                         ))}
-
                     </ul>
                   </div>
+
                 </div>
 
                 <div className='tab-content'>
