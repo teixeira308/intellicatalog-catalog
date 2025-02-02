@@ -217,16 +217,29 @@ function Catalogo() {
           Authorization: `Bearer ${apiToken}`
         }
       });
-      setProducts(prevState => ({
-        ...prevState,
-        [categoryId]: response.data.data
-      }));
-      // Carregar imagens após buscar produtos
-      await loadProductImages(response.data.data);
+  
+      const productsData = response.data.data;
+  
+      if (productsData.length === 0) {
+        // Caso não haja produtos na categoria, define o estado de "categoria vazia"
+        setProducts(prevState => ({
+          ...prevState,
+          [categoryId]: [] // Deixa a lista de produtos vazia
+        }));
+        // Aqui você pode adicionar um estado de "categoria vazia" ou mensagem visual
+        setEmptyCategory(true); // Estado para indicar que a categoria está vazia
+      } else {
+        setProducts(prevState => ({
+          ...prevState,
+          [categoryId]: productsData
+        }));
+        await loadProductImages(productsData);
+      }
     } catch (error) {
       console.error('Erro ao buscar produtos da categoria:', error);
     }
   };
+  
 
 
   const getFotoByProduto = async (product) => {
