@@ -31,17 +31,12 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
             <h1>
               <Modal.Title style={{ cursor: 'pointer', fontFamily: "Kanit" }}>{storeDetails.namestore}</Modal.Title>
             </h1>
-            {storeConfig.facebook && (
-              <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_secundaria }}>
-                <FaFacebookF size={24} />
-              </a>
-            )}
-
-            {storeConfig.instagram && (
-              <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_secundaria }}>
-                <FaInstagram size={24} />
-              </a>
-            )}
+            <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
+              <FaFacebookF size={24} />
+            </a>
+            <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
+              <FaInstagram size={24} />
+            </a>
           </div>
         ))}
       </div>
