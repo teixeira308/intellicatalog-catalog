@@ -356,6 +356,11 @@ function Catalogo() {
   const loadProductImages = async (products) => {
     const newImages = {};
 
+    if (products.length === 0) {
+      setLoading(false);  // Garantir que o loading seja desligado, mesmo sem produtos
+      return;
+    }
+  
     await Promise.all(
       products.map(async (product) => {
         const fotos = await getFotoByProduto(product); // Busca as fotos do produto
