@@ -178,6 +178,7 @@ function Catalogo() {
           Authorization: `Bearer ${apiToken}`
         }
       });
+      console.log('carregou categorias do usuario')
       setCategories(response.data.data);
       if (response.data.data.length > 0) {
         setActiveTab(`categoria${response.data.data[0].id}`);
@@ -204,7 +205,7 @@ function Catalogo() {
         }
       });
       setStoreDetails(response.data);
-
+      console.log('carregou detalhe da loja')
     } catch (error) {
       console.error('Erro ao buscar detalhes da loja:', error);
     }
@@ -221,6 +222,7 @@ function Catalogo() {
         ...prevState,
         [categoryId]: response.data.data
       }));
+      console.log('obteve produto por categoria')
       // Carregar imagens após buscar produtos
       await loadProductImages(response.data.data);
     } catch (error) {
@@ -238,7 +240,7 @@ function Catalogo() {
         Authorization: `Bearer ${apiToken}`,
       },
     });
-
+    console.log('carregou imagens do produto')
     if (!response.ok) {
       throw new Error("Erro ao buscar imagens do produto");
     }
@@ -256,6 +258,7 @@ function Catalogo() {
       },
     });
 
+    console.log('carregou configs')
     if (!response.ok) {
       throw new Error("Erro ao buscar imagens do produto");
     }
@@ -275,7 +278,7 @@ function Catalogo() {
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
-
+    console.log('obteve o download foto')
     const arrayBuffer = await response.arrayBuffer();
     // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
     const blob = new Blob([arrayBuffer], { type: "image/png" });
@@ -294,7 +297,7 @@ function Catalogo() {
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
-
+    console.log('carregou foto')
     const arrayBuffer = await response.arrayBuffer();
     // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
     const blob = new Blob([arrayBuffer], { type: "image/png" });
