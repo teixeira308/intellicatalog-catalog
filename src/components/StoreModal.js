@@ -31,12 +31,17 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
             <h1>
               <Modal.Title style={{ cursor: 'pointer', fontFamily: "Kanit" }}>{storeDetails.namestore}</Modal.Title>
             </h1>
-            <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
-          <FaFacebookF size={24} />
-        </a>
-        <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' ,color: storeConfig.cor_primaria}}>
-          <FaInstagram size={24} /> 
-        </a>
+            {configStore.facebook && (
+              <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                <FaFacebookF size={24} />
+              </a>
+            )}
+
+            {configStore.instagram && (
+              <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                <FaInstagram size={24} />
+              </a>
+            )}
           </div>
         ))}
       </div>
@@ -46,8 +51,8 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
         <p><strong>Endereço:</strong> {storeDetails.address}</p>
         <p><strong>Telefone:</strong> {storeDetails.phone}</p>
         <p><strong>E-mail:</strong> {storeDetails.email}</p>
-        
-       
+
+
       </div>
       <Modal.Footer className='modal-footer'>
         <Button variant="secondary" onClick={handleClose}>
