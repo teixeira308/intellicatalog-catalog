@@ -294,7 +294,7 @@ function Catalogo() {
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
-    
+
     const arrayBuffer = await response.arrayBuffer();
     // Converte o ArrayBuffer para Blob, certificando-se de usar o tipo correto de imagem
     const blob = new Blob([arrayBuffer], { type: "image/png" });
@@ -495,6 +495,7 @@ function Catalogo() {
                 <div key={image.id} onClick={handleOpenModal}>
                   <img
                     src={image.url}
+                    
                     alt={`Foto da store ${storeDetails.namestore}`}
                     style={{
                       width: '100px',
@@ -508,6 +509,8 @@ function Catalogo() {
                   <br />
                   <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
                     {storeDetails.namestore}
+                    {document.title= storeDetails.namestore}
+                    
                   </h1>
 
 
@@ -528,33 +531,20 @@ function Catalogo() {
                 )}
               </div>
             </header>
+
+
+
+
             <main className="my main-content">
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                    <ul
-                      className='nav nav-tabs w-100 d-flex'
-                      role='tablist'
-                      style={{
-                        margin: 0,
-                        padding: 0,
-                        borderBottom: "none",
-                        display: "flex", // Distribui os itens em linha
-                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
-                      }}
-                    >
+                    <ul className='nav nav-tabs w-100' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none" }}>
                       {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
+                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme o catalog_order
                         .map((category, index) => (
-                          <li
-                            className="nav-item text-center flex-fill"
-                            key={index}
-                            style={{
-                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
-                              display: "flex",
-                              justifyContent: "center", // Centraliza o botão dentro do <li>
-                            }}
-                          >
+                          <li className="nav-item flex-fill text-center" key={index} >
+
                             <button
                               className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                               id={`tab${category.id}-tab`}
@@ -568,7 +558,7 @@ function Catalogo() {
                               }}
                               style={{
                                 border: "none",
-                                borderRadius: "0px",
+                                borderRadius: "0px", // Bordas arredondadas no botão
                                 backgroundColor:
                                   category.name.toLowerCase() === "black friday"
                                     ? "black"
@@ -587,17 +577,16 @@ function Catalogo() {
                                         : configStore.cor_botao_secundaria,
                                 textDecoration: "none",
                                 fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                                padding: "10px 15px",
-                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
+                                padding: "10px 15px", // Padding para ajustar tamanho do botão
                               }}
                             >
                               {category.name}
                             </button>
                           </li>
                         ))}
+
                     </ul>
                   </div>
-
                 </div>
 
                 <div className='tab-content'>
