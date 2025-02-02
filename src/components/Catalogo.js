@@ -487,6 +487,7 @@ function Catalogo() {
                   <br />
                   <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
                     {storeDetails.namestore}
+                    {document.title= storeDetails.namestore}
                   </h1>
 
 
