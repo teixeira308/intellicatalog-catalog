@@ -90,54 +90,60 @@ function Catalogo() {
 
   const handleClickWhatsappNoOrder = (e) => {
     e.preventDefault();
+  
+    const numeroWhatsapp = configStore.numero_whatsapp?.replace(/\D/g, ""); // Remove caracteres não numéricos
+    if (!numeroWhatsapp) {
+      console.error("Número do WhatsApp não definido!");
+      return;
+    }
+  
     const message = "Olá! Gostaria de saber mais sobre seus produtos.";
-    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${encodeURIComponent(message)}`; // URL da API do WhatsApp
-
-    window.open(whatsappApiUrl, '_blank');
-  }
-
+  
+    // Detecta se está em um celular
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+    // Escolhe a URL apropriada
+    const whatsappApiUrl = isMobile
+      ? `whatsapp://send?phone=${numeroWhatsapp}&text=${encodeURIComponent(message)}`
+      : `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(message)}`;
+  
+    // Abre o WhatsApp corretamente para cada caso
+    if (isMobile) {
+      window.location.href = whatsappApiUrl; // Abre diretamente no app do WhatsApp no celular
+    } else {
+      window.open(whatsappApiUrl, "_blank", "noopener,noreferrer"); // Abre WhatsApp Web em uma nova aba no desktop
+    }
+  };
+  
+  
   const sendOrderToWhatsApp = async () => {
-
-    // Formata os itens do carrinho no formato esperado
+    // Formata os itens do carrinho
     const formattedItems = cart.map((item) => ({
       product_id: item.id,
       quantity: item.quantity,
       unit_price: parseFloat(item.price),
       total_price: parseFloat(item.price) * item.quantity,
     }));
-
-    // Calcula o valor total do pedido
+  
+    // Calcula o total do pedido
     const totalOrder = cart.reduce(
       (total, item) => total + parseFloat(item.price) * item.quantity,
       0
     );
-
+  
     // Monta o objeto `pedido`
     const pedido = {
-      user_id: storeDetails.user_id, // Insira o ID do usuário associado à loja
+      user_id: storeDetails.user_id,
       total_amount: totalOrder,
-      phone: "pendente confirmação", // Insira o telefone aqui
-      delivery_address: "pendente confirmação", // Insira o endereço de entrega aqui
+      phone: "pendente confirmação",
+      delivery_address: "pendente confirmação",
       notes: "pedido enviado por whatsapp, pendente confirmação",
       items: formattedItems,
     };
-
-    /*try {
-      // Chama a função para criar o pedido no backend
-      const pedido = await createPedido(pedido, storeDetails.user_id);
-      //console.log("Pedido criado com sucesso:", pedido);
-    } catch (error) {
-      console.error("Erro ao criar pedido:", error);
-    }
-*/
-    const pedidoComUserId = {
-      ...pedido,
-      user_id: storeDetails.user_id, // Pega o user_id do objeto `user`
-
-    };
+  
     let newPedido;
     try {
-      const response = await axios.post(`${api_url}/intellicatalog/v1/orders`, pedidoComUserId, {
+      const response = await axios.post(`${api_url}/intellicatalog/v1/orders`, pedido, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
@@ -146,31 +152,40 @@ function Catalogo() {
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
     }
-
-    // Gera a mensagem para o WhatsApp
+  
+    // Gera a mensagem do pedido
     const orderDetails = cart.map((item) => {
       const { titulo, price, quantity } = item;
       const unitPrice = Number(price);
       const totalItem = unitPrice * quantity;
-
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
     });
-
+  
     const message = encodeURIComponent(
       `Detalhes do pedido #${newPedido}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );
-
-    const whatsappApiUrl = `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
-
-    // Abre o WhatsApp com a mensagem do pedido
-    window.open(whatsappApiUrl, "_blank");
-
+  
+    // Detecta se está em um celular
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+    // Escolhe a URL apropriada
+    const whatsappApiUrl = isMobile
+      ? `whatsapp://send?phone=${configStore.numero_whatsapp}&text=${message}`
+      : `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
+  
+    // Abre o WhatsApp corretamente para cada caso
+    if (isMobile) {
+      window.location.href = whatsappApiUrl; // Abre o app diretamente no celular
+    } else {
+      window.open(whatsappApiUrl, "_blank"); // Abre o WhatsApp Web em uma nova aba no desktop
+    }
+  
     // Limpa o carrinho
     setCart([]);
     setCartItemCount(0);
     handleCloseCartModal();
   };
-
+  
   const fetchCategories = async (storeId) => {
     try {
       const response = await axios.get(`${api_url}/intellicatalog/v1/categories/users/${storeId}`, {
