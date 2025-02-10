@@ -10,13 +10,6 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
     const [showFullImage, setShowFullImage] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value);
-        if (value > 0 && (!storeConfigs.usa_estoque || storeConfigs.usa_estoque === "false" || value <= product.estoque)) {
-            setQuantity(value);
-        }
-    };
-
     const handleAddToCart = () => {
         addToCart({ ...product, quantity });
         handleClose();
@@ -53,7 +46,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                                         className="image-gallery"
                                         src={img.url}
                                         alt={product.titulo}
-                                        onClick={() => openFullImage(img.url)} // Abrir imagem em tela cheia ao clicar
+                                        onClick={() => openFullImage(img.url)}
                                         style={{ cursor: "pointer" }}
                                     />
                                 </Carousel.Item>
@@ -113,33 +106,17 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                 </div>
             </Modal>
 
-            {/* Modal para exibir imagem em tela cheia */}
-            <Modal show={showFullImage} onHide={() => setShowFullImage(false)} centered>
-                <Modal.Body className="p-0">
+            {/* Modal de imagem em tela cheia */}
+            <Modal show={showFullImage} onHide={() => setShowFullImage(false)} fullscreen>
+                <Modal.Body className="full-image-modal">
                     <Button 
                         variant="light" 
                         className="close-full-image" 
                         onClick={() => setShowFullImage(false)}
-                        style={{
-                            position: 'absolute',
-                            top: 10,
-                            right: 10,
-                            zIndex: 10,
-                            fontSize: '1.5rem',
-                            border: 'none',
-                            background: 'rgba(255,255,255,0.8)',
-                            padding: '5px 10px',
-                            borderRadius: '50%'
-                        }}
                     >
                         ×
                     </Button>
-                    <img 
-                        src={selectedImage} 
-                        alt="Imagem ampliada" 
-                        className="w-100"
-                        style={{ maxHeight: "90vh", objectFit: "contain" }}
-                    />
+                    <img src={selectedImage} alt="Imagem ampliada" className="full-image" />
                 </Modal.Body>
             </Modal>
         </>

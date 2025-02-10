@@ -72,3 +72,35 @@
   overflow-y: auto; /* Permite rolagem no conteúdo do modal */
 }
  
+.full-image-modal {
+  background-color: black !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0;
+}
+
+.full-image {
+  max-width: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+}
+
+.close-full-image {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 2rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  padding: 5px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.close-full-image:hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: black;
+}
