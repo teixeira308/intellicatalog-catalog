@@ -39,6 +39,15 @@ function Catalogo() {
     setShowCartModal(true);
   };
 
+  useEffect(() => {
+    // Atualizando as OG tags dinamicamente
+    document.getElementById('ogImage').setAttribute('content', imageStoreUrls[0]?.url || 'URL_DEFAULT_IMAGE');
+    document.getElementById('ogTitle').setAttribute('content', storeDetails.namestore || 'Nome da Loja');
+    document.getElementById('ogDescription').setAttribute('content', storeDetails.description || 'Descrição da Loja');
+    document.getElementById('ogUrl').setAttribute('content', window.location.href);
+
+  }, [storeDetails, imageStoreUrls]);
+
   const handleCloseCartModal = () => setShowCartModal(false);
 
   const total = cart.length > 0
