@@ -114,7 +114,6 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
             </Modal>
 
             {/* Modal de imagem em tela cheia */}
-            {/* Modal de imagem em tela cheia */}
             <Modal show={showFullImage} onHide={() => setShowFullImage(false)} fullscreen>
                 <Modal.Body
                     style={{
@@ -122,7 +121,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        maxWidth: '100%',
+                        maxWidth: '110%',
                         maxHeight: '100vh',
                         padding: 0
                     }}
