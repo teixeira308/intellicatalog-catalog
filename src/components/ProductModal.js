@@ -122,7 +122,8 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: '100vh',
+                        maxWidth: '100%',
+                        maxHeight: '100vh',
                         padding: 0
                     }}
                 >
