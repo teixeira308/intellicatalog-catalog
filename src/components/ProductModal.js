@@ -7,8 +7,7 @@ import Form from 'react-bootstrap/Form';
 
 const ProductModal = ({ show, handleClose, product, images, addToCart, storeStatus, storeConfigs }) => {
     const [quantity, setQuantity] = useState(1);
-    const [showFullImage, setShowFullImage] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
+ 
 
     const handleAddToCart = () => {
         addToCart({ ...product, quantity });
@@ -106,19 +105,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                 </div>
             </Modal>
 
-            {/* Modal de imagem em tela cheia */}
-            <Modal show={showFullImage} onHide={() => setShowFullImage(false)} fullscreen>
-                <Modal.Body className="full-image-modal">
-                    <Button 
-                        variant="light" 
-                        className="close-full-image" 
-                        onClick={() => setShowFullImage(false)}
-                    >
-                        ×
-                    </Button>
-                    <img src={selectedImage} alt="Imagem ampliada" className="full-image" />
-                </Modal.Body>
-            </Modal>
+           
         </>
     );
 };
