@@ -7,7 +7,15 @@ import Form from 'react-bootstrap/Form';
 
 const ProductModal = ({ show, handleClose, product, images, addToCart, storeStatus, storeConfigs }) => {
     const [quantity, setQuantity] = useState(1);
- 
+    const [showFullImage, setShowFullImage] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleQuantityChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (value > 0 && (!storeConfigs.usa_estoque || storeConfigs.usa_estoque === "false" || value <= product.estoque)) {
+            setQuantity(value);
+        }
+    };
 
     const handleAddToCart = () => {
         addToCart({ ...product, quantity });
@@ -34,8 +42,8 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
     return (
         <>
             <Modal show={show} onHide={handleClose} fullscreen='lg-down'>
-                <Modal.Header closeButton> 
-                </Modal.Header> 
+                <Modal.Header closeButton>
+                </Modal.Header>
                 <div className="modal-content">
                     {images.length > 0 ? (
                         <Carousel>
@@ -57,7 +65,7 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                     <div className='product-info'>
                         <h1>{product.titulo} - {product.brand}</h1>
 
-                        <h4> 
+                        <h4>
                             {product.promocional_price > 0 ? (
                                 <>
                                     <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '14px' }}>
@@ -105,7 +113,49 @@ const ProductModal = ({ show, handleClose, product, images, addToCart, storeStat
                 </div>
             </Modal>
 
-           
+            {/* Modal de imagem em tela cheia */}
+            {/* Modal de imagem em tela cheia */}
+            <Modal show={showFullImage} onHide={() => setShowFullImage(false)} fullscreen>
+                <Modal.Body
+                    style={{
+                        backgroundColor: 'black',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100vh',
+                        padding: 0
+                    }}
+                >
+                    <Button
+                        variant="light"
+                        onClick={() => setShowFullImage(false)}
+                        style={{
+                            position: 'absolute',
+                            top: '15px',
+                            right: '15px',
+                            fontSize: '2rem',
+                            color: 'white',
+                            background: 'rgba(0, 0, 0, 0.6)',
+                            border: 'none',
+                            padding: '5px 15px',
+                            borderRadius: '50%',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        ×
+                    </Button>
+                    <img
+                        src={selectedImage}
+                        alt="Imagem ampliada"
+                        style={{
+                            maxWidth: '100%',
+                            maxHeight: '100vh',
+                            objectFit: 'contain'
+                        }}
+                    />
+                </Modal.Body>
+            </Modal>
+
         </>
     );
 };
