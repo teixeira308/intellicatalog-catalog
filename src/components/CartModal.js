@@ -110,8 +110,10 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
                 <div className="cart-total">
                     {cartItemCount > 0 && (
                         <>
-                            <h5>Taxa entrega: R$ {storeConfigs.taxa_entrega}</h5>
-                            <h5>Total: {formattedTotal} / {cartItemCount}</h5>
+                            {storeConfigs.taxa_entrega > 0 && (
+                                <h5>Taxa entrega: R$ {storeConfigs.taxa_entrega}</h5>
+                            )}
+                            <h5>Total: {formattedTotal} / {cartItemCount} {cartItemCount === 1 ? " item" : " itens"}</h5>
                         </>
                     )}
                 </div>
