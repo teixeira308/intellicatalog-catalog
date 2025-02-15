@@ -90,23 +90,23 @@ function Catalogo() {
 
   const handleClickWhatsappNoOrder = (e) => {
     e.preventDefault();
-  
+
     const numeroWhatsapp = configStore.numero_whatsapp?.replace(/\D/g, ""); // Remove caracteres não numéricos
     if (!numeroWhatsapp) {
       console.error("Número do WhatsApp não definido!");
       return;
     }
-  
+
     const message = "Olá! Gostaria de saber mais sobre seus produtos.";
-  
+
     // Detecta se está em um celular
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  
+
     // Escolhe a URL apropriada
     const whatsappApiUrl = isMobile
       ? `whatsapp://send?phone=${numeroWhatsapp}&text=${encodeURIComponent(message)}`
       : `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(message)}`;
-  
+
     // Abre o WhatsApp corretamente para cada caso
     if (isMobile) {
       window.location.href = whatsappApiUrl; // Abre diretamente no app do WhatsApp no celular
@@ -114,8 +114,8 @@ function Catalogo() {
       window.open(whatsappApiUrl, "_blank", "noopener,noreferrer"); // Abre WhatsApp Web em uma nova aba no desktop
     }
   };
-  
-  
+
+
   const sendOrderToWhatsApp = async () => {
     // Formata os itens do carrinho
     const formattedItems = cart.map((item) => ({
@@ -124,13 +124,13 @@ function Catalogo() {
       unit_price: parseFloat(item.price),
       total_price: parseFloat(item.price) * item.quantity,
     }));
-  
+
     // Calcula o total do pedido
     const totalOrder = cart.reduce(
       (total, item) => total + parseFloat(item.price) * item.quantity,
       0
     );
-  
+
     // Monta o objeto `pedido`
     const pedido = {
       user_id: storeDetails.user_id,
@@ -140,7 +140,7 @@ function Catalogo() {
       notes: "pedido enviado por whatsapp, pendente confirmação",
       items: formattedItems,
     };
-  
+
     let newPedido;
     try {
       const response = await axios.post(`${api_url}/intellicatalog/v1/orders`, pedido, {
@@ -152,7 +152,7 @@ function Catalogo() {
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
     }
-  
+
     // Gera a mensagem do pedido
     const orderDetails = cart.map((item) => {
       const { titulo, price, quantity } = item;
@@ -160,32 +160,32 @@ function Catalogo() {
       const totalItem = unitPrice * quantity;
       return `Produto: ${titulo}\nPreço unitário: R$${unitPrice.toFixed(2)}\nQuantidade: ${quantity}\nTotal: R$${totalItem.toFixed(2)}\n\n`;
     });
-  
+
     const message = encodeURIComponent(
       `Detalhes do pedido #${newPedido}:\n\n${orderDetails.join("")}\nValor total do pedido: R$${totalOrder.toFixed(2)}`
     );
-  
+
     // Detecta se está em um celular
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  
+
     // Escolhe a URL apropriada
     const whatsappApiUrl = isMobile
       ? `whatsapp://send?phone=${configStore.numero_whatsapp}&text=${message}`
       : `https://wa.me/${configStore.numero_whatsapp}?text=${message}`;
-  
+
     // Abre o WhatsApp corretamente para cada caso
     if (isMobile) {
       window.location.href = whatsappApiUrl; // Abre o app diretamente no celular
     } else {
       window.open(whatsappApiUrl, "_blank"); // Abre o WhatsApp Web em uma nova aba no desktop
     }
-  
+
     // Limpa o carrinho
     setCart([]);
     setCartItemCount(0);
     handleCloseCartModal();
   };
-  
+
   const fetchCategories = async (storeId) => {
     try {
       const response = await axios.get(`${api_url}/intellicatalog/v1/categories/users/${storeId}`, {
@@ -375,7 +375,7 @@ function Catalogo() {
       setLoading(false);  // Garantir que o loading seja desligado, mesmo sem produtos
       return;
     }
-  
+
     await Promise.all(
       products.map(async (product) => {
         const fotos = await getFotoByProduto(product); // Busca as fotos do produto
@@ -462,7 +462,7 @@ function Catalogo() {
 
   useEffect(() => {
     if (storeDetails?.namestore) {
-      
+
     }
   }, [storeDetails?.namestore]); // Reexecuta quando o nome da loja mudar
 
@@ -515,7 +515,7 @@ function Catalogo() {
                 <div key={image.id} onClick={handleOpenModal}>
                   <img
                     src={image.url}
-                    
+
                     alt={`Foto da store ${storeDetails.namestore}`}
                     style={{
                       width: '100px',
@@ -529,7 +529,7 @@ function Catalogo() {
                   <br />
                   <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
                     {storeDetails.namestore}
-                    
+
                   </h1>
 
 
@@ -557,72 +557,72 @@ function Catalogo() {
             <main className="my main-content">
               <section>
                 <div className="persisti">
-                <div className='nav-tabs-responsive'>
-  <ul
-    className='nav nav-tabs w-100 d-flex'
-    role='tablist'
-    style={{
-      margin: 0,
-      padding: 0,
-      borderBottom: "none",
-      display: "flex", // Distribui os itens em linha
-      justifyContent: "space-between", // Espaçamento uniforme entre os itens
-    }}
-  >
-    {categories
-      .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
-      .map((category, index) => (
-        <li
-          className="nav-item text-center flex-fill"
-          key={index}
-          style={{
-            flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
-            display: "flex",
-            justifyContent: "center", // Centraliza o botão dentro do <li>
-          }}
-        >
-          <button
-            className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-            id={`tab${category.id}-tab`}
-            href={`#content${category.id}`}
-            role="tab"
-            aria-controls={`tab${category.id}`}
-            aria-selected={activeTab === `categoria${category.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveTab(`categoria${category.id}`);
-            }}
-            style={{
-              border: "none",
-              borderRadius: "0px",
-              backgroundColor:
-                category.name.toLowerCase() === "black friday"
-                  ? "black"
-                  : category.name.toLowerCase() === "promoção"
-                    ? "red"
-                    : activeTab === `categoria${category.id}`
-                      ? configStore.cor_botao_primaria
-                      : "transparent",
-              color:
-                category.name.toLowerCase() === "black friday"
-                  ? "white"
-                  : category.name.toLowerCase() === "promoção"
-                    ? "yellow"
-                    : activeTab === `categoria${category.id}`
-                      ? "white"
-                      : configStore.cor_botao_secundaria,
-              textDecoration: "none",
-              fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-              padding: "10px 15px",
-              width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
-            }}
-          >
-            {category.name}
-          </button>
-        </li>
-      ))}
-  </ul>
-</div>
+                  <div className='nav-tabs-responsive'>
+                    <ul
+                      className='nav nav-tabs w-100 d-flex'
+                      role='tablist'
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        borderBottom: "none",
+                        display: "flex", // Distribui os itens em linha
+                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
+                      }}
+                    >
+                      {categories
+                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
+                        .map((category, index) => (
+                          <li
+                            className="nav-item text-center flex-fill"
+                            key={index}
+                            style={{
+                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
+                              display: "flex",
+                              justifyContent: "center", // Centraliza o botão dentro do <li>
+                            }}
+                          >
+                            <button
+                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
+                              id={`tab${category.id}-tab`}
+                              href={`#content${category.id}`}
+                              role="tab"
+                              aria-controls={`tab${category.id}`}
+                              aria-selected={activeTab === `categoria${category.id}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setActiveTab(`categoria${category.id}`);
+                              }}
+                              style={{
+                                border: "none",
+                                borderRadius: "0px",
+                                backgroundColor:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "black"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "red"
+                                      : activeTab === `categoria${category.id}`
+                                        ? configStore.cor_botao_primaria
+                                        : "transparent",
+                                color:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "white"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "yellow"
+                                      : activeTab === `categoria${category.id}`
+                                        ? "white"
+                                        : configStore.cor_botao_secundaria,
+                                textDecoration: "none",
+                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+                                padding: "10px 15px",
+                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
+                              }}
+                            >
+                              {category.name}
+                            </button>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
 
                 </div>
 
@@ -693,7 +693,7 @@ function Catalogo() {
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                           </span>
                                           <br />
-                                          <span>
+                                          <span style={{color: configStore.cor_preco_promocional}}>
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
                                           </span>
                                           &nbsp;
@@ -702,7 +702,9 @@ function Catalogo() {
                                           </span>
                                         </>
                                       ) : (
+                                        <span style={{color: configStore.cor_preco}}>
                                         new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                        </span>
                                       )}
                                     </h4>
                                   </div>
