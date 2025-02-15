@@ -703,7 +703,7 @@ function Catalogo() {
                                         </>
                                       ) : (
                                         <span style={{color: configStore.cor_preco}}>
-                                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)
+                                       { new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                         </span>
                                       )}
                                     </h4>
