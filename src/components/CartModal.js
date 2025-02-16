@@ -110,7 +110,7 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
                 <div className="cart-total">
                     {cartItemCount > 0 && (
                         <>
-                            {storeConfigs.calcula_taxa_entrega_posterior ? (
+                            {storeConfigs.calcula_taxa_entrega_posterior === "true" ? (
                                 <h5>Taxa de envio a definir</h5>
                             ) : (
                                 storeConfigs.taxa_entrega > 0 && <h5>Taxa entrega: R$ {storeConfigs.taxa_entrega}</h5>
