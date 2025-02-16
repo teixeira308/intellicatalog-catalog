@@ -19,8 +19,8 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
               src={image.url}
               alt={`Foto da store ${storeDetails.namestore}`}
               style={{
-                width: '700px',
-                height: '700px',
+                width: '300px',
+                height: '300px',
                 borderRadius: '50%',
                 objectFit: 'cover',
                 position: 'relative', // Mantém a imagem do logo acima da sobreposição
