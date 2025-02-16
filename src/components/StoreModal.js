@@ -32,23 +32,41 @@ const StoreModal = ({ show, handleClose, storeConfig, storeDetails, storeImages 
               <Modal.Title style={{ cursor: 'pointer', fontFamily: "Kanit" }}>{storeDetails.namestore}</Modal.Title>
             </h1>
             {storeConfig.facebook && (
-                <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
-                  <FaFacebookF size={24} />
-                </a>)
+              <a href={storeConfig.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
+                <FaFacebookF size={24} />
+              </a>)
             }
             {storeConfig.instagram && (
-                <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
-                  <FaInstagram size={24} />
-                </a>)}
+              <a href={storeConfig.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: storeConfig.cor_primaria }}>
+                <FaInstagram size={24} />
+              </a>)}
           </div>
         ))}
       </div>
       <div className='store-info'>
         <br />
-        <p><strong>Horário de Funcionamento:</strong> {storeDetails.opening_hours} - {storeDetails.closing_hours}</p>
-        <p><strong>Endereço:</strong> {storeDetails.address}</p>
-        <p><strong>Telefone:</strong> {storeDetails.phone}</p>
-        <p><strong>E-mail:</strong> {storeDetails.email}</p>
+        <>
+          {storeDetails.opening_hours && storeDetails.closing_hours && (
+            <p>
+              <strong>Horário de Funcionamento:</strong> {storeDetails.opening_hours} - {storeDetails.closing_hours}
+            </p>
+          )}
+          {storeDetails.address && (
+            <p>
+              <strong>Endereço:</strong> {storeDetails.address}
+            </p>
+          )}
+          {storeDetails.phone && (
+            <p>
+              <strong>Telefone:</strong> {storeDetails.phone}
+            </p>
+          )}
+          {storeDetails.email && (
+            <p>
+              <strong>E-mail:</strong> {storeDetails.email}
+            </p>
+          )}
+        </>
 
 
       </div>
