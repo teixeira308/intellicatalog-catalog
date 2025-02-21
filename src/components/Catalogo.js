@@ -47,7 +47,7 @@ function Catalogo() {
 }, 0);
 
 // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-const deliveryFee = storeConfigs.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(storeConfigs.taxa_entrega) || 0);
+const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
 const finalTotal = total + deliveryFee;
 
