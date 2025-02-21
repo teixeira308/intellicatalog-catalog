@@ -41,15 +41,20 @@ function Catalogo() {
 
   const handleCloseCartModal = () => setShowCartModal(false);
 
-  const total = cart.length > 0
-    ? cart.reduce((sum, item) => {
-      const itemPrice = item.promocional_price
-        ? parseFloat(item.promocional_price)
-        : parseFloat(item.price);
-      return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-    }, 0) + (parseFloat(configStore.taxa_entrega) || 0)
-    : 0;
+  const total = cart.reduce((sum, item) => {
+    const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
+    return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
+}, 0);
 
+// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+const deliveryFee = storeConfigs.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(storeConfigs.taxa_entrega) || 0);
+
+const finalTotal = total + deliveryFee;
+
+  const formattedTotal = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(finalTotal);
 
   const updateCartItemCount = (cart) => {
     const totalItems = cart.reduce((count, item) => count + item.quantity, 0);
@@ -61,10 +66,7 @@ function Catalogo() {
   }, [cart]);
 
 
-  const formattedTotal = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(total);
+
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -693,7 +695,7 @@ function Catalogo() {
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                           </span>
                                           <br />
-                                          <span style={{color: configStore.cor_preco_promocional}}>
+                                          <span style={{ color: configStore.cor_preco_promocional }}>
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
                                           </span>
                                           &nbsp;
@@ -702,8 +704,8 @@ function Catalogo() {
                                           </span>
                                         </>
                                       ) : (
-                                        <span style={{color: configStore.cor_preco}}>
-                                       { new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                        <span style={{ color: configStore.cor_preco }}>
+                                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                         </span>
                                       )}
                                     </h4>
