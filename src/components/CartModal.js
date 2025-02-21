@@ -5,18 +5,20 @@ const CartModal = ({ show, handleClose, cart, productImages, sendOrderToWhatsApp
 
 
     const total = cart.reduce((sum, item) => {
-        // Verifica se o item tem um preço promocional, caso contrário, usa o preço normal
         const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
-
-        // Garante que o preço é um número válido antes de fazer o cálculo
         return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-    }, 0) + (parseFloat(storeConfigs.taxa_entrega) || 0); // Garante que delivery_fee é um número
+    }, 0);
+
+    // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+const deliveryFee = storeConfigs.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(storeConfigs.taxa_entrega) || 0);
+
+const finalTotal = total + deliveryFee;
 
 
     const formattedTotal = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
-    }).format(total);
+    }).format(finalTotal);
 
 
     const removeFromCart = (productId) => {
