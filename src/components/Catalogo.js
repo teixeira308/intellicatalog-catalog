@@ -236,7 +236,7 @@ function Catalogo() {
       // Atualize o estado para indicar que a categoria foi carregada
       setCategoryLoadingStages(prevState => ({
         ...prevState,
-        [categoryId]: 2 // Categoria carregada
+        [categoryId]: 3 // Categoria carregada
       }));
 
       // Carregar as imagens dos produtos
