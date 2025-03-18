@@ -606,13 +606,13 @@ function Catalogo() {
                           className="category-section"
                           style={{ padding: '20px 0', scrollMarginTop: '60px' }}
                         >
-                          <h4 className="category-title" style={{
+                          <p className="category-title" style={{
                             color: configStore.cor_botao_primaria,
                             padding: '10px',
                             borderBottom: `2px solid ${configStore.cor_botao_primaria}`
                           }}>
                             {category.name}
-                          </h4>
+                          </p>
 
                           <div className='sessao'>
                             <p>{category.description}</p>
