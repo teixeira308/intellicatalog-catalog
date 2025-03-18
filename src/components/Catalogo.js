@@ -11,7 +11,6 @@ import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
 import loadingGif from '../components/loading.gif'
 
 function Catalogo() {
-  const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
   const [categories, setCategories] = useState([]);  //estado para categorias
   const [products, setProducts] = useState({}); //estado para produtos e suas infos
   const [productImages, setProductImages] = useState({}); //estado para imagens de produtos
@@ -27,9 +26,7 @@ function Catalogo() {
   const [imageStoreUrls, setImageStoreUrls] = useState([]);
   const [configStore, setConfigStore] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
-
   const [loading, setLoading] = useState(true);
-
 
   //busca token no env
   const apiToken = process.env.REACT_APP_API_TOKEN;
@@ -44,12 +41,12 @@ function Catalogo() {
   const total = cart.reduce((sum, item) => {
     const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
     return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-}, 0);
+  }, 0);
 
-// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
+  // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+  const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
-const finalTotal = total + deliveryFee;
+  const finalTotal = total + deliveryFee;
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -64,9 +61,6 @@ const finalTotal = total + deliveryFee;
   useEffect(() => {
     updateCartItemCount(cart);
   }, [cart]);
-
-
-
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -88,7 +82,6 @@ const finalTotal = total + deliveryFee;
       return cartCopy;
     });
   };
-
 
   const handleClickWhatsappNoOrder = (e) => {
     e.preventDefault();
@@ -116,7 +109,6 @@ const finalTotal = total + deliveryFee;
       window.open(whatsappApiUrl, "_blank", "noopener,noreferrer"); // Abre WhatsApp Web em uma nova aba no desktop
     }
   };
-
 
   const sendOrderToWhatsApp = async () => {
     // Formata os itens do carrinho
@@ -196,24 +188,13 @@ const finalTotal = total + deliveryFee;
         }
       });
       setCategories(response.data.data);
-      if (response.data.data.length > 0) {
-        setActiveTab(`categoria${response.data.data[0].id}`);
-      }
+      console.log("Categories loaded:", response.data.data);
     } catch (error) {
       console.error('Erro ao buscar categorias:', error);
     }
   };
 
-  useEffect(() => {
-    // Essa parte irá definir a categoria ativa após as categorias serem carregadas
-    if (categories.length > 0) {
-      const firstCategoryId = `categoria${categories[0].id}`; // Pega a primeira categoria carregada
-      setActiveTab(firstCategoryId); // Define a primeira categoria como ativa
-    }
-  }, [categories]);
-
   const fetchStoreDetails = async (identificadorExterno) => {
-
     try {
       const response = await axios.get(`${api_url}/intellicatalog/v1/stores/${identificadorExterno}`, {
         headers: {
@@ -221,7 +202,7 @@ const finalTotal = total + deliveryFee;
         }
       });
       setStoreDetails(response.data);
-
+      console.log("Store details loaded:", response.data);
     } catch (error) {
       console.error('Erro ao buscar detalhes da loja:', error);
     }
@@ -229,11 +210,13 @@ const finalTotal = total + deliveryFee;
 
   const fetchProductsByCategory = async (categoryId) => {
     try {
+      console.log("Fetching products for category:", categoryId);
       const response = await axios.get(`${api_url}/intellicatalog/v1/products/category/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
       });
+      console.log("Products received for category", categoryId, ":", response.data.data);
       setProducts(prevState => ({
         ...prevState,
         [categoryId]: response.data.data
@@ -245,9 +228,7 @@ const finalTotal = total + deliveryFee;
     }
   };
 
-
   const getFotoByProduto = async (product) => {
-
     const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images`, {
       method: "GET",
       headers: {
@@ -262,9 +243,7 @@ const finalTotal = total + deliveryFee;
     return await response.json();
   };
 
-
   const getStoreConfigs = async (store) => {
-
     const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/config`, {
       method: "GET",
       headers: {
@@ -278,8 +257,6 @@ const finalTotal = total + deliveryFee;
     }
     return await response.json();
   };
-
-
 
   const getFotoProdutoDownload = async (product, photo) => {
     const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
@@ -300,7 +277,6 @@ const finalTotal = total + deliveryFee;
   };
 
   const getFotoStoreDownload = async (store, photo) => {
-
     const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
       headers: {
@@ -319,7 +295,6 @@ const finalTotal = total + deliveryFee;
   };
 
   const getFotoByStoreId = async (store) => {
-
     const response = await fetch(`${api_url}/intellicatalog/v1/stores/${store.id}/store_images`, {
       method: "GET",
       headers: {
@@ -334,7 +309,6 @@ const finalTotal = total + deliveryFee;
 
     return await response.json();
   }
-
 
   // Função para carregar as imagens do stores do usuario
   const loadStoreImages = async (store) => {
@@ -352,7 +326,7 @@ const finalTotal = total + deliveryFee;
           })
         );
         setImageStoreUrls(fotosUrls); // Define todas as URLs das imagens
-
+        console.log("Store images loaded:", fotosUrls);
       } catch (error) {
         console.error("Erro ao buscar fotos:", error);
       }
@@ -363,9 +337,10 @@ const finalTotal = total + deliveryFee;
     if (store) {
       try {
         const configs = await getStoreConfigs(store);
-        setConfigStore(configs)
+        setConfigStore(configs);
+        console.log("Store configs loaded:", configs);
       } catch (error) {
-        console.error("Erro ao buscar fotos:", error);
+        console.error("Erro ao buscar configurações:", error);
       }
     }
   };
@@ -392,16 +367,19 @@ const finalTotal = total + deliveryFee;
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-
-        setLoading(false)
+        console.log(`Loaded images for product ${product.id}:`, fotosUrls.filter(Boolean));
       })
     );
 
-    setProductImages((prevImages) => ({
-      ...prevImages,
-      ...newImages, // Mescla as novas imagens com as existentes
-    }));
-
+    setProductImages((prevImages) => {
+      const updatedImages = {
+        ...prevImages,
+        ...newImages, // Mescla as novas imagens com as existentes
+      };
+      console.log("Updated product images:", updatedImages);
+      setLoading(false);
+      return updatedImages;
+    });
   };
 
   useEffect(() => {
@@ -410,15 +388,9 @@ const finalTotal = total + deliveryFee;
     }
   }, [cart]);
 
-
   useEffect(() => {
-    //console.log('Valor capturado:', capturedValue);
-
-  }, [capturedValue]);
-
-  useEffect(() => {
+    console.log('Valor capturado:', capturedValue);
     fetchStoreDetails(capturedValue);
-
   }, [capturedValue]);
 
   useEffect(() => {
@@ -427,16 +399,16 @@ const finalTotal = total + deliveryFee;
       loadStoreImages(storeDetails);
       fetchCategories(storeDetails.user_id);
     }
-
   }, [storeDetails]);
 
   useEffect(() => {
-
-    if (activeTab) {
-      const categoryId = parseInt(activeTab.replace('categoria', ''));
-      fetchProductsByCategory(categoryId);
+    // Carregar produtos para todas as categorias quando elas forem carregadas
+    if (categories.length > 0) {
+      categories.forEach(category => {
+        fetchProductsByCategory(category.id);
+      });
     }
-  }, [activeTab]);
+  }, [categories]);
 
   const handleOpenProductModal = (product) => {
     setSelectedProduct(product);
@@ -446,6 +418,13 @@ const finalTotal = total + deliveryFee;
   const handleCloseProductModal = () => {
     setSelectedProduct(null);
     setShowProductModal(false);
+  };
+
+  const scrollToCategory = (categoryId) => {
+    const element = document.getElementById(`category-${categoryId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
@@ -462,186 +441,148 @@ const finalTotal = total + deliveryFee;
     }
   }, [imageStoreUrls]); // Executa sempre que as imagens mudarem
 
-  useEffect(() => {
-    if (storeDetails?.namestore) {
-
-    }
-  }, [storeDetails?.namestore]); // Reexecuta quando o nome da loja mudar
-
-
   return (
-
     <div className="App">
-
       {loading ? (
         <div className="loading-screen">
-          {/* Exibir tela de carregamento */}
           <img src={loadingGif} alt="Carregando..." />
         </div>
-      )
-        :
-        (
-          <>
-            <header
-              className="text-white text-center"
+      ) : (
+        <>
+          <header
+            className="text-white text-center"
+            style={{
+              backgroundImage: configStore.usa_logo_fundo === "true"
+                ? `url(${imageStoreUrls[0]?.url})`
+                : `none`,
+              backgroundColor: configStore.usa_logo_fundo === "true"
+                ? 'transparent'
+                : configStore.cor_primaria,
+              backgroundSize: '120%',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              position: 'relative',
+              color: 'white',
+            }}
+          >
+            <div
               style={{
-                backgroundImage: configStore.usa_logo_fundo === "true"
-                  ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
-                  : `none`, // Se não, não define nenhuma imagem de fundo
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
                 backgroundColor: configStore.usa_logo_fundo === "true"
-                  ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
-                  : configStore.cor_primaria, // Se não, usa a cor primária
-                backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
-                backgroundPosition: 'center', // Centraliza a imagem
-                backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
-                position: 'relative', // Necessário para o posicionamento do pseudo-elemento
-                color: 'white', // Para garantir que o texto fique legível
+                  ? 'rgba(0, 0, 0, 0.5)'
+                  : `none`,
+                zIndex: 1,
               }}
-
-            >
-              <div
-                style={{
-                  position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: configStore.usa_logo_fundo === "true"
-                    ? 'rgba(0, 0, 0, 0.5)' // Cor escura com opacidade
-                    : `none`,
-                  zIndex: 1, // Coloca a sobreposição acima do fundo
-                }}
-                onClick={handleOpenModal}
-              />
-              {imageStoreUrls.map((image) => (
-                <div key={image.id} onClick={handleOpenModal}>
-                  <img
-                    src={image.url}
-
-                    alt={`Foto da store ${storeDetails.namestore}`}
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '50%',
-                      objectFit: 'cover',
-                      position: 'relative', // Mantém a imagem do logo acima da sobreposição
-                      zIndex: 2, // Imagem acima da sobreposição
-                    }}
-                  />
-                  <br />
-                  <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
-                    {storeDetails.namestore}
-
-                  </h1>
-
-
-                </div>
-
-              ))}
-              <div style={{ zIndex: 2, position: 'relative', marginTop: '10px' }}>
-                {configStore.facebook && (
-                  <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
-                    <FaFacebookF size={24} />
-                  </a>
-                )}
-
-                {configStore.instagram && (
-                  <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
-                    <FaInstagram size={24} />
-                  </a>
-                )}
+              onClick={handleOpenModal}
+            />
+            {imageStoreUrls.map((image) => (
+              <div key={image.id} onClick={handleOpenModal}>
+                <img
+                  src={image.url}
+                  alt={`Foto da store ${storeDetails.namestore}`}
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    position: 'relative',
+                    zIndex: 2,
+                  }}
+                />
+                <br />
+                <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
+                  {storeDetails.namestore}
+                </h1>
               </div>
-            </header>
+            ))}
+            <div style={{ zIndex: 2, position: 'relative', marginTop: '10px' }}>
+              {configStore.facebook && (
+                <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                  <FaFacebookF size={24} />
+                </a>
+              )}
 
+              {configStore.instagram && (
+                <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                  <FaInstagram size={24} />
+                </a>
+              )}
+            </div>
+          </header>
 
-
-
-            <main className="my main-content">
-              <section>
-                <div className="persisti">
-                  <div className='nav-tabs-responsive'>
-                    <ul
-                      className='nav nav-tabs w-100 d-flex'
-                      role='tablist'
+          <main className="my main-content">
+            <section>
+              {/* Category Menu with Anchor Links */}
+              <div className="category-menu" style={{ 
+                position: 'sticky', 
+                top: 0, 
+                backgroundColor: configStore.cor_primaria,
+                zIndex: 100,
+                padding: '10px 0',
+                overflowX: 'auto',
+                whiteSpace: 'nowrap',
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}>
+                {categories.length > 0 && categories
+                  .sort((a, b) => a.catalog_order - b.catalog_order)
+                  .map((category) => (
+                    <a
+                      key={category.id}
+                      href={`#category-${category.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToCategory(category.id);
+                      }}
                       style={{
-                        margin: 0,
-                        padding: 0,
-                        borderBottom: "none",
-                        display: "flex", // Distribui os itens em linha
-                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
+                        padding: '8px 16px',
+                        color: 'white',
+                        textDecoration: 'none',
+                        backgroundColor: 
+                          category.name.toLowerCase() === "black friday"
+                            ? "black"
+                            : category.name.toLowerCase() === "promoção"
+                              ? "red"
+                              : "transparent",
+                        borderRadius: '4px',
+                        margin: '0 5px',
+                        display: 'inline-block',
+                        flexShrink: 0
                       }}
                     >
-                      {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
-                        .map((category, index) => (
-                          <li
-                            className="nav-item text-center flex-fill"
-                            key={index}
-                            style={{
-                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
-                              display: "flex",
-                              justifyContent: "center", // Centraliza o botão dentro do <li>
-                            }}
-                          >
-                            <button
-                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-                              id={`tab${category.id}-tab`}
-                              href={`#content${category.id}`}
-                              role="tab"
-                              aria-controls={`tab${category.id}`}
-                              aria-selected={activeTab === `categoria${category.id}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setActiveTab(`categoria${category.id}`);
-                              }}
-                              style={{
-                                border: "none",
-                                borderRadius: "0px",
-                                backgroundColor:
-                                  category.name.toLowerCase() === "black friday"
-                                    ? "black"
-                                    : category.name.toLowerCase() === "promoção"
-                                      ? "red"
-                                      : activeTab === `categoria${category.id}`
-                                        ? configStore.cor_botao_primaria
-                                        : "transparent",
-                                color:
-                                  category.name.toLowerCase() === "black friday"
-                                    ? "white"
-                                    : category.name.toLowerCase() === "promoção"
-                                      ? "yellow"
-                                      : activeTab === `categoria${category.id}`
-                                        ? "white"
-                                        : configStore.cor_botao_secundaria,
-                                textDecoration: "none",
-                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                                padding: "10px 15px",
-                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
-                              }}
-                            >
-                              {category.name}
-                            </button>
-                          </li>
-                        ))}
-                    </ul>
+                      {category.name}
+                    </a>
+                  ))}
+              </div>
+
+              {/* Category Content Sections */}
+              <div className="category-content">
+                {categories.length === 0 ? (
+                  <div className="text-center my-5">
+                    <h4>Não há categorias incluídas.</h4>
                   </div>
-
-                </div>
-
-                <div className='tab-content'>
-                  {categories.length === 0 ? (
-                    <div className="text-center my-5">
-                      <h4>Não há categorias incluídas.</h4>
-                    </div>
-                  ) : (
-                    categories.map((category, index) => (
-                      <div
-                        className={`tab-pane fade ${activeTab === `categoria${category.id}` ? 'show active' : ''}`}
-                        id={`content${category.id}`}
-                        role='tabpanel'
-                        aria-labelledby={`tab${category.id}-tab`}
-                        key={index}
+                ) : (
+                  categories
+                    .sort((a, b) => a.catalog_order - b.catalog_order)
+                    .map((category) => (
+                      <div 
+                        key={category.id} 
+                        id={`category-${category.id}`} 
+                        className="category-section"
+                        style={{ padding: '20px 0', scrollMarginTop: '60px' }}
                       >
+                        <h2 className="category-title" style={{ 
+                          color: configStore.cor_botao_primaria, 
+                          padding: '10px',
+                          borderBottom: `2px solid ${configStore.cor_botao_primaria}`
+                        }}>
+                          {category.name}
+                        </h2>
+                        
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
@@ -674,7 +615,7 @@ const finalTotal = total + deliveryFee;
                                         )}
                                         <img
                                           loading="lazy"
-                                          src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                          src={productImages[product.id][0].url}
                                           alt={product.titulo}
                                           className='img-square'
                                         />
@@ -718,78 +659,68 @@ const finalTotal = total + deliveryFee;
                             </div>
                           )}
                         </div>
-
                       </div>
                     ))
+                )}
+                <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
+                  <FaWhatsapp className="whatsapp-icon" />
+                </button>
+              </div>
+            </section>
+            
+            {cartItemCount > 0 && (
+              <footer style={{ backgroundColor: configStore.cor_primaria }}>
+                {storeDetails.status === "Aberta" ? (
+                  <div>
+                    <>
+                      Total: {formattedTotal} &nbsp; &nbsp;
+                    </>
+                    <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
+                      ({cartItemCount}) Ver carrinho
+                    </Button>
+                  </div>
+                ) : (
+                  <p>Loja indisponível para receber pedidos</p>
+                )}
+              </footer>
+            )}
+          </main>
+          
+          <StoreModal
+            show={showModal}
+            handleClose={handleCloseModal}
+            storeDetails={storeDetails}
+            storeConfig={configStore}
+            storeConfigs={configStore}
+            storeImages={imageStoreUrls}
+          />
 
-                  )}
-                  <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
-                    <FaWhatsapp className="whatsapp-icon" />
-
-                  </button>
-
-                </div>
-
-
-              </section>
-              {cartItemCount > 0 && (
-                <footer style={{ backgroundColor: configStore.cor_primaria }}>
-                  {storeDetails.status === "Aberta" ? (
-                    <div>
-                      <>
-                        Total: {formattedTotal} &nbsp; &nbsp;
-                      </>
-                      <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
-                        ({cartItemCount}) Ver carrinho
-                      </Button>
-                    </div>
-                  ) : (
-                    <p>Loja indisponível para receber pedidos</p>
-                  )}
-                </footer>
-              )}
-
-
-            </main>
-            <StoreModal
-              show={showModal}
-              handleClose={handleCloseModal}
-              storeDetails={storeDetails}
-              storeConfig={configStore}
+          {selectedProduct && (
+            <ProductModal
+              show={showProductModal}
+              handleClose={handleCloseProductModal}
+              addToCart={addToCart}
+              product={selectedProduct}
+              images={productImages[selectedProduct.id] || []}
+              storeStatus={storeDetails.status}
               storeConfigs={configStore}
-              storeImages={imageStoreUrls}
             />
+          )}
 
-            {
-              selectedProduct && (
-                <ProductModal
-                  show={showProductModal}
-                  handleClose={handleCloseProductModal}
-                  addToCart={addToCart}
-                  product={selectedProduct}
-                  images={productImages[selectedProduct.id] || []}
-                  storeStatus={storeDetails.status}
-                  storeConfigs={configStore}
-                />
-              )
-            }
-
-            <CartModal
-              show={showCartModal}
-              handleClose={handleCloseCartModal}
-              cart={cart}
-              productImages={productImages} // Passando as imagens para o CartModal
-              sendOrderToWhatsApp={sendOrderToWhatsApp}
-              setCart={setCart}
-              store={storeDetails}
-              storeConfigs={configStore}
-              cartItemCount={cartItemCount}
-              setCartItemCount={setCartItemCount}
-            />
-
-
-          </>
-        )}
+          <CartModal
+            show={showCartModal}
+            handleClose={handleCloseCartModal}
+            cart={cart}
+            productImages={productImages}
+            sendOrderToWhatsApp={sendOrderToWhatsApp}
+            setCart={setCart}
+            store={storeDetails}
+            storeConfigs={configStore}
+            cartItemCount={cartItemCount}
+            setCartItemCount={setCartItemCount}
+          />
+        </>
+      )}
     </div>
   );
 }
