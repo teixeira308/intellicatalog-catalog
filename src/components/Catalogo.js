@@ -540,7 +540,7 @@ function Catalogo() {
                         scrollToCategory(category.id);
                       }}
                       style={{
-                        padding: '5px 10px',
+                        padding: '2px 5px',
                         color: 'white',
                         textDecoration: 'none',
                         backgroundColor: 
