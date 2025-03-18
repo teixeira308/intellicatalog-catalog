@@ -11,6 +11,7 @@ import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
 import loadingGif from '../components/loading.gif'
 
 function Catalogo() {
+  const [categoryLoadingStages, setCategoryLoadingStages] = useState({});
   const [categories, setCategories] = useState([]);  //estado para categorias
   const [products, setProducts] = useState({}); //estado para produtos e suas infos
   const [productImages, setProductImages] = useState({}); //estado para imagens de produtos
@@ -211,23 +212,45 @@ function Catalogo() {
   const fetchProductsByCategory = async (categoryId) => {
     try {
       console.log("Fetching products for category:", categoryId);
+
+      // Atualize o estado para indicar que a categoria está carregando
+      setCategoryLoadingStages(prevState => ({
+        ...prevState,
+        [categoryId]: 1 // Indicando que a categoria está sendo carregada
+      }));
+
       const response = await axios.get(`${api_url}/intellicatalog/v1/products/category/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${apiToken}`
         }
       });
+
       console.log("Products received for category", categoryId, ":", response.data.data);
+
+      // Armazene os produtos no estado
       setProducts(prevState => ({
         ...prevState,
         [categoryId]: response.data.data
       }));
-      // Carregar imagens após buscar produtos
+
+      // Atualize o estado para indicar que a categoria foi carregada
+      setCategoryLoadingStages(prevState => ({
+        ...prevState,
+        [categoryId]: 2 // Categoria carregada
+      }));
+
+      // Carregar as imagens dos produtos
       await loadProductImages(response.data.data);
       setLoadingStage(3);
     } catch (error) {
       console.error('Erro ao buscar produtos da categoria:', error);
+      setCategoryLoadingStages(prevState => ({
+        ...prevState,
+        [categoryId]: 0 // Se houver erro, marque como falha
+      }));
     }
   };
+
 
   const getFotoByProduto = async (product) => {
     const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images`, {
@@ -595,96 +618,94 @@ function Catalogo() {
                             <p>{category.description}</p>
                           </div>
 
-                          {loadingStage < 3 ?
-                            (
-                              <div className="loading-screen-category">
-                                <img src={loadingGif} alt="Carregando..." />
-                              </div>
-                            ) : (
-                              <div className='items-catalogo'>
-                                {products[category.id] && products[category.id].length > 0 ? (
-                                  products[category.id]
-                                    .filter(product => product.estoque > 0)
-                                    .sort((a, b) => a.product_order - b.product_order)
-                                    .map((product, idx) => (
+                          {/* Exibir o carregamento individual de cada categoria */}
+                          {categoryLoadingStages[category.id] === 1 ? (
+                            <div className="loading-screen-category">
+                              <img src={loadingGif} alt="Carregando produtos..." />
+                            </div>
+                          ) : categoryLoadingStages[category.id] === 0 ? (
+                            <div className="text-center my-5">
+                              <h4>Erro ao carregar os produtos dessa categoria.</h4>
+                            </div>
+                          ) : (
+                            <div className='items-catalogo'>
+                              {products[category.id] && products[category.id].length > 0 ? (
+                                products[category.id]
+                                  .filter(product => product.estoque > 0)
+                                  .sort((a, b) => a.product_order - b.product_order)
+                                  .map((product, idx) => (
+                                    <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                                      <div className='imagem'>
+                                        {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                          <>
+                                            {category.name.toLowerCase() === "black friday" && (
+                                              <div
+                                                style={{
+                                                  backgroundColor: "black",
+                                                  color: "white",
+                                                  borderRadius: "10px",
+                                                  padding: "5px 10px",
+                                                  display: "inline-block",
+                                                  fontSize: "12px",
+                                                  fontWeight: "bold",
+                                                  marginBottom: "8px",
+                                                }}
+                                              >
+                                                Black Friday
+                                              </div>
+                                            )}
+                                            <img
+                                              loading="lazy"
+                                              src={productImages[product.id][0].url}
+                                              alt={product.titulo}
+                                              className='img-square'
+                                            />
+                                          </>
+                                        ) : (
+                                          <div className="placeholder">
+                                            Sem imagem
+                                          </div>
+                                        )}
+                                      </div>
 
-                                      <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-
-
-                                        <div className='imagem'>
-                                          {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                      <div className='texto'>
+                                        <h3 className='item-titulo'>{product.titulo}</h3>
+                                        <p className='item-descricao'>{product.description}</p>
+                                        <h4 className='item-preco'>
+                                          {product.promocional_price > 0 ? (
                                             <>
-                                              {category.name.toLowerCase() === "black friday" && (
-                                                <div
-                                                  style={{
-                                                    backgroundColor: "black",
-                                                    color: "white",
-                                                    borderRadius: "10px",
-                                                    padding: "5px 10px",
-                                                    display: "inline-block",
-                                                    fontSize: "12px",
-                                                    fontWeight: "bold",
-                                                    marginBottom: "8px",
-                                                  }}
-                                                >
-                                                  Black Friday
-                                                </div>
-                                              )}
-                                              <img
-                                                loading="lazy"
-                                                src={productImages[product.id][0].url}
-                                                alt={product.titulo}
-                                                className='img-square'
-                                              />
-                                            </>
-                                          ) : (
-                                            <div className="placeholder">
-                                              Sem imagem
-                                            </div>
-                                          )}
-                                        </div>
-
-                                        <div className='texto'>
-                                          <h3 className='item-titulo'>{product.titulo}</h3>
-                                          <p className='item-descricao'>{product.description}</p>
-                                          <h4 className='item-preco'>
-                                            {product.promocional_price > 0 ? (
-                                              <>
-                                                <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
-                                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                                </span>
-                                                <br />
-                                                <span style={{ color: configStore.cor_preco_promocional }}>
-                                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                                </span>
-                                                &nbsp;
-                                                <span style={{ color: 'green' }}>
-                                                  ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                                </span>
-                                              </>
-                                            ) : (
-                                              <span style={{ color: configStore.cor_preco }}>
+                                              <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
                                                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                               </span>
-                                            )}
-                                          </h4>
-                                        </div>
-
+                                              <br />
+                                              <span style={{ color: configStore.cor_preco_promocional }}>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                              </span>
+                                              &nbsp;
+                                              <span style={{ color: 'green' }}>
+                                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <span style={{ color: configStore.cor_preco }}>
+                                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                            </span>
+                                          )}
+                                        </h4>
                                       </div>
-                                    ))
-                                ) : (
-                                  <div className="text-center my-5">
-                                    <h4>Nenhum produto encontrado nesta categoria</h4>
-                                  </div>
-                                )}
-                              </div>
-                            )}
+                                    </div>
+                                  ))
+                              ) : (
+                                <div className="text-center my-5">
+                                  <h4>Nenhum produto encontrado nesta categoria</h4>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       ))
                   )}
-                  <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
-                    <FaWhatsapp className="whatsapp-icon" />
-                  </button>
+
                 </div>
               )}
             </section>
