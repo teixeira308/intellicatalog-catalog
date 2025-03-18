@@ -1,0 +1,611 @@
+NOVO
+
+
+
+.nav-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  
+  }
+  
+  .persisti {
+    position: sticky;
+    top: 0; /* Define a posição no topo da página */
+    z-index: 1000; /* Coloca o elemento acima de outros, se necessário */
+    background-color: white; /* Isso ajuda a garantir que a div seja visível */
+    border-bottom: 1px solid #ccc; /* Um exemplo de borda visual */
+  
+  }
+  
+  .loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa a altura total da tela */
+    width: 100vw; /* Ocupa a largura total da tela */
+    background-color: #f0f0f0; /* Cor de fundo opcional */
+  }
+  
+  .loading-screen-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    height: 60px;  /* Menor altura */
+    width: auto;   /* Ajuste a largura automaticamente */
+    padding: 10px; /* Um pouco de espaço interno */
+  }
+  
+  .loading-screen-category img {
+    width: 300px; /* Ajuste o tamanho do GIF conforme necessário */
+    height: auto;
+  }
+  
+  .loading-screen img {
+    width: 300px; /* Ajuste o tamanho do GIF conforme necessário */
+    height: auto;
+  }
+  
+  
+  .nav-item {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .nav-tabs .nav-link {
+    white-space: nowrap;
+  }
+  
+   .sessao {
+    margin-bottom: 1rem;
+    padding-left: 10px;
+  
+  }
+  
+  
+  
+  .imagem {
+  
+    margin-right: 1rem;
+    width: 30%;
+  }
+  
+  
+  
+   .texto {
+    flex: 2;
+    
+  }
+  
+  
+  .nav-tabs {
+    padding: 5px;
+  }
+  
+  .texto{
+    
+    width: 5vw;
+  
+  }
+  
+  
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  .main-content {
+    flex: 1;
+    /* Faz com que o conteúdo principal ocupe todo o espaço disponível */
+    padding-bottom: 60px;
+    /* Altura aproximada do footer */
+  }
+  
+  footer {
+    background-color: #A0CA92;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  footer p {
+    font-size: 10px;
+  }
+  
+  .texto h3 {
+    font-size: 15px;
+  }
+  
+  .texto h4 {
+    font-size: 15px;
+    color: crimson;
+  }
+  
+  
+  .texto p {
+    font-size: 10px;
+  }
+  
+  .textomenor {
+    font-size: 10px;
+  }
+  
+  
+  .placeholder {
+    width: 120px;
+    /* Ajuste conforme necessário */
+    height: 120px;
+    /* Ajuste conforme necessário */
+    background-color: black;
+    /* Cor de fundo do placeholder */
+    border-radius: 50%;
+    /* Arredondar para circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #aaa;
+    /* Cor do texto */
+    text-align: center;
+  }
+  
+  .rounded {
+    width: 100px;
+    /* Defina o tamanho que você deseja */
+    height: 100px;
+    /* A altura deve ser igual à largura para manter a proporção quadrada */
+    object-fit: cover;
+    /* Corta a imagem para caber dentro do elemento */
+    border-radius: 50%;
+    /* Torna a imagem circular */
+  }
+  
+  header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .store-image {
+  
+    width: 50px;
+    /* Ajuste conforme necessário */
+    height: 50px;
+    /* Ajuste conforme necessário */
+    border-radius: 50%;
+    /* Arredondar para circular */
+  
+  }
+  
+  .img-square {
+    width: 100px;
+    /* Ajuste a largura conforme necessário */
+    height: 100px;
+    /* Altura igual à largura para garantir o formato quadrado */
+    object-fit: cover;
+    /* Garante que a imagem mantenha a proporção e cubra o quadrado */
+    display: block;
+    /* Remove o espaço em branco ao redor da imagem */
+    border-radius: 8px;
+    /* Mantém o arredondamento se for necessário */
+  }
+  
+  
+  
+  .button-carrinho {
+    background-color: #75B09C !important;
+    border-color: #75B09C !important;
+    /* Cor da borda customizada */
+    color: white;
+  }
+  
+  
+  .items-catalogo {
+    display: flex;
+    flex-direction: row;
+    /* Elementos lado a lado */
+    justify-content: left;
+    /* Permite quebrar linha ao atingir o limite da tela */
+    /* Espaçamento entre os itens */
+  }
+  
+  
+   .item {
+    display: flex;
+    margin-bottom: 1rem;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border-style: groove;
+    flex-basis: 20%;
+    /* Define a largura base de cada item como 30% */
+  
+  }
+  
+  @media (max-width: 768px) {
+    .items-catalogo {
+  
+      flex-direction: column;
+      /* Elementos um abaixo do outro */
+      justify-content: left;
+    }
+  
+   .item {
+      display: flex;
+      margin-bottom: 1rem;
+      border-style: none;
+    }
+  
+    .item {
+      flex-basis: 100%;
+      /* Largura total em telas menores */
+      border-style: none;
+    
+    }
+  
+  }
+  
+  .item-descricao {
+    display: -webkit-box;
+    /* Define um contêiner flexível */
+    -webkit-line-clamp: 2;
+    /* Limita o texto a 2 linhas */
+    -webkit-box-orient: vertical;
+    /* Define a orientação vertical */
+    overflow: hidden;
+    /* Esconde o conteúdo extra */
+    text-overflow: ellipsis;
+    /* Adiciona reticências (...) */
+    width: 90%;
+  } 
+  
+  .item-titulo{
+    width: 90%;
+  }
+  
+  .item-preco{
+    width: 90%;
+  }
+  
+  .whatsapp-button {
+    position: fixed; /* Fixa o botão no canto da tela */
+    bottom: 80px; /* Distância do fundo da tela */
+    right: 20px; /* Distância da direita da tela */
+    width: 70px; /* Aumenta a largura do botão */
+    height: 70px; /* Aumenta a altura do botão */
+    background-color: #25D366; /* Cor do WhatsApp */
+    border: none; /* Remove a borda */
+    border-radius: 50%; /* Torna o botão redondo */
+    display: flex; /* Utiliza flexbox para centralizar o ícone */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Alinha horizontalmente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+  }
+  
+  .whatsapp-button:hover {
+    background-color: #128C7E; /* Cor do botão ao passar o mouse */
+  }
+  
+  .whatsapp-icon {
+    color: white; /* Cor do ícone */
+    font-size: 36px; /* Aumenta o tamanho do ícone */
+  }
+
+  
+  ATUAL
+
+  .nav-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  
+  }
+  
+  .persisti {
+    position: sticky;
+    top: 0; /* Define a posição no topo da página */
+    z-index: 1000; /* Coloca o elemento acima de outros, se necessário */
+    background-color: white; /* Isso ajuda a garantir que a div seja visível */
+    border-bottom: 1px solid #ccc; /* Um exemplo de borda visual */
+  
+  }
+  
+  .loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa a altura total da tela */
+    width: 100vw; /* Ocupa a largura total da tela */
+    background-color: #f0f0f0; /* Cor de fundo opcional */
+  }
+  
+  .loading-screen-category {
+    display: flex;
+    height: auto;
+    width: 100vw; 
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Cor de fundo opcional */
+  }
+  
+  .loading-screen img {
+    width: 300px; /* Ajuste o tamanho do GIF conforme necessário */
+    height: auto;
+  }
+  
+  
+  .nav-item {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .nav-tabs .nav-link {
+    white-space: nowrap;
+  }
+  
+  .tab-content .sessao {
+    margin-bottom: 1rem;
+    padding-left: 10px;
+  
+  }
+  
+  
+  
+  .tab-content .imagem {
+  
+    margin-right: 1rem;
+    width: 30%;
+  }
+  
+  
+  
+  .tab-content .texto {
+    flex: 2;
+    
+  }
+  
+  .tab-content {
+    overflow-y: auto;
+    
+  }
+  
+  .nav-tabs {
+    padding: 5px;
+  }
+  
+  .texto{
+    
+    width: 5vw;
+  
+  }
+  
+  
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  .main-content {
+    flex: 1;
+    /* Faz com que o conteúdo principal ocupe todo o espaço disponível */
+    padding-bottom: 60px;
+    /* Altura aproximada do footer */
+  }
+  
+  footer {
+    background-color: #A0CA92;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  footer p {
+    font-size: 10px;
+  }
+  
+  .texto h3 {
+    font-size: 15px;
+  }
+  
+  .texto h4 {
+    font-size: 15px;
+    color: crimson;
+  }
+  
+  
+  .texto p {
+    font-size: 10px;
+  }
+  
+  .textomenor {
+    font-size: 10px;
+  }
+  
+  
+  .placeholder {
+    width: 120px;
+    /* Ajuste conforme necessário */
+    height: 120px;
+    /* Ajuste conforme necessário */
+    background-color: black;
+    /* Cor de fundo do placeholder */
+    border-radius: 50%;
+    /* Arredondar para circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #aaa;
+    /* Cor do texto */
+    text-align: center;
+  }
+  
+  .rounded {
+    width: 100px;
+    /* Defina o tamanho que você deseja */
+    height: 100px;
+    /* A altura deve ser igual à largura para manter a proporção quadrada */
+    object-fit: cover;
+    /* Corta a imagem para caber dentro do elemento */
+    border-radius: 50%;
+    /* Torna a imagem circular */
+  }
+  
+  header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .store-image {
+  
+    width: 50px;
+    /* Ajuste conforme necessário */
+    height: 50px;
+    /* Ajuste conforme necessário */
+    border-radius: 50%;
+    /* Arredondar para circular */
+  
+  }
+  
+  .img-square {
+    width: 100px;
+    /* Ajuste a largura conforme necessário */
+    height: 100px;
+    /* Altura igual à largura para garantir o formato quadrado */
+    object-fit: cover;
+    /* Garante que a imagem mantenha a proporção e cubra o quadrado */
+    display: block;
+    /* Remove o espaço em branco ao redor da imagem */
+    border-radius: 8px;
+    /* Mantém o arredondamento se for necessário */
+  }
+  
+  
+  
+  .button-carrinho {
+    background-color: #75B09C !important;
+    border-color: #75B09C !important;
+    /* Cor da borda customizada */
+    color: white;
+  }
+  
+  
+  .items-catalogo {
+    display: flex;
+    flex-direction: row;
+    /* Elementos lado a lado */
+    justify-content: left;
+    /* Permite quebrar linha ao atingir o limite da tela */
+    /* Espaçamento entre os itens */
+  }
+  
+  
+  .tab-content .item {
+    display: flex;
+    margin-bottom: 1rem;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border-style: groove;
+    flex-basis: 20%;
+    /* Define a largura base de cada item como 30% */
+  
+  }
+  
+  @media (max-width: 768px) {
+    .items-catalogo {
+  
+      flex-direction: column;
+      /* Elementos um abaixo do outro */
+      justify-content: left;
+    }
+  
+    .tab-content .item {
+      display: flex;
+      margin-bottom: 1rem;
+      border-style: none;
+    }
+  
+    .item {
+      flex-basis: 100%;
+      /* Largura total em telas menores */
+      border-style: none;
+    
+    }
+  
+  }
+  
+  .item-descricao {
+    display: -webkit-box;
+    /* Define um contêiner flexível */
+    -webkit-line-clamp: 2;
+    /* Limita o texto a 2 linhas */
+    -webkit-box-orient: vertical;
+    /* Define a orientação vertical */
+    overflow: hidden;
+    /* Esconde o conteúdo extra */
+    text-overflow: ellipsis;
+    /* Adiciona reticências (...) */
+    width: 90%;
+  } 
+  
+  .item-titulo{
+    width: 90%;
+  }
+  
+  .item-preco{
+    width: 90%;
+  }
+  
+  .whatsapp-button {
+    position: fixed; /* Fixa o botão no canto da tela */
+    bottom: 80px; /* Distância do fundo da tela */
+    right: 20px; /* Distância da direita da tela */
+    width: 70px; /* Aumenta a largura do botão */
+    height: 70px; /* Aumenta a altura do botão */
+    background-color: #25D366; /* Cor do WhatsApp */
+    border: none; /* Remove a borda */
+    border-radius: 50%; /* Torna o botão redondo */
+    display: flex; /* Utiliza flexbox para centralizar o ícone */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Alinha horizontalmente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+  }
+  
+  .whatsapp-button:hover {
+    background-color: #128C7E; /* Cor do botão ao passar o mouse */
+  }
+  
+  .whatsapp-icon {
+    color: white; /* Cor do ícone */
+    font-size: 36px; /* Aumenta o tamanho do ícone */
+  }
+  
