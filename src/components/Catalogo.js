@@ -367,7 +367,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-        setLoadingStage(3);
+        
         console.log(`Loaded images for product ${product.id}:`, fotosUrls.filter(Boolean));
       })
     );
@@ -378,7 +378,7 @@ function Catalogo() {
         ...newImages, // Mescla as novas imagens com as existentes
       };
       console.log("Updated product images:", updatedImages);
-      setLoadingStage(2);
+      setLoadingStage(3);
       return updatedImages;
     });
   };
@@ -399,6 +399,7 @@ function Catalogo() {
       loadStoreConfigs(storeDetails);
       loadStoreImages(storeDetails);
       fetchCategories(storeDetails.user_id);
+      setLoadingStage(2);
     }
   }, [storeDetails]);
 
