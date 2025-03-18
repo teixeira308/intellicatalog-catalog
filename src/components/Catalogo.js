@@ -564,8 +564,8 @@ function Catalogo() {
               {/* Category Content Sections */}
               {loadingStage < 2 ? (
                 // Loading enquanto categorias/produtos são carregados
-                <div className="loading-screen">
-                  <img style={{width: '30px' }}src={loadingGif} alt="Carregando categorias e produtos..." />
+                <div className="loading-screen-category">
+                  <img src={loadingGif} alt="Carregando categorias e produtos..." />
                 </div>
               ) : (
                 <div className="category-content">
@@ -597,8 +597,8 @@ function Catalogo() {
 
                           {loadingStage < 3 ?
                             (
-                              <div className="loading-screen">
-                                <img style={{width: '30px' }} src={loadingGif} alt="Carregando..." />
+                              <div className="loading-screen-category">
+                                <img src={loadingGif} alt="Carregando..." />
                               </div>
                             ) : (
                               <div className='items-catalogo'>
