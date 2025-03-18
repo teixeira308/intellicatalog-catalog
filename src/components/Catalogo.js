@@ -608,7 +608,7 @@ function Catalogo() {
                         >
                           <p className="category-title" style={{
                             color: configStore.cor_botao_primaria,
-                            padding: '10px',
+                            padding: '5px',
                             borderBottom: `2px solid ${configStore.cor_botao_primaria}`
                           }}>
                             {category.name}
