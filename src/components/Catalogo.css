@@ -37,8 +37,8 @@
 }
 
 .loading-screen-category img {
-  max-width: 50px; /* Controla o tamanho da imagem */
-  max-height: 50px; /* Controla o tamanho da imagem */
+  width: 300px; /* Ajuste o tamanho do GIF conforme necessário */
+  height: auto;
 }
 
 .loading-screen img {
