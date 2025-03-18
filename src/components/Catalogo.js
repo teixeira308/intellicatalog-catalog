@@ -209,6 +209,7 @@ function Catalogo() {
     if (categories.length > 0) {
       const firstCategoryId = `categoria${categories[0].id}`; // Pega a primeira categoria carregada
       setActiveTab(firstCategoryId); // Define a primeira categoria como ativa
+      console.log('Set active tab to:', firstCategoryId);
     }
   }, [categories]);
 
@@ -234,6 +235,7 @@ function Catalogo() {
           Authorization: `Bearer ${apiToken}`
         }
       });
+      console.log('Products received:', response.data.data);
       setProducts(prevState => ({
         ...prevState,
         [categoryId]: response.data.data
@@ -449,6 +451,14 @@ function Catalogo() {
   };
 
   useEffect(() => {
+    if (activeTab) {
+      const categoryId = parseInt(activeTab.replace('categoria', ''));
+      console.log('Fetching products for category:', categoryId);
+      fetchProductsByCategory(categoryId);
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
     if (imageStoreUrls.length > 0) {
       const favicon = document.querySelector("link[rel='icon']");
       if (favicon) {
@@ -564,6 +574,10 @@ function Catalogo() {
                           <a
                             className="nav-link"
                             href={`#categoria${category.id}`} // Link âncora
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setActiveTab(`categoria${category.id}`);
+                            }}
                             style={{
                               border: "none",
                               borderRadius: "0px",
@@ -605,8 +619,8 @@ function Catalogo() {
                     categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category) => (
                       <div
                         key={category.id}
-                        id={`categoria${category.id}`} // ID para âncora
-                        className="tab-pane fade show"
+                        id={`categoria${category.id}`}
+                        className={`tab-pane fade show ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
                         role="tabpanel"
                         aria-labelledby={`tab${category.id}-tab`}
                         style={{ padding: "20px 0" }}
