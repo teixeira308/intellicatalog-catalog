@@ -283,7 +283,7 @@ function Catalogo() {
         Authorization: `Bearer ${apiToken}`
       }
     });
-    setLoadingStage(3);
+    
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
@@ -367,6 +367,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
+        setLoadingStage(3);
         console.log(`Loaded images for product ${product.id}:`, fotosUrls.filter(Boolean));
       })
     );
