@@ -604,7 +604,7 @@ function Catalogo() {
                           key={category.id}
                           id={`category-${category.id}`}
                           className="category-section"
-                          style={{ padding: '20px 0', scrollMarginTop: '60px' }}
+                          style={{ padding: '10px 0', scrollMarginTop: '60px' }}
                         >
                           <p className="category-title" style={{
                             color: configStore.cor_botao_primaria,
