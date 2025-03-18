@@ -223,6 +223,7 @@ function Catalogo() {
       }));
       // Carregar imagens após buscar produtos
       await loadProductImages(response.data.data);
+      setLoadingStage(3);
     } catch (error) {
       console.error('Erro ao buscar produtos da categoria:', error);
     }
@@ -367,7 +368,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-        setLoadingStage(3);
+       
         console.log(`Loaded images for product ${product.id}:`, fotosUrls.filter(Boolean));
       })
     );
