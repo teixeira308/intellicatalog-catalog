@@ -28,11 +28,17 @@
 
 .loading-screen-category {
   display: flex;
-  height: auto;
-  width: 100vw; 
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0; /* Cor de fundo opcional */
+  background-color: #f0f0f0;
+  height: 60px;  /* Menor altura */
+  width: auto;   /* Ajuste a largura automaticamente */
+  padding: 10px; /* Um pouco de espaço interno */
+}
+
+.loading-screen-category img {
+  max-width: 50px; /* Controla o tamanho da imagem */
+  max-height: 50px; /* Controla o tamanho da imagem */
 }
 
 .loading-screen img {
