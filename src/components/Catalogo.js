@@ -13,7 +13,7 @@ import { FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa';
 import loadingGif from '../components/loading.gif'
 
 function Catalogo() {
-
+  const [activeTab, setActiveTab] = useState(''); //controle de estado de guia ativa
   const [categories, setCategories] = useState([]);  //estado para categorias
   const [products, setProducts] = useState({}); //estado para produtos e suas infos
   const [productImages, setProductImages] = useState({}); //estado para imagens de produtos
