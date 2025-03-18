@@ -26,7 +26,6 @@ function Catalogo() {
   const [imageStoreUrls, setImageStoreUrls] = useState([]);
   const [configStore, setConfigStore] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [loadingStage, setLoadingStage] = useState(0);
 
   //busca token no env
@@ -350,7 +349,7 @@ function Catalogo() {
     const newImages = {};
 
     if (products.length === 0) {
-      setLoading(false);  // Garantir que o loading seja desligado, mesmo sem produtos
+     setLoadingStage(false);  // Garantir que o loading seja desligado, mesmo sem produtos
       return;
     }
 
@@ -378,7 +377,7 @@ function Catalogo() {
         ...newImages, // Mescla as novas imagens com as existentes
       };
       console.log("Updated product images:", updatedImages);
-      setLoading(false);
+      setLoadingStage(false);
       return updatedImages;
     });
   };
