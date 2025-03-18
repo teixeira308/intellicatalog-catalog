@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Catalogo.css';
@@ -28,6 +27,7 @@ function Catalogo() {
   const [configStore, setConfigStore] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingStage, setLoadingStage] = useState(0);
 
   //busca token no env
   const apiToken = process.env.REACT_APP_API_TOKEN;
@@ -444,7 +444,7 @@ function Catalogo() {
 
   return (
     <div className="App">
-      {loading ? (
+      {loadingStage < 1 ? (
         <div className="loading-screen">
           <img src={loadingGif} alt="Carregando..." />
         </div>
@@ -561,6 +561,12 @@ function Catalogo() {
               </div>
 
               {/* Category Content Sections */}
+              {loadingStage < 2 ? (
+                // Loading enquanto categorias/produtos são carregados
+                <div className="loading-screen">
+                  <img src={loadingGif} alt="Carregando categorias e produtos..." />
+                </div>
+              ) : ( 
               <div className="category-content">
                 {categories.length === 0 ? (
                   <div className="text-center my-5">
@@ -667,6 +673,7 @@ function Catalogo() {
                   <FaWhatsapp className="whatsapp-icon" />
                 </button>
               </div>
+              )}
             </section>
             
             {cartItemCount > 0 && (
