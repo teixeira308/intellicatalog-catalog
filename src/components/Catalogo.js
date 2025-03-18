@@ -284,7 +284,7 @@ function Catalogo() {
         Authorization: `Bearer ${apiToken}`
       }
     });
-    
+
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
@@ -368,7 +368,7 @@ function Catalogo() {
           })
         );
         newImages[product.id] = fotosUrls.filter(Boolean); // Adiciona as URLs válidas
-       
+
         console.log(`Loaded images for product ${product.id}:`, fotosUrls.filter(Boolean));
       })
     );
@@ -595,83 +595,87 @@ function Catalogo() {
                             <p>{category.description}</p>
                           </div>
 
-                          {loadingStage < 3 ? (
-                            <div className="loading-screen">
-                              <img src={loadingGif} alt="Carregando..." />
-                            </div>
-                          ) : (
-                            <div className='items-catalogo'>
-                              {products[category.id] && products[category.id].length > 0 ? (
-                                products[category.id]
-                                  .filter(product => product.estoque > 0)
-                                  .sort((a, b) => a.product_order - b.product_order)
-                                  .map((product, idx) => (
-                                    <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                                      <div className='imagem'>
-                                        {productImages[product.id] && productImages[product.id].length > 0 ? (
-                                          <>
-                                            {category.name.toLowerCase() === "black friday" && (
-                                              <div
-                                                style={{
-                                                  backgroundColor: "black",
-                                                  color: "white",
-                                                  borderRadius: "10px",
-                                                  padding: "5px 10px",
-                                                  display: "inline-block",
-                                                  fontSize: "12px",
-                                                  fontWeight: "bold",
-                                                  marginBottom: "8px",
-                                                }}
-                                              >
-                                                Black Friday
-                                              </div>
-                                            )}
-                                            <img
-                                              loading="lazy"
-                                              src={productImages[product.id][0].url}
-                                              alt={product.titulo}
-                                              className='img-square'
-                                            />
-                                          </>
-                                        ) : (
-                                          <div className="placeholder">
-                                            Sem imagem
-                                          </div>
-                                        )}
-                                      </div>
-                                      <div className='texto'>
-                                        <h3 className='item-titulo'>{product.titulo}</h3>
-                                        <p className='item-descricao'>{product.description}</p>
-                                        <h4 className='item-preco'>
-                                          {product.promocional_price > 0 ? (
-                                            <>
-                                              <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+
+                          <div className='items-catalogo'>
+                            {products[category.id] && products[category.id].length > 0 ? (
+                              products[category.id]
+                                .filter(product => product.estoque > 0)
+                                .sort((a, b) => a.product_order - b.product_order)
+                                .map((product, idx) => (
+                                  <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                                    <div className='imagem'>
+                                      {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                        <>
+                                          {category.name.toLowerCase() === "black friday" && (
+                                            <div
+                                              style={{
+                                                backgroundColor: "black",
+                                                color: "white",
+                                                borderRadius: "10px",
+                                                padding: "5px 10px",
+                                                display: "inline-block",
+                                                fontSize: "12px",
+                                                fontWeight: "bold",
+                                                marginBottom: "8px",
+                                              }}
+                                            >
+                                              Black Friday
+                                            </div>
+                                          )}
+                                          <img
+                                            loading="lazy"
+                                            src={productImages[product.id][0].url}
+                                            alt={product.titulo}
+                                            className='img-square'
+                                          />
+                                        </>
+                                      ) : (
+                                        <div className="placeholder">
+                                          Sem imagem
+                                        </div>
+                                      )}
+                                    </div>
+                                    {loadingStage < 3 ?
+                                      (
+                                        <div className="loading-screen">
+                                          <img src={loadingGif} alt="Carregando..." />
+                                        </div>
+                                      ) : (
+                                        <div className='texto'>
+                                          <h3 className='item-titulo'>{product.titulo}</h3>
+                                          <p className='item-descricao'>{product.description}</p>
+                                          <h4 className='item-preco'>
+                                            {product.promocional_price > 0 ? (
+                                              <>
+                                                <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                                </span>
+                                                <br />
+                                                <span style={{ color: configStore.cor_preco_promocional }}>
+                                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                                </span>
+                                                &nbsp;
+                                                <span style={{ color: 'green' }}>
+                                                  ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                                </span>
+                                              </>
+                                            ) : (
+                                              <span style={{ color: configStore.cor_preco }}>
                                                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                               </span>
-                                              <br />
-                                              <span style={{ color: configStore.cor_preco_promocional }}>
-                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                              </span>
-                                              &nbsp;
-                                              <span style={{ color: 'green' }}>
-                                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                              </span>
-                                            </>
-                                          ) : (
-                                            <span style={{ color: configStore.cor_preco }}>
-                                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                            </span>
-                                          )}
-                                        </h4>
-                                      </div>
-                                    </div>
-                                  ))
-                              ) : (
-                                <div className="text-center my-5">
-                                  <h4>Nenhum produto encontrado nesta categoria</h4>
-                                </div>
-                              )}
-                            </div>)}
+                                            )}
+                                          </h4>
+                                        </div>
+                                      )}
+                                  </div>
+                                ))
+                            ) : (
+                              <div className="text-center my-5">
+                                <h4>Nenhum produto encontrado nesta categoria</h4>
+                              </div>
+                            )}
+                          </div>
+
                         </div>
                       ))
                   )}
