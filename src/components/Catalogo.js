@@ -233,15 +233,15 @@ function Catalogo() {
         [categoryId]: response.data.data
       }));
 
+      await loadProductImages(response.data.data);
       // Atualize o estado para indicar que a categoria foi carregada
       setCategoryLoadingStages(prevState => ({
         ...prevState,
-        [categoryId]: 3 // Categoria carregada
+        [categoryId]: 2 // Categoria carregada
       }));
 
       // Carregar as imagens dos produtos
-      await loadProductImages(response.data.data);
-      setLoadingStage(3);
+      
     } catch (error) {
       console.error('Erro ao buscar produtos da categoria:', error);
       setCategoryLoadingStages(prevState => ({
