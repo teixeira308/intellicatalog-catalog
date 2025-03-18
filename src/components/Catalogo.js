@@ -44,12 +44,12 @@ function Catalogo() {
   const total = cart.reduce((sum, item) => {
     const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
     return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-  }, 0);
+}, 0);
 
-  // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-  const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
+// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
-  const finalTotal = total + deliveryFee;
+const finalTotal = total + deliveryFee;
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -209,7 +209,6 @@ function Catalogo() {
     if (categories.length > 0) {
       const firstCategoryId = `categoria${categories[0].id}`; // Pega a primeira categoria carregada
       setActiveTab(firstCategoryId); // Define a primeira categoria como ativa
-      console.log('Set active tab to:', firstCategoryId);
     }
   }, [categories]);
 
@@ -235,7 +234,6 @@ function Catalogo() {
           Authorization: `Bearer ${apiToken}`
         }
       });
-      console.log('Products received:', response.data.data);
       setProducts(prevState => ({
         ...prevState,
         [categoryId]: response.data.data
@@ -451,14 +449,6 @@ function Catalogo() {
   };
 
   useEffect(() => {
-    if (activeTab) {
-      const categoryId = parseInt(activeTab.replace('categoria', ''));
-      console.log('Fetching products for category:', categoryId);
-      fetchProductsByCategory(categoryId);
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
     if (imageStoreUrls.length > 0) {
       const favicon = document.querySelector("link[rel='icon']");
       if (favicon) {
@@ -480,7 +470,9 @@ function Catalogo() {
 
 
   return (
+
     <div className="App">
+
       {loading ? (
         <div className="loading-screen">
           {/* Exibir tela de carregamento */}
@@ -568,44 +560,70 @@ function Catalogo() {
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                    <ul className='nav nav-tabs w-100 d-flex' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none", display: "flex", justifyContent: "space-between" }}>
-                      {categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category, index) => (
-                        <li className="nav-item text-center flex-fill" key={index} style={{ flex: "1", display: "flex", justifyContent: "center" }}>
-                          <a
-                            className="nav-link"
-                            href={`#categoria${category.id}`} // Link âncora
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setActiveTab(`categoria${category.id}`);
-                            }}
+                    <ul
+                      className='nav nav-tabs w-100 d-flex'
+                      role='tablist'
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        borderBottom: "none",
+                        display: "flex", // Distribui os itens em linha
+                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
+                      }}
+                    >
+                      {categories
+                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
+                        .map((category, index) => (
+                          <li
+                            className="nav-item text-center flex-fill"
+                            key={index}
                             style={{
-                              border: "none",
-                              borderRadius: "0px",
-                              backgroundColor:
-                                category.name.toLowerCase() === "black friday"
-                                  ? "black"
-                                  : category.name.toLowerCase() === "promoção"
-                                    ? "red"
-                                    : "transparent",
-                              color:
-                                category.name.toLowerCase() === "black friday"
-                                  ? "white"
-                                  : category.name.toLowerCase() === "promoção"
-                                    ? "yellow"
-                                    : configStore.cor_botao_secundaria,
-                              textDecoration: "none",
-                              fontWeight: "bold",
-                              padding: "10px 15px",
-                              width: "100%",
-                              textAlign: "center"
+                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
+                              display: "flex",
+                              justifyContent: "center", // Centraliza o botão dentro do <li>
                             }}
                           >
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
+                            <button
+                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
+                              id={`tab${category.id}-tab`}
+                              href={`#content${category.id}`}
+                              role="tab"
+                              aria-controls={`tab${category.id}`}
+                              aria-selected={activeTab === `categoria${category.id}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setActiveTab(`categoria${category.id}`);
+                              }}
+                              style={{
+                                border: "none",
+                                borderRadius: "0px",
+                                backgroundColor:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "black"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "red"
+                                      : activeTab === `categoria${category.id}`
+                                        ? configStore.cor_botao_primaria
+                                        : "transparent",
+                                color:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "white"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "yellow"
+                                      : activeTab === `categoria${category.id}`
+                                        ? "white"
+                                        : configStore.cor_botao_secundaria,
+                                textDecoration: "none",
+                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+                                padding: "10px 15px",
+                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
+                              }}
+                            >
+                              {category.name}
+                            </button>
+                          </li>
+                        ))}
                     </ul>
-
                   </div>
 
                 </div>
@@ -616,14 +634,13 @@ function Catalogo() {
                       <h4>Não há categorias incluídas.</h4>
                     </div>
                   ) : (
-                    categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category) => (
+                    categories.map((category, index) => (
                       <div
-                        key={category.id}
-                        id={`categoria${category.id}`}
-                        className={`tab-pane fade show ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-                        role="tabpanel"
+                        className={`tab-pane fade ${activeTab === `categoria${category.id}` ? 'show active' : ''}`}
+                        id={`content${category.id}`}
+                        role='tabpanel'
                         aria-labelledby={`tab${category.id}-tab`}
-                        style={{ padding: "20px 0" }}
+                        key={index}
                       >
                         <div className='sessao'>
                           <p>{category.description}</p>
@@ -657,7 +674,7 @@ function Catalogo() {
                                         )}
                                         <img
                                           loading="lazy"
-                                          src={productImages[product.id][0].url}
+                                          src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
                                           alt={product.titulo}
                                           className='img-square'
                                         />
@@ -701,14 +718,17 @@ function Catalogo() {
                             </div>
                           )}
                         </div>
+
                       </div>
                     ))
+
                   )}
                   <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
                     <FaWhatsapp className="whatsapp-icon" />
-                  </button>
-                </div>
 
+                  </button>
+
+                </div>
 
 
               </section>
