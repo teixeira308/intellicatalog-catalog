@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Catalogo.css';
@@ -46,12 +44,12 @@ function Catalogo() {
   const total = cart.reduce((sum, item) => {
     const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
     return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-  }, 0);
+}, 0);
 
-  // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-  const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
+// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
-  const finalTotal = total + deliveryFee;
+const finalTotal = total + deliveryFee;
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -94,14 +92,18 @@ function Catalogo() {
 
   const handleClickWhatsappNoOrder = (e) => {
     e.preventDefault();
+
     const numeroWhatsapp = configStore.numero_whatsapp?.replace(/\D/g, ""); // Remove caracteres não numéricos
     if (!numeroWhatsapp) {
       console.error("Número do WhatsApp não definido!");
       return;
     }
+
     const message = "Olá! Gostaria de saber mais sobre seus produtos.";
+
     // Detecta se está em um celular
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
     // Escolhe a URL apropriada
     const whatsappApiUrl = isMobile
       ? `whatsapp://send?phone=${numeroWhatsapp}&text=${encodeURIComponent(message)}`
@@ -115,6 +117,7 @@ function Catalogo() {
     }
   };
 
+
   const sendOrderToWhatsApp = async () => {
     // Formata os itens do carrinho
     const formattedItems = cart.map((item) => ({
@@ -123,11 +126,13 @@ function Catalogo() {
       unit_price: parseFloat(item.price),
       total_price: parseFloat(item.price) * item.quantity,
     }));
+
     // Calcula o total do pedido
     const totalOrder = cart.reduce(
       (total, item) => total + parseFloat(item.price) * item.quantity,
       0
     );
+
     // Monta o objeto `pedido`
     const pedido = {
       user_id: storeDetails.user_id,
@@ -191,12 +196,21 @@ function Catalogo() {
         }
       });
       setCategories(response.data.data);
-      console.log("Categories loaded:", response.data.data);
+      if (response.data.data.length > 0) {
+        setActiveTab(`categoria${response.data.data[0].id}`);
+      }
     } catch (error) {
       console.error('Erro ao buscar categorias:', error);
     }
   };
 
+  useEffect(() => {
+    // Essa parte irá definir a categoria ativa após as categorias serem carregadas
+    if (categories.length > 0) {
+      const firstCategoryId = `categoria${categories[0].id}`; // Pega a primeira categoria carregada
+      setActiveTab(firstCategoryId); // Define a primeira categoria como ativa
+    }
+  }, [categories]);
 
   const fetchStoreDetails = async (identificadorExterno) => {
 
@@ -207,6 +221,7 @@ function Catalogo() {
         }
       });
       setStoreDetails(response.data);
+
     } catch (error) {
       console.error('Erro ao buscar detalhes da loja:', error);
     }
@@ -264,6 +279,8 @@ function Catalogo() {
     return await response.json();
   };
 
+
+
   const getFotoProdutoDownload = async (product, photo) => {
     const response = await fetch(`${api_url}/intellicatalog/v1/products/${product.id}/products_images/download?arquivo=${photo.nomearquivo}`, {
       method: "GET",
@@ -318,6 +335,7 @@ function Catalogo() {
     return await response.json();
   }
 
+
   // Função para carregar as imagens do stores do usuario
   const loadStoreImages = async (store) => {
     if (store) {
@@ -347,7 +365,7 @@ function Catalogo() {
         const configs = await getStoreConfigs(store);
         setConfigStore(configs)
       } catch (error) {
-        console.error("Erro ao buscar configurações:", error);
+        console.error("Erro ao buscar fotos:", error);
       }
     }
   };
@@ -379,15 +397,11 @@ function Catalogo() {
       })
     );
 
-    setProductImages((prevImages) => {
-      const updatedImages = {
-        ...prevImages,
-        ...newImages, // Mescla as novas imagens com as existentes
-      };
-      console.log("Updated product images:", updatedImages);
-      setLoading(false);
-      return updatedImages;
-    });
+    setProductImages((prevImages) => ({
+      ...prevImages,
+      ...newImages, // Mescla as novas imagens com as existentes
+    }));
+
   };
 
   useEffect(() => {
@@ -404,6 +418,7 @@ function Catalogo() {
 
   useEffect(() => {
     fetchStoreDetails(capturedValue);
+
   }, [capturedValue]);
 
   useEffect(() => {
@@ -417,13 +432,11 @@ function Catalogo() {
 
   useEffect(() => {
 
-    // Carregar produtos para todas as categorias quando elas forem carregadas
-    if (categories.length > 0) {
-      categories.forEach(category => {
-        fetchProductsByCategory(category.id);
-      });
+    if (activeTab) {
+      const categoryId = parseInt(activeTab.replace('categoria', ''));
+      fetchProductsByCategory(categoryId);
     }
-  }, [categories]);
+  }, [activeTab]);
 
   const handleOpenProductModal = (product) => {
     setSelectedProduct(product);
@@ -433,13 +446,6 @@ function Catalogo() {
   const handleCloseProductModal = () => {
     setSelectedProduct(null);
     setShowProductModal(false);
-  };
-
-  const scrollToCategory = (categoryId) => {
-    const element = document.getElementById(`category-${categoryId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   useEffect(() => {
@@ -546,6 +552,10 @@ function Catalogo() {
                 )}
               </div>
             </header>
+
+
+
+
             <main className="my main-content">
               <section>
                 <div className="persisti">
@@ -785,4 +795,3 @@ function Catalogo() {
 }
 
 export default Catalogo;
-
