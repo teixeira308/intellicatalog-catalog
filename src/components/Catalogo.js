@@ -44,12 +44,12 @@ function Catalogo() {
   const total = cart.reduce((sum, item) => {
     const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
     return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-  }, 0);
+}, 0);
 
-  // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-  const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
+// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
-  const finalTotal = total + deliveryFee;
+const finalTotal = total + deliveryFee;
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -470,121 +470,183 @@ function Catalogo() {
 
 
   return (
+
     <div className="App">
+
       {loading ? (
         <div className="loading-screen">
           {/* Exibir tela de carregamento */}
           <img src={loadingGif} alt="Carregando..." />
         </div>
-      ) : (
-        <>
-          <header
-            className="text-white text-center"
-            style={{
-              backgroundImage: configStore.usa_logo_fundo === "true"
-                ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
-                : `none`, // Se não, não define nenhuma imagem de fundo
-              backgroundColor: configStore.usa_logo_fundo === "true"
-                ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
-                : configStore.cor_primaria, // Se não, usa a cor primária
-              backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
-              backgroundPosition: 'center', // Centraliza a imagem
-              backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
-              position: 'relative', // Necessário para o posicionamento do pseudo-elemento
-              color: 'white', // Para garantir que o texto fique legível
-            }}
-          >
-            <div
+      )
+        :
+        (
+          <>
+            <header
+              className="text-white text-center"
               style={{
-                position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
+                backgroundImage: configStore.usa_logo_fundo === "true"
+                  ? `url(${imageStoreUrls[0]?.url})`  // Se usa_logo_fundo for "true", usa a imagem
+                  : `none`, // Se não, não define nenhuma imagem de fundo
                 backgroundColor: configStore.usa_logo_fundo === "true"
-                  ? 'rgba(0, 0, 0, 0.5)' // Cor escura com opacidade
-                  : `none`,
-                zIndex: 1, // Coloca a sobreposição acima do fundo
+                  ? 'transparent' // Se usa_logo_fundo for "true", a cor de fundo deve ser transparente
+                  : configStore.cor_primaria, // Se não, usa a cor primária
+                backgroundSize: '120%', // Aumenta o tamanho da imagem para criar efeito de zoom
+                backgroundPosition: 'center', // Centraliza a imagem
+                backgroundRepeat: 'no-repeat', // Impede a repetição da imagem
+                position: 'relative', // Necessário para o posicionamento do pseudo-elemento
+                color: 'white', // Para garantir que o texto fique legível
               }}
-              onClick={handleOpenModal}
-            />
-            {imageStoreUrls.map((image) => (
-              <div key={image.id} onClick={handleOpenModal}>
-                <img
-                  src={image.url}
 
-                  alt={`Foto da store ${storeDetails.namestore}`}
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    position: 'relative', // Mantém a imagem do logo acima da sobreposição
-                    zIndex: 2, // Imagem acima da sobreposição
-                  }}
-                />
-                <br />
-                <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
-                  {storeDetails.namestore}
-                </h1>
-              </div>
-            ))}
-            <div style={{ zIndex: 2, position: 'relative', marginTop: '10px' }}>
-              {configStore.facebook && (
-                <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
-                  <FaFacebookF size={24} />
-                </a>
-              )}
-              {configStore.instagram && (
-                <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
-                  <FaInstagram size={24} />
-                </a>
-              )}
-            </div>
-          </header>
-          <main className="my main-content">
-            <section>
-              <div className="persisti">
-                <div className='nav-tabs-responsive'>
-                  <ul className='nav nav-tabs w-100 d-flex' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none", display: "flex", justifyContent: "space-between" }}>
-                    {categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category, index) => (
-                      <li className="nav-item text-center flex-fill" key={index} style={{ flex: "1", display: "flex", justifyContent: "center" }}>
-                        <a
-                          className="nav-link"
-                          href={`#categoria${category.id}`} // Link âncora
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                            color: configStore.cor_botao_secundaria,
-                            textDecoration: "none",
-                            fontWeight: "bold",
-                            padding: "10px 15px",
-                            width: "100%",
-                          }}
-                        >
-                          {category.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+            >
+              <div
+                style={{
+                  position: 'absolute', // Posiciona o pseudo-elemento em relação ao cabeçalho
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: configStore.usa_logo_fundo === "true"
+                    ? 'rgba(0, 0, 0, 0.5)' // Cor escura com opacidade
+                    : `none`,
+                  zIndex: 1, // Coloca a sobreposição acima do fundo
+                }}
+                onClick={handleOpenModal}
+              />
+              {imageStoreUrls.map((image) => (
+                <div key={image.id} onClick={handleOpenModal}>
+                  <img
+                    src={image.url}
+
+                    alt={`Foto da store ${storeDetails.namestore}`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      position: 'relative', // Mantém a imagem do logo acima da sobreposição
+                      zIndex: 2, // Imagem acima da sobreposição
+                    }}
+                  />
+                  <br />
+                  <h1 style={{ cursor: 'pointer', fontFamily: 'Kanit', zIndex: 2, color: 'white', position: 'relative' }}>
+                    {storeDetails.namestore}
+
+                  </h1>
+
 
                 </div>
+
+              ))}
+              <div style={{ zIndex: 2, position: 'relative', marginTop: '10px' }}>
+                {configStore.facebook && (
+                  <a href={configStore.facebook} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                    <FaFacebookF size={24} />
+                  </a>
+                )}
+
+                {configStore.instagram && (
+                  <a href={configStore.instagram} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px', color: configStore.cor_secundaria }}>
+                    <FaInstagram size={24} />
+                  </a>
+                )}
               </div>
-              <div className='tab-content'>
-                {categories.length === 0 ? (
-                  <div className="text-center my-5">
-                    <h4>Não há categorias incluídas.</h4>
+            </header>
+
+
+
+
+            <main className="my main-content">
+              <section>
+                <div className="persisti">
+                  <div className='nav-tabs-responsive'>
+                    <ul
+                      className='nav nav-tabs w-100 d-flex'
+                      role='tablist'
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        borderBottom: "none",
+                        display: "flex", // Distribui os itens em linha
+                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
+                      }}
+                    >
+                      {categories
+                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
+                        .map((category, index) => (
+                          <li
+                            className="nav-item text-center flex-fill"
+                            key={index}
+                            style={{
+                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
+                              display: "flex",
+                              justifyContent: "center", // Centraliza o botão dentro do <li>
+                            }}
+                          >
+                            <button
+                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
+                              id={`tab${category.id}-tab`}
+                              href={`#content${category.id}`}
+                              role="tab"
+                              aria-controls={`tab${category.id}`}
+                              aria-selected={activeTab === `categoria${category.id}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setActiveTab(`categoria${category.id}`);
+                              }}
+                              style={{
+                                border: "none",
+                                borderRadius: "0px",
+                                backgroundColor:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "black"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "red"
+                                      : activeTab === `categoria${category.id}`
+                                        ? configStore.cor_botao_primaria
+                                        : "transparent",
+                                color:
+                                  category.name.toLowerCase() === "black friday"
+                                    ? "white"
+                                    : category.name.toLowerCase() === "promoção"
+                                      ? "yellow"
+                                      : activeTab === `categoria${category.id}`
+                                        ? "white"
+                                        : configStore.cor_botao_secundaria,
+                                textDecoration: "none",
+                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
+                                padding: "10px 15px",
+                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
+                              }}
+                            >
+                              {category.name}
+                            </button>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
-                ) : (
-                 
-                    <div className='items-catalogo'>
-                    {categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category) => (
-                      <div key={category.id} id={`categoria${category.id}`} style={{ marginBottom: '30px' }}> {/* ID para âncora */}
-                        <h2 style={{ marginBottom: '15px', color: configStore.cor_primaria }}>{category.name}</h2>
+
+                </div>
+
+                <div className='tab-content'>
+                  {categories.length === 0 ? (
+                    <div className="text-center my-5">
+                      <h4>Não há categorias incluídas.</h4>
+                    </div>
+                  ) : (
+                    categories.map((category, index) => (
+                      <div
+                        className={`tab-pane fade ${activeTab === `categoria${category.id}` ? 'show active' : ''}`}
+                        id={`content${category.id}`}
+                        role='tabpanel'
+                        aria-labelledby={`tab${category.id}-tab`}
+                        key={index}
+                      >
                         <div className='sessao'>
                           <p>{category.description}</p>
                         </div>
-                        <div className='produtos'>
+
+                        <div className='items-catalogo'>
                           {products[category.id] && products[category.id].length > 0 ? (
                             products[category.id]
                               .filter(product => product.estoque > 0)
@@ -593,9 +655,34 @@ function Catalogo() {
                                 <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
                                   <div className='imagem'>
                                     {productImages[product.id] && productImages[product.id].length > 0 ? (
-                                      <img loading="lazy" src={productImages[product.id][0].url} alt={product.titulo} className='img-square' />
+                                      <>
+                                        {category.name.toLowerCase() === "black friday" && (
+                                          <div
+                                            style={{
+                                              backgroundColor: "black",
+                                              color: "white",
+                                              borderRadius: "10px",
+                                              padding: "5px 10px",
+                                              display: "inline-block",
+                                              fontSize: "12px",
+                                              fontWeight: "bold",
+                                              marginBottom: "8px",
+                                            }}
+                                          >
+                                            Black Friday
+                                          </div>
+                                        )}
+                                        <img
+                                          loading="lazy"
+                                          src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                          alt={product.titulo}
+                                          className='img-square'
+                                        />
+                                      </>
                                     ) : (
-                                      <div className="placeholder">Sem imagem</div>
+                                      <div className="placeholder">
+                                        Sem imagem
+                                      </div>
                                     )}
                                   </div>
                                   <div className='texto'>
@@ -631,70 +718,78 @@ function Catalogo() {
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  
 
-                )}
-                <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
-                  <FaWhatsapp className="whatsapp-icon" />
-                </button>
-              </div>
-            </section>
-            {cartItemCount > 0 && (
-              <footer style={{ backgroundColor: configStore.cor_primaria }}>
-                {storeDetails.status === "Aberta" ? (
-                  <div>
-                    <>
-                      Total: {formattedTotal} &nbsp; &nbsp;
-                    </>
-                    <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
-                      ({cartItemCount}) Ver carrinho
-                    </Button>
-                  </div>
-                ) : (
-                  <p>Loja indisponível para receber pedidos</p>
-                )}
-              </footer>
-            )}
-          </main>
-          <StoreModal
-            show={showModal}
-            handleClose={handleCloseModal}
-            storeDetails={storeDetails}
-            storeConfig={configStore}
-            storeConfigs={configStore}
-            storeImages={imageStoreUrls}
-          />
-          {
-            selectedProduct && (
-              <ProductModal
-                show={showProductModal}
-                handleClose={handleCloseProductModal}
-                addToCart={addToCart}
-                product={selectedProduct}
-                images={productImages[selectedProduct.id] || []}
-                storeStatus={storeDetails.status}
-                storeConfigs={configStore}
-              />
-            )
-          }
-          <CartModal
-            show={showCartModal}
-            handleClose={handleCloseCartModal}
-            cart={cart}
-            productImages={productImages} // Passando as imagens para o CartModal
-            sendOrderToWhatsApp={sendOrderToWhatsApp}
-            setCart={setCart}
-            store={storeDetails}
-            storeConfigs={configStore}
-            cartItemCount={cartItemCount}
-            setCartItemCount={setCartItemCount}
-          />
-        </>
-      )}
+                      </div>
+                    ))
+
+                  )}
+                  <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
+                    <FaWhatsapp className="whatsapp-icon" />
+
+                  </button>
+
+                </div>
+
+
+              </section>
+              {cartItemCount > 0 && (
+                <footer style={{ backgroundColor: configStore.cor_primaria }}>
+                  {storeDetails.status === "Aberta" ? (
+                    <div>
+                      <>
+                        Total: {formattedTotal} &nbsp; &nbsp;
+                      </>
+                      <Button onClick={() => handleOpenCartModal()} style={{ backgroundColor: configStore.cor_botao_secundaria, borderColor: configStore.cor_botao_secundaria, color: configStore.cor_secundaria }}>
+                        ({cartItemCount}) Ver carrinho
+                      </Button>
+                    </div>
+                  ) : (
+                    <p>Loja indisponível para receber pedidos</p>
+                  )}
+                </footer>
+              )}
+
+
+            </main>
+            <StoreModal
+              show={showModal}
+              handleClose={handleCloseModal}
+              storeDetails={storeDetails}
+              storeConfig={configStore}
+              storeConfigs={configStore}
+              storeImages={imageStoreUrls}
+            />
+
+            {
+              selectedProduct && (
+                <ProductModal
+                  show={showProductModal}
+                  handleClose={handleCloseProductModal}
+                  addToCart={addToCart}
+                  product={selectedProduct}
+                  images={productImages[selectedProduct.id] || []}
+                  storeStatus={storeDetails.status}
+                  storeConfigs={configStore}
+                />
+              )
+            }
+
+            <CartModal
+              show={showCartModal}
+              handleClose={handleCloseCartModal}
+              cart={cart}
+              productImages={productImages} // Passando as imagens para o CartModal
+              sendOrderToWhatsApp={sendOrderToWhatsApp}
+              setCart={setCart}
+              store={storeDetails}
+              storeConfigs={configStore}
+              cartItemCount={cartItemCount}
+              setCartItemCount={setCartItemCount}
+            />
+
+
+          </>
+        )}
     </div>
   );
 }
