@@ -48,7 +48,7 @@
   white-space: nowrap;
 }
 
- .sessao {
+.tab-content .sessao {
   margin-bottom: 1rem;
   padding-left: 10px;
 
@@ -56,7 +56,7 @@
 
 
 
-.imagem {
+.tab-content .imagem {
 
   margin-right: 1rem;
   width: 30%;
@@ -64,11 +64,15 @@
 
 
 
- .texto {
+.tab-content .texto {
   flex: 2;
   
 }
 
+.tab-content {
+  overflow-y: auto;
+  
+}
 
 .nav-tabs {
   padding: 5px;
@@ -212,7 +216,7 @@ header {
 }
 
 
- .item {
+.tab-content .item {
   display: flex;
   margin-bottom: 1rem;
   margin: 5px;
@@ -232,7 +236,7 @@ header {
     justify-content: left;
   }
 
- .item {
+  .tab-content .item {
     display: flex;
     margin-bottom: 1rem;
     border-style: none;
