@@ -283,7 +283,7 @@ function Catalogo() {
         Authorization: `Bearer ${apiToken}`
       }
     });
-
+    setLoadingStage(3);
     if (!response.ok) {
       throw new Error("Erro ao fazer download da imagem");
     }
@@ -349,7 +349,7 @@ function Catalogo() {
     const newImages = {};
 
     if (products.length === 0) {
-     setLoadingStage(1);  // Garantir que o loading seja desligado, mesmo sem produtos
+      setLoadingStage(1);  // Garantir que o loading seja desligado, mesmo sem produtos
       return;
     }
 
@@ -517,9 +517,9 @@ function Catalogo() {
           <main className="my main-content">
             <section>
               {/* Category Menu with Anchor Links */}
-              <div className="category-menu" style={{ 
-                position: 'sticky', 
-                top: 0, 
+              <div className="category-menu" style={{
+                position: 'sticky',
+                top: 0,
                 backgroundColor: configStore.cor_primaria,
                 zIndex: 100,
                 padding: '10px 0',
@@ -542,7 +542,7 @@ function Catalogo() {
                         padding: '2px 5px',
                         color: 'white',
                         textDecoration: 'none',
-                        backgroundColor: 
+                        backgroundColor:
                           category.name.toLowerCase() === "black friday"
                             ? "black"
                             : category.name.toLowerCase() === "promoção"
@@ -565,116 +565,121 @@ function Catalogo() {
                 <div className="loading-screen">
                   <img src={loadingGif} alt="Carregando categorias e produtos..." />
                 </div>
-              ) : ( 
-              <div className="category-content">
-                {categories.length === 0 ? (
-                  <div className="text-center my-5">
-                    <h4>Não há categorias incluídas.</h4>
-                  </div>
-                ) : (
-                  categories
-                    .sort((a, b) => a.catalog_order - b.catalog_order)
-                    .map((category) => (
-                      <div 
-                        key={category.id} 
-                        id={`category-${category.id}`} 
-                        className="category-section"
-                        style={{ padding: '20px 0', scrollMarginTop: '60px' }}
-                      >
-                        <h2 className="category-title" style={{ 
-                          color: configStore.cor_botao_primaria, 
-                          padding: '10px',
-                          borderBottom: `2px solid ${configStore.cor_botao_primaria}`
-                        }}>
-                          {category.name}
-                        </h2>
-                        
-                        <div className='sessao'>
-                          <p>{category.description}</p>
-                        </div>
+              ) : (
+                <div className="category-content">
+                  {categories.length === 0 ? (
+                    <div className="text-center my-5">
+                      <h4>Não há categorias incluídas.</h4>
+                    </div>
+                  ) : (
+                    categories
+                      .sort((a, b) => a.catalog_order - b.catalog_order)
+                      .map((category) => (
+                        <div
+                          key={category.id}
+                          id={`category-${category.id}`}
+                          className="category-section"
+                          style={{ padding: '20px 0', scrollMarginTop: '60px' }}
+                        >
+                          <h2 className="category-title" style={{
+                            color: configStore.cor_botao_primaria,
+                            padding: '10px',
+                            borderBottom: `2px solid ${configStore.cor_botao_primaria}`
+                          }}>
+                            {category.name}
+                          </h2>
 
-                        <div className='items-catalogo'>
-                          {products[category.id] && products[category.id].length > 0 ? (
-                            products[category.id]
-                              .filter(product => product.estoque > 0)
-                              .sort((a, b) => a.product_order - b.product_order)
-                              .map((product, idx) => (
-                                <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
-                                  <div className='imagem'>
-                                    {productImages[product.id] && productImages[product.id].length > 0 ? (
-                                      <>
-                                        {category.name.toLowerCase() === "black friday" && (
-                                          <div
-                                            style={{
-                                              backgroundColor: "black",
-                                              color: "white",
-                                              borderRadius: "10px",
-                                              padding: "5px 10px",
-                                              display: "inline-block",
-                                              fontSize: "12px",
-                                              fontWeight: "bold",
-                                              marginBottom: "8px",
-                                            }}
-                                          >
-                                            Black Friday
+                          <div className='sessao'>
+                            <p>{category.description}</p>
+                          </div>
+
+                          {loadingStage < 3 ? (
+                            <div className="loading-screen">
+                              <img src={loadingGif} alt="Carregando..." />
+                            </div>
+                          ) : (
+                            <div className='items-catalogo'>
+                              {products[category.id] && products[category.id].length > 0 ? (
+                                products[category.id]
+                                  .filter(product => product.estoque > 0)
+                                  .sort((a, b) => a.product_order - b.product_order)
+                                  .map((product, idx) => (
+                                    <div className='item' key={idx} onClick={() => handleOpenProductModal(product)}>
+                                      <div className='imagem'>
+                                        {productImages[product.id] && productImages[product.id].length > 0 ? (
+                                          <>
+                                            {category.name.toLowerCase() === "black friday" && (
+                                              <div
+                                                style={{
+                                                  backgroundColor: "black",
+                                                  color: "white",
+                                                  borderRadius: "10px",
+                                                  padding: "5px 10px",
+                                                  display: "inline-block",
+                                                  fontSize: "12px",
+                                                  fontWeight: "bold",
+                                                  marginBottom: "8px",
+                                                }}
+                                              >
+                                                Black Friday
+                                              </div>
+                                            )}
+                                            <img
+                                              loading="lazy"
+                                              src={productImages[product.id][0].url}
+                                              alt={product.titulo}
+                                              className='img-square'
+                                            />
+                                          </>
+                                        ) : (
+                                          <div className="placeholder">
+                                            Sem imagem
                                           </div>
                                         )}
-                                        <img
-                                          loading="lazy"
-                                          src={productImages[product.id][0].url}
-                                          alt={product.titulo}
-                                          className='img-square'
-                                        />
-                                      </>
-                                    ) : (
-                                      <div className="placeholder">
-                                        Sem imagem
                                       </div>
-                                    )}
-                                  </div>
-                                  <div className='texto'>
-                                    <h3 className='item-titulo'>{product.titulo}</h3>
-                                    <p className='item-descricao'>{product.description}</p>
-                                    <h4 className='item-preco'>
-                                      {product.promocional_price > 0 ? (
-                                        <>
-                                          <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                          </span>
-                                          <br />
-                                          <span style={{ color: configStore.cor_preco_promocional }}>
-                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
-                                          </span>
-                                          &nbsp;
-                                          <span style={{ color: 'green' }}>
-                                            ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
-                                          </span>
-                                        </>
-                                      ) : (
-                                        <span style={{ color: configStore.cor_preco }}>
-                                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                                        </span>
-                                      )}
-                                    </h4>
-                                  </div>
+                                      <div className='texto'>
+                                        <h3 className='item-titulo'>{product.titulo}</h3>
+                                        <p className='item-descricao'>{product.description}</p>
+                                        <h4 className='item-preco'>
+                                          {product.promocional_price > 0 ? (
+                                            <>
+                                              <span style={{ textDecoration: 'line-through', color: 'red', fontSize: '10px' }}>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                              </span>
+                                              <br />
+                                              <span style={{ color: configStore.cor_preco_promocional }}>
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.promocional_price)}
+                                              </span>
+                                              &nbsp;
+                                              <span style={{ color: 'green' }}>
+                                                ({Math.round(((product.price - product.promocional_price) / product.price) * 100)}% de desconto)
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <span style={{ color: configStore.cor_preco }}>
+                                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                                            </span>
+                                          )}
+                                        </h4>
+                                      </div>
+                                    </div>
+                                  ))
+                              ) : (
+                                <div className="text-center my-5">
+                                  <h4>Nenhum produto encontrado nesta categoria</h4>
                                 </div>
-                              ))
-                          ) : (
-                            <div className="text-center my-5">
-                              <h4>Nenhum produto encontrado nesta categoria</h4>
-                            </div>
-                          )}
+                              )}
+                            </div>)}
                         </div>
-                      </div>
-                    ))
-                )}
-                <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
-                  <FaWhatsapp className="whatsapp-icon" />
-                </button>
-              </div>
+                      ))
+                  )}
+                  <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
+                    <FaWhatsapp className="whatsapp-icon" />
+                  </button>
+                </div>
               )}
             </section>
-            
+
             {cartItemCount > 0 && (
               <footer style={{ backgroundColor: configStore.cor_primaria }}>
                 {storeDetails.status === "Aberta" ? (
@@ -692,7 +697,7 @@ function Catalogo() {
               </footer>
             )}
           </main>
-          
+
           <StoreModal
             show={showModal}
             handleClose={handleCloseModal}
