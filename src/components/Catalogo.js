@@ -612,7 +612,7 @@ function Catalogo() {
                             borderBottom: `2px solid ${configStore.cor_botao_primaria}`
                           }}>
                             {category.name}
-                          </h2>
+                          </h4>
 
                           <div className='sessao'>
                             <p>{category.description}</p>
