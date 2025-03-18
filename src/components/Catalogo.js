@@ -576,6 +576,7 @@ function Catalogo() {
                     <h4>Não há categorias incluídas.</h4>
                   </div>
                 ) : (
+                 
                     <div className='items-catalogo'>
                     {categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category) => (
                       <div key={category.id} id={`categoria${category.id}`} style={{ marginBottom: '30px' }}> {/* ID para âncora */}
