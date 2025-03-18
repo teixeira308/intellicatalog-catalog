@@ -565,7 +565,7 @@ function Catalogo() {
               {loadingStage < 2 ? (
                 // Loading enquanto categorias/produtos são carregados
                 <div className="loading-screen">
-                  <img src={loadingGif} alt="Carregando categorias e produtos..." />
+                  <img style={{width: '30px' }}src={loadingGif} alt="Carregando categorias e produtos..." />
                 </div>
               ) : (
                 <div className="category-content">
