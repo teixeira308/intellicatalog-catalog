@@ -598,7 +598,7 @@ function Catalogo() {
                           {loadingStage < 3 ?
                             (
                               <div className="loading-screen">
-                                <img src={loadingGif} alt="Carregando..." />
+                                <img style={{width: '30px' }} src={loadingGif} alt="Carregando..." />
                               </div>
                             ) : (
                               <div className='items-catalogo'>
