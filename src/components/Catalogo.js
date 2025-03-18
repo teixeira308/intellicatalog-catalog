@@ -349,7 +349,7 @@ function Catalogo() {
     const newImages = {};
 
     if (products.length === 0) {
-     setLoadingStage(false);  // Garantir que o loading seja desligado, mesmo sem produtos
+     setLoadingStage(1);  // Garantir que o loading seja desligado, mesmo sem produtos
       return;
     }
 
@@ -377,7 +377,7 @@ function Catalogo() {
         ...newImages, // Mescla as novas imagens com as existentes
       };
       console.log("Updated product images:", updatedImages);
-      setLoadingStage(false);
+      setLoadingStage(2);
       return updatedImages;
     });
   };
