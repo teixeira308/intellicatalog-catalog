@@ -44,12 +44,12 @@ function Catalogo() {
   const total = cart.reduce((sum, item) => {
     const itemPrice = item.promocional_price ? parseFloat(item.promocional_price) : parseFloat(item.price);
     return sum + (isNaN(itemPrice) ? 0 : itemPrice * item.quantity);
-}, 0);
+  }, 0);
 
-// Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
-const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
+  // Adiciona a taxa de entrega apenas se calcula_taxa_entrega_posterior não for "true"
+  const deliveryFee = configStore.calcula_taxa_entrega_posterior === "true" ? 0 : (parseFloat(configStore.taxa_entrega) || 0);
 
-const finalTotal = total + deliveryFee;
+  const finalTotal = total + deliveryFee;
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -470,9 +470,7 @@ const finalTotal = total + deliveryFee;
 
 
   return (
-
     <div className="App">
-
       {loading ? (
         <div className="loading-screen">
           {/* Exibir tela de carregamento */}
@@ -560,70 +558,40 @@ const finalTotal = total + deliveryFee;
               <section>
                 <div className="persisti">
                   <div className='nav-tabs-responsive'>
-                    <ul
-                      className='nav nav-tabs w-100 d-flex'
-                      role='tablist'
-                      style={{
-                        margin: 0,
-                        padding: 0,
-                        borderBottom: "none",
-                        display: "flex", // Distribui os itens em linha
-                        justifyContent: "space-between", // Espaçamento uniforme entre os itens
-                      }}
-                    >
-                      {categories
-                        .sort((a, b) => a.catalog_order - b.catalog_order) // Ordena as categorias conforme catalog_order
-                        .map((category, index) => (
-                          <li
-                            className="nav-item text-center flex-fill"
-                            key={index}
+                    <ul className='nav nav-tabs w-100 d-flex' role='tablist' style={{ margin: 0, padding: 0, borderBottom: "none", display: "flex", justifyContent: "space-between" }}>
+                      {categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category, index) => (
+                        <li className="nav-item text-center flex-fill" key={index} style={{ flex: "1", display: "flex", justifyContent: "center" }}>
+                          <a
+                            className="nav-link"
+                            href={`#categoria${category.id}`} // Link âncora
                             style={{
-                              flex: "1", // Faz com que todos os itens tenham o mesmo tamanho
-                              display: "flex",
-                              justifyContent: "center", // Centraliza o botão dentro do <li>
+                              border: "none",
+                              borderRadius: "0px",
+                              backgroundColor:
+                                category.name.toLowerCase() === "black friday"
+                                  ? "black"
+                                  : category.name.toLowerCase() === "promoção"
+                                    ? "red"
+                                    : "transparent",
+                              color:
+                                category.name.toLowerCase() === "black friday"
+                                  ? "white"
+                                  : category.name.toLowerCase() === "promoção"
+                                    ? "yellow"
+                                    : configStore.cor_botao_secundaria,
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                              padding: "10px 15px",
+                              width: "100%",
+                              textAlign: "center"
                             }}
                           >
-                            <button
-                              className={`nav-link ${activeTab === `categoria${category.id}` ? 'active' : ''}`}
-                              id={`tab${category.id}-tab`}
-                              href={`#content${category.id}`}
-                              role="tab"
-                              aria-controls={`tab${category.id}`}
-                              aria-selected={activeTab === `categoria${category.id}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setActiveTab(`categoria${category.id}`);
-                              }}
-                              style={{
-                                border: "none",
-                                borderRadius: "0px",
-                                backgroundColor:
-                                  category.name.toLowerCase() === "black friday"
-                                    ? "black"
-                                    : category.name.toLowerCase() === "promoção"
-                                      ? "red"
-                                      : activeTab === `categoria${category.id}`
-                                        ? configStore.cor_botao_primaria
-                                        : "transparent",
-                                color:
-                                  category.name.toLowerCase() === "black friday"
-                                    ? "white"
-                                    : category.name.toLowerCase() === "promoção"
-                                      ? "yellow"
-                                      : activeTab === `categoria${category.id}`
-                                        ? "white"
-                                        : configStore.cor_botao_secundaria,
-                                textDecoration: "none",
-                                fontWeight: activeTab === `categoria${category.id}` ? "bold" : "normal",
-                                padding: "10px 15px",
-                                width: "100%", // Faz o botão ocupar todo o espaço disponível dentro do <li>
-                              }}
-                            >
-                              {category.name}
-                            </button>
-                          </li>
-                        ))}
+                            {category.name}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
+
                   </div>
 
                 </div>
@@ -634,13 +602,14 @@ const finalTotal = total + deliveryFee;
                       <h4>Não há categorias incluídas.</h4>
                     </div>
                   ) : (
-                    categories.map((category, index) => (
+                    categories.sort((a, b) => a.catalog_order - b.catalog_order).map((category) => (
                       <div
-                        className={`tab-pane fade ${activeTab === `categoria${category.id}` ? 'show active' : ''}`}
-                        id={`content${category.id}`}
-                        role='tabpanel'
+                        key={category.id}
+                        id={`categoria${category.id}`} // ID para âncora
+                        className="tab-pane fade show"
+                        role="tabpanel"
                         aria-labelledby={`tab${category.id}-tab`}
-                        key={index}
+                        style={{ padding: "20px 0" }}
                       >
                         <div className='sessao'>
                           <p>{category.description}</p>
@@ -674,7 +643,7 @@ const finalTotal = total + deliveryFee;
                                         )}
                                         <img
                                           loading="lazy"
-                                          src={productImages[product.id][0].url} // Mostra apenas a primeira imagem
+                                          src={productImages[product.id][0].url}
                                           alt={product.titulo}
                                           className='img-square'
                                         />
@@ -718,17 +687,14 @@ const finalTotal = total + deliveryFee;
                             </div>
                           )}
                         </div>
-
                       </div>
                     ))
-
                   )}
                   <button className="whatsapp-button" onClick={handleClickWhatsappNoOrder}>
                     <FaWhatsapp className="whatsapp-icon" />
-
                   </button>
-
                 </div>
+
 
 
               </section>
